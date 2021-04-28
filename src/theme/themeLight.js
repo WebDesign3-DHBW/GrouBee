@@ -11,7 +11,10 @@ const overrides = themeGlobal.overrides;
 let themeLight = createMuiTheme({
   palette: {
     primary: {
-      main: "#FDCB6E",
+      main: "#fdcb6e",
+    },
+    secondary: {
+      main: "#6dacfc",
     },
   },
   typography,

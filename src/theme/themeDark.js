@@ -12,7 +12,10 @@ let themeDark = createMuiTheme({
   palette: {
     type: "dark",
     primary: {
-      main: "#FDCB6E",
+      main: "#fdcb6e",
+    },
+    secondary: {
+      main: "#6dacfc",
     },
   },
   typography,
