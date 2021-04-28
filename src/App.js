@@ -19,7 +19,7 @@ function App() {
       <CssBaseline />
       <RecoilRoot>
         <Router>
-          <Home path="/" default />
+          <Home path="/" />
           <ToDo path="todo" />
           <Media path="media" />
           <Finance path="finance" />

@@ -1,10 +1,10 @@
 import FAB from "../FAB";
-import CreateGroup from ".";
+import Popup from "./Popup";
 
 function Settings() {
     return <>
         <h1>Settings</h1>
-        <CreateGroup />
+        <Popup />
         <FAB />
     </>
 }
