@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   button: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 20,
+    padding: 0,
   },
 });
 
@@ -67,11 +67,11 @@ function CreateGroup() {
         {generatedID ? (
           <Button color="primary"> Kopieren </Button>
         ) : (
-          <Button onClick={handleCreate} color="primary">
-            {" "}
-            Einladungscode generieren{" "}
-          </Button>
-        )}
+            <Button onClick={handleCreate} color="primary">
+              {" "}
+              Einladungscode generieren{" "}
+            </Button>
+          )}
       </DialogActions>
     </>
   );

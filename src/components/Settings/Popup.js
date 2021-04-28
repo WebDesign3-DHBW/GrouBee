@@ -44,9 +44,13 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: "white",
         width: 500,
+        padding: 0,
     },
+
+
+
 }));
 
 export default function FullWidthTabs() {
@@ -77,12 +81,14 @@ export default function FullWidthTabs() {
                     <Tab label="Gruppe beitreten" {...a11yProps(1)} />
                 </Tabs>
             </AppBar>
+
             <TabPanel value={value} index={0} dir={theme.direction}>
                 <CreateGroup />
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
                 <JoinGroup />
             </TabPanel>
+
         </div>
     );
 }

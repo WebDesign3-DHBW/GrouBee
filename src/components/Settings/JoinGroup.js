@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     button: {
         display: "flex",
         justifyContent: "space-between",
-        padding: 20,
+        padding: 0,
     }
 })
 
