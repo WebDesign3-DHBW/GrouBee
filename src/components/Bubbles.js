@@ -31,8 +31,6 @@ function Bubbles() {
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // let colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
   // add or delete active group
   const toggleElement = (group) => {
     const groupID = group[0];
