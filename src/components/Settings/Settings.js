@@ -22,6 +22,8 @@ function Settings() {
       <Bubbles />
       <FAB open={openModal} />
       <h1>Settings</h1>
+      <CreateGroup />
+      <FAB />
       <Button onClick={onClickSignOut}>Ausloggen</Button>
     </>
   );
