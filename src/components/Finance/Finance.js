@@ -1,5 +1,4 @@
 import ButtonAppBar from "../AppBar";
-import { Link } from "@reach/router";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 
@@ -9,12 +8,10 @@ function Finance() {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-  console.log("financeData", financeData);
 
   return (
     <>
       <ButtonAppBar title="Finanzen" />
-      <Link to="/home">Home</Link>
       <Bubbles />
 
       <h1>Finance</h1>
