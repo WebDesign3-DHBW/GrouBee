@@ -10,22 +10,23 @@ import Grid from "@material-ui/core/Grid";
 import { navigate } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+  root: {},
+
+  menuButton1: {},
+
+  toolbar: {
+    display: "flex",
+    justifyContent: "space-between",
   },
 
-  menuButton1: {
-    flexGrow: 1,
-  },
+  menuButton2: {},
 
-  title: {
-    flexGrow: 1,
-  },
+  title: {},
   appbar: {
     backgroundColor: "white",
     "&:after": {
-      margin: "0 1rem",
-      border: "0.25px solid black",
+      margin: "0 1.2rem",
+      border: "0.5px solid black",
       content: "''",
     },
   },
@@ -36,38 +37,35 @@ function ButtonAppBar({ title }) {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <AppBar elevation={0} className={classes.appbar} position="static">
-            <Toolbar>
-              <div className={classes.menuButton1}>
-                <IconButton
-                  edge="start"
-                  className={classes.menuButton1}
-                  color="inherit"
-                  aria-label="menu"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  <MdHome />
-                </IconButton>
-              </div>
-              <Typography variant="h6" className={classes.title}>
-                {title}
-              </Typography>
-              <IconButton
-                edge="start"
-                className={classes.menuButton2}
-                color="inherit"
-                aria-label="menu"
-              >
-                <MdSettings />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-        </Grid>
-      </Grid>
+      <AppBar elevation={0} className={classes.appbar} position="static">
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            className={classes.menuButton1}
+            color="inherit"
+            aria-label="menu"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            <MdHome />
+          </IconButton>
+          <Typography variant="h1" className={classes.title}>
+            {title}
+          </Typography>
+          <IconButton
+            edge="end"
+            className={classes.menuButton2}
+            color="inherit"
+            aria-label="menu"
+            onClick={() => {
+              navigate("/settings");
+            }}
+          >
+            <MdSettings />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 }
