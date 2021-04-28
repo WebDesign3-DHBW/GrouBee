@@ -1,12 +1,9 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles, FormHelperText } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
     button: {
@@ -14,8 +11,6 @@ const useStyles = makeStyles({
         justifyContent: "space-between",
         padding: 20,
     }
-
-
 })
 
 
@@ -31,7 +26,7 @@ export default function JoinGroup() {
         <div>
             <DialogContentText>
                 Gib deinen Gruppencode ein, um einer Gruppe beizutreten
-          </DialogContentText>
+            </DialogContentText>
             <TextField
                 autoFocus
                 margin="dense"
@@ -40,15 +35,14 @@ export default function JoinGroup() {
                 type="textfield"
                 fullWidth
             />
-            <DialogActions className={classes.abbrechen}>
-
+            <DialogActions className={classes.button}>
                 <Button onClick={handleClose} color="lightgrey">
                     Abbrechen
-</Button>
+                </Button>
 
                 <Button onClick={handleClose} color="primary">
                     Beitreten
-</Button>
+                </Button>
             </DialogActions>
 
         </div>
