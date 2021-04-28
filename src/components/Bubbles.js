@@ -13,6 +13,15 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
     },
+    overflowX: "auto",
+    scrollbarWidth: "none" /* Firefox */,
+    "&::-webkit-scrollbar": {
+      display: "none" /*Chrome, Safari and Opera*/,
+    },
+    "& span:last-child": {
+      background: "tomato",
+      marginRight: theme.spacing(2),
+    },
   },
 }));
 
@@ -54,16 +63,22 @@ function Bubbles() {
 
   return (
     <div className={classes.root}>
-      {Object.entries(groups).map((group, idx) => {
-        return (
-          <Bubble
-            key={idx}
-            group={group}
-            toggleElement={toggleElement}
-            activeGroups={activeGroups}
-          />
-        );
-      })}
+      {Object.entries(groups)
+        // Sort by group name
+        .sort((a, b) => a[1].localeCompare(b[1]))
+        // Place "ICH" at the beginning
+        .sort((a, b) => (b[1] === "ICH") - (a[1] === "ICH"))
+        .map((group, idx) => {
+          console.log("group", group);
+          return (
+            <Bubble
+              key={idx}
+              group={group}
+              toggleElement={toggleElement}
+              activeGroups={activeGroups}
+            />
+          );
+        })}
     </div>
   );
 }

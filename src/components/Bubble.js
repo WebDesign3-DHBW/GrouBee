@@ -8,8 +8,17 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
+  circle: {
+    width: "64px",
+    height: "64px",
+  },
   active: {
-    border: "1px solid black",
+    background: "linear-gradient(left top, red 0%, #f90 100%)",
+    borderRadius: "1000px",
+    padding: "4px",
+  },
+  inactive: {
+    padding: "4px",
   },
 }));
 
@@ -20,7 +29,7 @@ function Bubble({ group, toggleElement, activeGroups }) {
 
   const checked = activeGroups.some((groupArr) => groupArr[0] === group[0]);
 
-  const styles = checked ? classes.active : null;
+  const styles = checked ? classes.active : classes.inactive;
 
   return (
     <>
@@ -29,8 +38,9 @@ function Bubble({ group, toggleElement, activeGroups }) {
           setActive(!active);
           toggleElement(group);
         }}
+        className={styles}
       >
-        <Avatar className={styles}>{group[1]}</Avatar>
+        <Avatar className={classes.circle}>{group[1]}</Avatar>
       </span>
     </>
   );
