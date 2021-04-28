@@ -7,6 +7,10 @@ import Home from "./components/Home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import themeLight from "./theme/themeLight";
+import ToDo from "./components/ToDo/ToDo";
+import Media from "./components/Media/Media";
+import Finance from "./components/Finance/Finance";
+import Calendar from "./components/Calendar/Calendar";
 
 function App() {
   return (
@@ -15,7 +19,10 @@ function App() {
       <RecoilRoot>
         <Router>
           <Home path="/" default />
-          {/* <ToDo path="todo" /> */}
+          <ToDo path="todo" />
+          <Media path="media" />
+          <Finance path="finance" />
+          <Calendar path="calendar" />
         </Router>
       </RecoilRoot>
     </ThemeProvider>
