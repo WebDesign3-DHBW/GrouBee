@@ -11,6 +11,7 @@ import ToDo from "./components/ToDo/ToDo";
 import Media from "./components/Media/Media";
 import Finance from "./components/Finance/Finance";
 import Calendar from "./components/Calendar/Calendar";
+import Settings from "./components/Settings/Settings";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Media path="media" />
           <Finance path="finance" />
           <Calendar path="calendar" />
+          <Settings path="settings" />
         </Router>
       </RecoilRoot>
     </ThemeProvider>
