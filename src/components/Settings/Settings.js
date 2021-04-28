@@ -4,6 +4,7 @@ import { signOut } from "../../auth/signOut";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
+import Popup from "../Settings/Popup";
 
 function Settings() {
   const onClickSignOut = async () => {
@@ -22,7 +23,6 @@ function Settings() {
       <Bubbles />
       <FAB open={openModal} />
       <h1>Settings</h1>
-      <CreateGroup />
       <Popup />
       <FAB />
       <Button onClick={onClickSignOut}>Ausloggen</Button>
