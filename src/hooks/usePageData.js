@@ -13,16 +13,16 @@ function usePageData(pageName) {
   useEffect(() => {
     async function fetchData() {
       try {
-        if (pageName) {
-          const pageData = await getActiveGroupData(activeGroupIDs, pageName);
-          console.log("pageData fetched", pageData);
-          setResult(pageData);
-        } else if (pageName === "Calendar") {
+        if (pageName === "Calendar") {
           const calendar = await getActiveGroupData(activeGroupIDs, pageName);
           const todos = await getActiveGroupData(activeGroupIDs, "ToDo");
           console.log("calendar fetched", calendar);
           console.log("todos fetched", todos);
-          setResult([calendar, todos]);
+          setResult([calendar], [todos]);
+        } else if (pageName) {
+          const pageData = await getActiveGroupData(activeGroupIDs, pageName);
+          console.log("pageData fetched", pageData);
+          setResult(pageData);
         } else {
           setResult([]);
         }
