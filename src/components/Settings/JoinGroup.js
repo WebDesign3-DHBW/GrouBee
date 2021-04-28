@@ -6,8 +6,21 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles, FormHelperText } from '@material-ui/core';
 
-export default function FormDialog() {
+const useStyles = makeStyles({
+  abbrechen: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: 20,
+  }
+
+
+})
+
+
+export default function JoinGroup() {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -38,10 +51,13 @@ export default function FormDialog() {
             fullWidth
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
+
+        <DialogActions className={classes.abbrechen}>
+
+          <Button onClick={handleClose} color="lightgrey">
             Abbrechen
           </Button>
+
           <Button onClick={handleClose} color="primary">
             Beitreten
           </Button>
