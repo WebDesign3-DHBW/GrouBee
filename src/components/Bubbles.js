@@ -18,8 +18,7 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar": {
       display: "none" /*Chrome, Safari and Opera*/,
     },
-    "& span:last-child": {
-      background: "tomato",
+    "& span:last-child > *": {
       marginRight: theme.spacing(2),
     },
   },
@@ -58,7 +57,7 @@ function Bubbles() {
 
   // Todo: styles
   if (isLoading) {
-    return <Skeleton variant="circle" width={40} height={40} />;
+    return <Skeleton variant="circle" width={64} height={64} />;
   }
 
   return (
