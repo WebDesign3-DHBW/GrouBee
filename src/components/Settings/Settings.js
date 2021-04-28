@@ -1,12 +1,12 @@
 import { Link } from "@material-ui/core";
 
-function ToDo() {
+function Settings() {
   return (
     <>
       <Link to="/home">Home</Link>
-      <h1>ToDo</h1>
+      <h1>Settings</h1>
     </>
   );
 }
 
-export default ToDo;
+export default Settings;

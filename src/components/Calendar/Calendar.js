@@ -3,7 +3,7 @@ import { Link } from "@reach/router";
 function Calendar() {
   return (
     <>
-      <Link to="home">Home</Link>
+      <Link to="/home">Home</Link>
 
       <h1>Calendar</h1>
     </>
