@@ -8,7 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, FormHelperText } from '@material-ui/core';
 
-
 const useStyles = makeStyles({
     button: {
         display: "flex",
@@ -18,7 +17,9 @@ const useStyles = makeStyles({
 
 
 })
-function CreateGroup() {
+
+
+export default function JoinGroup() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -26,29 +27,30 @@ function CreateGroup() {
         setOpen(false);
     };
 
-    return <>
-        <DialogContentText>
-            Gib deiner neuen Gruppe einen Namen
+    return (
+        <div>
+            <DialogContentText>
+                Gib deinen Gruppencode ein, um einer Gruppe beizutreten
           </DialogContentText>
-        <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="textfield"
-            fullWidth
-        />
-        <DialogActions className={classes.abbrechen}>
+            <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Gruppencode"
+                type="textfield"
+                fullWidth
+            />
+            <DialogActions className={classes.abbrechen}>
 
-            <Button onClick={handleClose} color="lightgrey">
-                Abbrechen
+                <Button onClick={handleClose} color="lightgrey">
+                    Abbrechen
 </Button>
 
-            <Button onClick={handleClose} color="primary">
-                Beitreten
+                <Button onClick={handleClose} color="primary">
+                    Beitreten
 </Button>
-        </DialogActions>
-    </>
+            </DialogActions>
+
+        </div>
+    );
 }
-
-export default CreateGroup;

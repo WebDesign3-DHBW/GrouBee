@@ -1,7 +1,13 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
 import Popup from './Popup';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles, FormHelperText } from '@material-ui/core';
 
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -35,7 +41,7 @@ export default function Settings() {
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
 
-    const handleOpen = () => {
+    const handleClickOpen = () => {
         setOpen(true);
     };
 
@@ -43,25 +49,17 @@ export default function Settings() {
         setOpen(false);
     };
 
-    const body = (
-        <div style={modalStyle} className={classes.paper}>
-            <Popup />
-        </div>
-    );
-
     return (
         <div>
-            <button type="button" onClick={handleOpen}>
-                Open Modal
-      </button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                Später durch Kreis mit + ersetzen
+            </Button>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogContent>
+                    <Popup />
+
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
