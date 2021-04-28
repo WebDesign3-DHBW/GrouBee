@@ -1,32 +1,26 @@
+import { Router } from "@reach/router";
+import React from "react";
+import { RecoilRoot } from "recoil";
+import "./App.css";
+import Home from "./components/Home/Home";
+import ToDo from "./components/ToDo/ToDo";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import themeLight from "./theme/themeLight";
 import themeDark from "./theme/themeDark";
 import useMediaQueryUI from "@material-ui/core/useMediaQuery";
-import logo from "./logo.svg";
-import "./App.css";
 
 function App() {
   const prefersDarkMode = useMediaQueryUI("(prefers-color-scheme: dark)");
   return (
     <ThemeProvider theme={prefersDarkMode ? themeDark : themeLight}>
       <CssBaseline />
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <RecoilRoot>
+        <Router>
+          <Home path="/" default />
+          <ToDo path="todo" />
+        </Router>
+      </RecoilRoot>
     </ThemeProvider>
   );
 }
