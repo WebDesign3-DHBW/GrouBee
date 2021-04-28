@@ -91,7 +91,7 @@ function CreateGroup() {
           </Button>
         )}
       </DialogActions>
-    </div>
+    </>
   );
 }
 
