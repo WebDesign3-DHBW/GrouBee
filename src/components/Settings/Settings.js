@@ -23,6 +23,7 @@ function Settings() {
       <FAB open={openModal} />
       <h1>Settings</h1>
       <CreateGroup />
+      <Popup />
       <FAB />
       <Button onClick={onClickSignOut}>Ausloggen</Button>
     </>
