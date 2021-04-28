@@ -1,12 +1,12 @@
-import { Link } from "@reach/router";
+import FAB from "../FAB";
+import CreateGroup from ".";
 
 function Settings() {
-    return (
-        <>
-            <Link to="/home">Home</Link>
-            <h1>Settings</h1>
-        </>
-    );
+    return <>
+        <h1>Settings</h1>
+        <CreateGroup />
+        <FAB />
+    </>
 }
 
 export default Settings;
