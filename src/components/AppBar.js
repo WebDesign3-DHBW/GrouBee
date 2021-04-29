@@ -10,7 +10,6 @@ import { navigate, useLocation } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
 
-  menuButton1: {},
 
   toolbar: {
     display: "flex",
