@@ -6,6 +6,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import { makeStyles, Typography } from "@material-ui/core";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles({
   buttons: {
@@ -72,7 +73,11 @@ function CreateGroup() {
         value={value}
         onChange={handleChange}
       />
-
+      {generatedID && (
+        <Alert severity="success" color="success">
+          Du hast erfolgreich eine Gruppe erstellt. Kopiere den Code, um Andere einzuladen!
+        </Alert>
+      )}
       {generatedID && <Typography variant="body1">{generatedID}</Typography>}
       <input value={generatedID} ref={inputRef} readOnly hidden />
       <DialogActions className={classes.buttons}>
