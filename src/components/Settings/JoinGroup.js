@@ -35,14 +35,15 @@ export default function JoinGroup() {
         id="name"
         label="Gruppencode"
         type="textfield"
+        value=""
         fullWidth
       />
       <DialogActions className={classes.buttons}>
-        <Button onClick={handleClose} className={classes.buttons}>
+        <Button onClick={handleClose} color="lightgrey" className={classes.button}>
           Abbrechen
         </Button>
 
-        <Button onClick={handleClose} className={classes.buttons} color="primary">
+        <Button onClick={handleClose} color="primary" className={classes.button}>
           Beitreten
         </Button>
       </DialogActions>
