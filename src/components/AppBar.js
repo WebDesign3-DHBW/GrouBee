@@ -15,8 +15,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
 
-
-  title: {},
   appbar: {
     backgroundColor: "white",
     "&:after": {
