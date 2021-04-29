@@ -53,7 +53,6 @@ function ButtonAppBar({ title }) {
           </Typography>
           <IconButton
             edge="start"
-            className={classes.menuButton1}
             style={isHome ? { visibility: "hidden" } : null}
             color="inherit"
             aria-label="menu"
