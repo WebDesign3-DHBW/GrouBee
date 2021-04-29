@@ -73,7 +73,7 @@ function ButtonAppBar({ title }) {
             edge="end"
             style={location.pathname === "/settings" ? { visibility: "hidden" } : null}
             color="inherit"
-            aria-label="menu"
+            aria-label="Settings"
             onClick={() => {
               navigate("/settings");
             }}
