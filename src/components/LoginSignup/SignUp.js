@@ -53,7 +53,7 @@ function SignUp({ location }) {
           setErrorMessage("Die angegebene E-Mail Adresse wird bereits verwendet.");
           break;
         case "auth/weak-password":
-          setErrorMessage("Dein Passwort muss mehr als sechs Zeichen haben.");
+          setErrorMessage("Dein Passwort muss mindestens 6 Zeichen haben.");
           break;
         default:
           setErrorMessage(
