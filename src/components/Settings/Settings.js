@@ -5,8 +5,11 @@ import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
 import Popup from "../Settings/Popup";
+import { useState } from "react";
 
 function Settings() {
+  const [open, setOpen] = useState(false);
+
   const onClickSignOut = async () => {
     try {
       await signOut();
