@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
 
-  menuButton2: {},
 
   title: {},
   appbar: {
