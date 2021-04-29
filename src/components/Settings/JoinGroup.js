@@ -6,10 +6,15 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
-  button: {
+  buttons: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "20px 0px 0px 0px",
+    padding: 0,
+    paddingTop: 20,
+  },
+  button: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
 });
 
@@ -32,10 +37,12 @@ export default function JoinGroup() {
         type="textfield"
         fullWidth
       />
-      <DialogActions className={classes.button}>
-        <Button onClick={handleClose}>Abbrechen</Button>
+      <DialogActions className={classes.buttons}>
+        <Button onClick={handleClose} className={classes.buttons}>
+          Abbrechen
+        </Button>
 
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} className={classes.buttons} color="primary">
           Beitreten
         </Button>
       </DialogActions>

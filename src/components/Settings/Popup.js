@@ -45,11 +45,8 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "white",
-    width: 500,
-    paddingTop: "0px",
-  },
-  tabs: {
-    maxWidth: "500px",
+    maxWidth: 500,
+    height: "100%",
   },
 }));
 
@@ -60,10 +57,6 @@ export default function FullWidthTabs() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
   };
 
   return (
@@ -79,8 +72,8 @@ export default function FullWidthTabs() {
           padding="0px"
           className={classes.tabs}
         >
-          <Tab label="Gruppe erstellen" {...a11yProps(0)} />
-          <Tab label="Gruppe beitreten" {...a11yProps(1)} />
+          <Tab label="Gruppe erstellen" {...a11yProps(0)} width="100%" style={{ padding: 0 }} />
+          <Tab label="Gruppe beitreten" {...a11yProps(1)} width="100%" />
         </Tabs>
       </AppBar>
 

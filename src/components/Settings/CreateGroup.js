@@ -8,10 +8,15 @@ import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
 
 const useStyles = makeStyles({
-  button: {
+  buttons: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "20px 0px 0px 0px",
+    padding: 0,
+    paddingTop: 20,
+  },
+  button: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
 });
 
@@ -46,7 +51,7 @@ function CreateGroup() {
   };
 
   return (
-    <>
+    <div className={classes.container}>
       <DialogContentText>Gib deiner neuen Gruppe einen Namen</DialogContentText>
       <TextField
         autoFocus
@@ -60,18 +65,21 @@ function CreateGroup() {
       />
 
       {generatedID && <Typography>{generatedID}</Typography>}
-      <DialogActions className={classes.button}>
-        <Button onClick={handleClose}>Abbrechen</Button>
+      <DialogActions className={classes.buttons}>
+        <Button onClick={handleClose} className={classes.button}>
+          Abbrechen
+        </Button>
         {generatedID ? (
-          <Button color="primary"> Kopieren </Button>
+          <Button color="primary" className={classes.button}>
+            Kopieren
+          </Button>
         ) : (
-          <Button onClick={handleCreate} color="primary">
-            {" "}
-            Einladungscode generieren{" "}
+          <Button onClick={handleCreate} color="primary" className={classes.button}>
+            Code generieren
           </Button>
         )}
       </DialogActions>
-    </>
+    </div>
   );
 }
 
