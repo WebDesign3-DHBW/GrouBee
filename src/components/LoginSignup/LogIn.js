@@ -34,15 +34,9 @@ function SignIn({ location }) {
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = useState(true);
-  let signUpSuccessful = false;
 
-  try {
-    if (location.state.signUpSuccessful) {
-      signUpSuccessful = true;
-    }
-  } catch {}
-
-  const onSignInClicked = async () => {
+  const onSignInClicked = async (e) => {
+    e.preventDefault();
     try {
       const signInSuccessful = await signIn(emailValue, passwordValue);
       signInSuccessful.successful && navigate(`/`);
@@ -70,7 +64,7 @@ function SignIn({ location }) {
 
   return (
     <>
-      {signUpSuccessful && (
+      {location.state?.signUpSuccessful && (
         <Snackbar
           open={open}
           autoHideDuration={7000}
@@ -90,7 +84,7 @@ function SignIn({ location }) {
       )}
       <Wrapper>
         <div>
-          {errorMessage ? <div className={classes.errorMessage}> {errorMessage} </div> : null}
+          {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
           <form noValidate autoComplete="off">
             <TextField
               type="email"
@@ -113,6 +107,8 @@ function SignIn({ location }) {
             fullWidth={true}
             className={classes.button}
             onClick={onSignInClicked}
+            type="submit"
+            form="loginForm"
           >
             Einloggen
           </Button>

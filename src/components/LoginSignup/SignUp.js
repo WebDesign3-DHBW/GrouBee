@@ -64,9 +64,9 @@ function SignUp({ location }) {
   };
 
   const validateForm = () => {
-    if (!usernameValue) return "Bitte einen Nutzernamen eingeben.";
-    if (!emailValue) return "Bitte eine E-Mail Adresse eingeben.";
-    if (!isEmail(emailValue)) return "Bitte eine gültige E-Mail Adresse eingeben.";
+    if (!usernameValue) return "Bitte gib einen Nutzernamen ein.";
+    if (!emailValue) return "Bitte gib E-Mail Adresse ein.";
+    if (!isEmail(emailValue)) return "Bitte gib eine gültige E-Mail Adresse an.";
     if (passwordValue !== confirmPassword) return "Die Passwörter stimmen nicht überein.";
     return null;
   };
@@ -74,7 +74,7 @@ function SignUp({ location }) {
   return (
     <Wrapper>
       <div>
-        {errorMessage ? <div className={classes.errorMessage}> {errorMessage} </div> : null}
+        {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
         <form noValidate autoComplete="off">
           <TextField
             type="text"
