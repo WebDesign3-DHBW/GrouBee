@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import { activeGroupsState } from "../utils/recoil";
 import { useRecoilState } from "recoil";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { colors } from "../theme/bubbleColors";
 
 import Bubble from "./Bubble";
 import { getCurrentUserData } from "../firebase/getCurrentUserData";
@@ -29,6 +30,8 @@ function Bubbles() {
   const [activeGroups, setActiveGroups] = useRecoilState(activeGroupsState);
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // let colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   // add or delete active group
   const toggleElement = (group) => {
@@ -74,6 +77,7 @@ function Bubbles() {
               group={group}
               toggleElement={toggleElement}
               activeGroups={activeGroups}
+              color={colors[idx]}
             />
           );
         })}
