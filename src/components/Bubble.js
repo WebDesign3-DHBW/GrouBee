@@ -32,17 +32,15 @@ function Bubble({ group, toggleElement, activeGroups }) {
   const styles = checked ? classes.active : classes.inactive;
 
   return (
-    <>
-      <span
-        onClick={() => {
-          setActive(!active);
-          toggleElement(group);
-        }}
-        className={styles}
-      >
-        <Avatar className={classes.circle}>{group[1]}</Avatar>
-      </span>
-    </>
+    <span
+      onClick={() => {
+        setActive(!active);
+        toggleElement(group);
+      }}
+      className={styles}
+    >
+      <Avatar className={classes.circle}>{group[1]}</Avatar>
+    </span>
   );
 }
 

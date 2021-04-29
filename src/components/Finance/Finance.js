@@ -8,6 +8,7 @@ function Finance() {
   if (isLoading) {
     return <p>Loading...</p>;
   }
+  console.log("financeData", financeData);
 
   return (
     <>

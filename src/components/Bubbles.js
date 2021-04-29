@@ -68,7 +68,6 @@ function Bubbles() {
         // Place "ICH" at the beginning
         .sort((a, b) => (b[1] === "ICH") - (a[1] === "ICH"))
         .map((group, idx) => {
-          console.log("group", group);
           return (
             <Bubble
               key={idx}
