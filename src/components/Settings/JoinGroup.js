@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
 export default function JoinGroup() {
   const classes = useStyles();
-  const [setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
   const [groupObject, setGroupObject] = useState();
 
