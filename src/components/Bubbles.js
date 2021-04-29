@@ -10,17 +10,11 @@ import { getCurrentUserData } from "../firebase/getCurrentUserData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
+    whiteSpace: "nowrap",
     overflowX: "auto",
     scrollbarWidth: "none" /* Firefox */,
     "&::-webkit-scrollbar": {
       display: "none" /*Chrome, Safari and Opera*/,
-    },
-    "& span:last-child > *": {
-      marginRight: theme.spacing(2),
     },
   },
 }));
@@ -30,8 +24,6 @@ function Bubbles() {
   const [activeGroups, setActiveGroups] = useRecoilState(activeGroupsState);
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  // let colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   // add or delete active group
   const toggleElement = (group) => {

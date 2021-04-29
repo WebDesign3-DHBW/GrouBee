@@ -2,17 +2,15 @@ import { Avatar, makeStyles } from "@material-ui/core";
 import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
   avatar: {
     width: "64px",
     height: "64px",
     color: "#000",
     fontSize: "0.75rem",
+  },
+  bubble: {
+    display: "inline-block",
+    margin: theme.spacing(1),
   },
   active: {
     background: "linear-gradient(left top, red 0%, #f90 100%)",
@@ -42,7 +40,7 @@ function Bubble({ group, toggleElement, activeGroups, color }) {
           setActive(!active);
           toggleElement(group);
         }}
-        className={styles}
+        className={`${styles} ${classes.bubble}`}
       >
         <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
           {group[1].substring(0, 7).concat(ellipsis)}

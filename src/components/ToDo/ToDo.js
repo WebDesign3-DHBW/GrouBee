@@ -1,4 +1,3 @@
-import { Link } from "@reach/router";
 import Bubbles from "../Bubbles";
 import usePageData from "../../hooks/usePageData";
 import ButtonAppBar from "../AppBar";
@@ -12,7 +11,6 @@ function ToDo() {
   return (
     <>
       <ButtonAppBar title="ToDo" />
-      <Link to="/">Home</Link>
       <Bubbles />
       <h1>ToDo</h1>
       {todos.map((todo, idx) => (
