@@ -18,7 +18,6 @@ const useStyles = makeStyles({
 
 export default function JoinGroup() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
   const [groupObject, setGroupObject] = useState();
 
@@ -38,10 +37,6 @@ export default function JoinGroup() {
     const groupObject = generateGroupObject(value);
     addGroupToDB(groupObject);
     setGroupObject(groupObject);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const handleChange = (event) => {
@@ -67,10 +62,6 @@ export default function JoinGroup() {
         </Alert>
       )}
       <DialogActions className={classes.button}>
-        <Button onClick={handleClose} color="lightgrey">
-          Schließen
-        </Button>
-
         <Button onClick={handleJoin} color="primary">
           Beitreten
         </Button>
