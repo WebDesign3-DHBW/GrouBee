@@ -9,7 +9,6 @@ import { MdSettings } from "react-icons/md";
 import { navigate, useLocation } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
 
   menuButton1: {},
 
