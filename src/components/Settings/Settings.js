@@ -1,5 +1,5 @@
 import ButtonAppBar from "../AppBar";
-import { Link, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
 import Button from "@material-ui/core/Button";
 import { signOut } from "../../auth/signOut";
 
