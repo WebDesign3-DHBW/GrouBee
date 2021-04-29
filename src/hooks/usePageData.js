@@ -9,16 +9,15 @@ function usePageData(pageName) {
   const [loading, setLoading] = useState(true);
 
   const activeGroupIDs = activeGroups.map((groupArr) => groupArr[0]);
-
+  console.log("activeGroupIDs", activeGroupIDs);
   useEffect(() => {
     async function fetchData() {
       try {
         if (pageName === "Calendar") {
           const calendar = await getActiveGroupData(activeGroupIDs, pageName);
           const todos = await getActiveGroupData(activeGroupIDs, "ToDo");
-          console.log("calendar fetched", calendar);
-          console.log("todos fetched", todos);
-          setResult([calendar], [todos]);
+
+          setResult([calendar, todos]);
         } else if (pageName) {
           const pageData = await getActiveGroupData(activeGroupIDs, pageName);
           console.log("pageData fetched", pageData);
