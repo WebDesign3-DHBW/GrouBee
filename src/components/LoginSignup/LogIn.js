@@ -78,7 +78,7 @@ function SignIn({ location }) {
             severity="success"
             onClose={() => setOpen(false)}
           >
-            Deine Registrierung war erfolgreich 🎉. <br /> Du kannst dich nun einloggen.
+            Deine Registrierung war erfolgreich 🎉 <br /> Du kannst dich nun einloggen.
           </MuiAlert>
         </Snackbar>
       )}
