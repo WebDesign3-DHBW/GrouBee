@@ -55,7 +55,7 @@ function ButtonAppBar({ title }) {
             edge="start"
             style={isHome ? { visibility: "hidden" } : null}
             color="inherit"
-            aria-label="menu"
+            aria-label="Home"
             onClick={() => {
               navigate("/");
             }}
