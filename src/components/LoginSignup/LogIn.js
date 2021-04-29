@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { navigate, Link } from "@reach/router";
+import { navigate } from "@reach/router";
 import { signIn } from "../../auth/signIn";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button, Snackbar, Slide } from "@material-ui/core/";
@@ -116,10 +116,16 @@ function SignIn({ location }) {
           >
             Einloggen
           </Button>
-          <Button variant="outlined" color="primary" fullWidth={true} className={classes.button}>
-            <Link to="/signup" className={classes.link}>
-              Registrieren
-            </Link>
+          <Button
+            variant="outlined"
+            color="primary"
+            fullWidth={true}
+            className={classes.button}
+            onClick={async (event) => {
+              navigate("/signup");
+            }}
+          >
+            Registrieren
           </Button>
         </div>
       </Wrapper>
