@@ -4,7 +4,7 @@ import ButtonAppBar from "../AppBar";
 function Settings() {
   return (
     <>
-      <ButtonAppBar title="Settings" />
+      <ButtonAppBar title="Einstellungen" />
       <h1>Settings</h1>
     </>
   );
