@@ -71,7 +71,6 @@ function ButtonAppBar({ title }) {
           </Typography>
           <IconButton
             edge="end"
-            className={classes.menuButton2}
             style={location.pathname === "/settings" ? { visibility: "hidden" } : null}
             color="inherit"
             aria-label="menu"
