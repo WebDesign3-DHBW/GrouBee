@@ -23,7 +23,6 @@ const useStyles = makeStyles({
 
 function CreateGroup() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
   const [generatedID, setGeneratedID] = useState();
 
@@ -48,10 +47,6 @@ function CreateGroup() {
     inputRef.current.style.display = "none";
   }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleCreate = () => {
     addGroupToDB(value);
   };
@@ -61,18 +56,20 @@ function CreateGroup() {
   };
 
   return (
-    <div className={classes.container}>
-      <DialogContentText>Gib deiner neuen Gruppe einen Namen</DialogContentText>
-      <TextField
-        autoFocus
-        margin="dense"
-        id="name"
-        label="Name"
-        type="textfield"
-        fullWidth
-        value={value}
-        onChange={handleChange}
-      />
+    <>
+      {!generatedID && <DialogContentText>Gib deiner neuen Gruppe einen Namen</DialogContentText>}
+      {!generatedID && (
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Name"
+          type="textfield"
+          fullWidth
+          value={value}
+          onChange={handleChange}
+        />
+      )}
       {generatedID && (
         <Alert severity="success" color="success">
           Du hast erfolgreich eine Gruppe erstellt. Kopiere den Code, um Andere einzuladen!

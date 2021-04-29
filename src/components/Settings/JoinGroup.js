@@ -23,7 +23,6 @@ const useStyles = makeStyles({
 
 export default function JoinGroup() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
   const [groupObject, setGroupObject] = useState();
 
@@ -43,10 +42,6 @@ export default function JoinGroup() {
     const groupObject = generateGroupObject(value);
     addGroupToDB(groupObject);
     setGroupObject(groupObject);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const handleChange = (event) => {
