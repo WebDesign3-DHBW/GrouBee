@@ -20,14 +20,13 @@ function usePageData(pageName) {
           setResult([calendar, todos]);
         } else if (pageName) {
           const pageData = await getActiveGroupData(activeGroupIDs, pageName);
-          console.log("pageData fetched", pageData);
           setResult(pageData);
         } else {
           setResult([]);
         }
         setLoading(false);
       } catch (e) {
-        console.log("oh fuck...", e);
+        console.error(e);
         setResult([]);
         setLoading(false);
       }

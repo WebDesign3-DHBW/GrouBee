@@ -1,4 +1,4 @@
-import { Link } from "@reach/router";
+import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 
@@ -12,7 +12,7 @@ function Finance() {
 
   return (
     <>
-      <Link to="/home">Home</Link>
+      <ButtonAppBar title="Finanzen" />
       <Bubbles />
 
       <h1>Finance</h1>

@@ -1,4 +1,4 @@
-import { Link } from "@reach/router";
+import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 
@@ -14,7 +14,7 @@ function Calendar() {
 
   return (
     <>
-      <Link to="/home">Home</Link>
+      <ButtonAppBar title="Calendar" />
       <Bubbles />
 
       <h1>Calendar</h1>

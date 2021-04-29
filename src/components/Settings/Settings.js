@@ -1,9 +1,15 @@
-import { Link } from "@reach/router";
+import ButtonAppBar from "../AppBar";
+import Bubbles from "../Bubbles";
+import FAB from "../FAB";
 
 function Settings() {
+  const openModal = () => {};
+
   return (
     <>
-      <Link to="/home">Home</Link>
+      <ButtonAppBar title="Einstellungen" />
+      <Bubbles />
+      <FAB open={openModal} />
       <h1>Settings</h1>
     </>
   );
