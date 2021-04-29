@@ -73,7 +73,7 @@ function CreateGroup() {
         onChange={handleChange}
       />
 
-      {generatedID && <Typography>{generatedID}</Typography>}
+      {generatedID && <Typography variant="body1">{generatedID}</Typography>}
       <input value={generatedID} ref={inputRef} readOnly hidden />
       <DialogActions className={classes.buttons}>
         <Button onClick={handleClose} className={classes.button}>
