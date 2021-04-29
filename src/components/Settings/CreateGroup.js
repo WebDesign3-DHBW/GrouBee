@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -33,6 +33,15 @@ function CreateGroup() {
     setGeneratedID(groupname + "/" + groupID);
   }
 
+  const inputRef = useRef();
+
+  function copyToClipboard() {
+    inputRef.current.style.display = "block";
+    inputRef.current.select();
+    document.execCommand("copy");
+    inputRef.current.style.display = "none";
+  }
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -59,13 +68,17 @@ function CreateGroup() {
         onChange={handleChange}
       />
 
-      {generatedID && <Typography>{generatedID}</Typography>}
+      {generatedID && <Typography variant="body1">string</Typography>}
+      <input value={generatedID} ref={inputRef} readOnly hidden />
       <DialogActions className={classes.button}>
         <Button onClick={handleClose} color="lightgrey">
           Abbrechen
         </Button>
         {generatedID ? (
-          <Button color="primary"> Kopieren </Button>
+          <Button color="primary" onClick={copyToClipboard()}>
+            {" "}
+            Kopieren{" "}
+          </Button>
         ) : (
           <Button onClick={handleCreate} color="primary">
             {" "}
