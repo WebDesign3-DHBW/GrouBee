@@ -33,7 +33,6 @@ function ButtonAppBar({ title }) {
   const classes = useStyles();
 
   const location = useLocation();
-  console.log("location", location);
 
   const isHome = location.pathname === "/";
   return (
