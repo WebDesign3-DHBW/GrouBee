@@ -3,40 +3,36 @@ import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 
 function Calendar() {
-  const [calendarData, isLoading] = usePageData("Calendar");
+  const [pageData, isLoading] = usePageData("Calendar");
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  const calendar = calendarData[0];
-  const todos = calendarData[1];
+  const calendar = pageData[0];
+  const todos = pageData[1];
 
-  console.log("calendar", calendar);
-  console.log("todos", todos);
-
-  console.log("calendarData", calendarData);
   return (
     <>
       <Link to="/home">Home</Link>
       <Bubbles />
 
       <h1>Calendar</h1>
-      {/* <ul>
-        {calendar.map((data) => (
-          <>
-            <li>Calendar Data: {data.title}</li>
-          </>
+      <ul>
+        {calendar?.map((data, idx) => (
+          <li key={idx}>Calendar Data: {data.title},</li>
         ))}
-        {todos.map((data) => {
-          console.log("TDO", data);
+      </ul>
+      <h2>Todos</h2>
+      <ul>
+        {todos?.map((data, idx) => {
           return (
-            <>
-              <li>Todos: {data.title}</li>
-            </>
+            <li key={idx}>
+              Todos: {data.title}, done: {data.done}
+            </li>
           );
         })}
-      </ul> */}
+      </ul>
     </>
   );
 }
