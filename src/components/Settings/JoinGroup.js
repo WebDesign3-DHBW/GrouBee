@@ -3,10 +3,10 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Snackbar, Slide } from "@material-ui/core";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import { Alert } from "@material-ui/lab";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles({
   buttons: {
@@ -21,10 +21,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function JoinGroup() {
+export default function JoinGroup({ close }) {
   const classes = useStyles();
   const [value, setValue] = useState();
-  const [groupObject, setGroupObject] = useState();
+  const [open, setOpen] = useState(false);
+  const [snackbarContent, setSnackbarContent] = useState();
 
   async function addGroupToDB(groupObject) {
     let user = await getCurrentUserData();
@@ -39,9 +40,20 @@ export default function JoinGroup() {
   }
 
   const handleJoin = () => {
-    const groupObject = generateGroupObject(value);
-    addGroupToDB(groupObject);
-    setGroupObject(groupObject);
+    if (value.includes("/")) {
+      const groupObject = generateGroupObject(value);
+      addGroupToDB(groupObject);
+      setSnackbarContent({
+        message: "Du bist der Gruppe erfolgreich beigetreten!",
+        status: "success",
+      });
+    } else {
+      setSnackbarContent({
+        message: "Dein Gruppencode ist nicht valide",
+        status: "error",
+      });
+    }
+    setOpen(true);
   };
 
   const handleChange = (event) => {
@@ -61,12 +73,33 @@ export default function JoinGroup() {
         onChange={handleChange}
         fullWidth
       />
+
+      {open && (
+        <Snackbar
+          open={open}
+          autoHideDuration={2000}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={Slide}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            className={classes.snackbar}
+            severity={snackbarContent.status}
+            onClose={() => setOpen(false)}
+          >
+            {snackbarContent.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
+
       <DialogActions className={classes.buttons}>
-        <Button onClick={handleClose} color="lightgrey" className={classes.button}>
-          Abbrechen
+        <Button onClick={close} className={classes.button}>
+          Schließen
         </Button>
 
-        <Button onClick={handleClose} color="primary" className={classes.button}>
+        <Button onClick={handleJoin} className={classes.button} color="primary">
           Beitreten
         </Button>
       </DialogActions>

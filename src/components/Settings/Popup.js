@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import CreateGroup from "./CreateGroup";
 import JoinGroup from "./JoinGroup";
+import { Dialog } from "@material-ui/core";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -29,12 +29,6 @@ function TabPanel(props) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
@@ -48,9 +42,16 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 500,
     height: "100%",
   },
+  tabs: {
+    width: "400",
+  },
+  appbar: {
+    minWidth: 310,
+    backgroundColor: "#fff",
+  },
 }));
 
-export default function FullWidthTabs() {
+export default function FullWidthTabs({ open, close }) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -60,28 +61,30 @@ export default function FullWidthTabs() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-          padding="0px"
-          className={classes.tabs}
-        >
-          <Tab label="Gruppe erstellen" {...a11yProps(0)} width="100%" style={{ padding: 0 }} />
-          <Tab label="Gruppe beitreten" {...a11yProps(1)} width="100%" />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0} dir={theme.direction}>
-        <CreateGroup />
-      </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        <JoinGroup />
-      </TabPanel>
-    </div>
+    <Dialog open={open} onClose={close}>
+      <div className={classes.root}>
+        <AppBar position="static" color="default" variant="outlined" className={classes.appbar}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            aria-label="full width tabs example"
+            padding="0px"
+            className={classes.tabs}
+          >
+            <Tab label="Gruppe erstellen" {...a11yProps(0)} width="100%" style={{ padding: 0 }} />
+            <Tab label="Gruppe beitreten" {...a11yProps(1)} width="100%" />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          <CreateGroup close={close} />
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          <JoinGroup close={close} />
+        </TabPanel>
+      </div>
+    </Dialog>
   );
 }
