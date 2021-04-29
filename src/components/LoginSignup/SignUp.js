@@ -3,9 +3,30 @@ import { useState } from "react";
 import { navigate, Link } from "@reach/router";
 import { signUp } from "../../auth/signUp";
 import { validate as isEmail } from "isemail";
-import { useStyles } from "./Wrapper";
+import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core/";
 import { Wrapper } from "./Wrapper";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    marginBottom: theme.spacing(2),
+    "& label.Mui-focused": {
+      color: theme.palette.grey[900],
+    },
+  },
+  button: {
+    marginTop: theme.spacing(2),
+    color: theme.palette.grey[900],
+  },
+  link: {
+    textDecoration: "none",
+    color: theme.palette.grey[900],
+  },
+  errorMessage: {
+    marginBottom: theme.spacing(2),
+    color: theme.palette.error.main,
+  },
+}));
 
 function SignUp({ location }) {
   const classes = useStyles();

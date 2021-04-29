@@ -2,10 +2,31 @@ import React from "react";
 import { useState } from "react";
 import { navigate, Link } from "@reach/router";
 import { signIn } from "../../auth/signIn";
-import { useStyles } from "./Wrapper";
+import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button, Snackbar, Slide } from "@material-ui/core/";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Wrapper } from "./Wrapper";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    marginBottom: theme.spacing(2),
+    "& label.Mui-focused": {
+      color: theme.palette.grey[900],
+    },
+  },
+  button: {
+    marginTop: theme.spacing(2),
+    color: theme.palette.grey[900],
+  },
+  link: {
+    textDecoration: "none",
+    color: theme.palette.grey[900],
+  },
+  errorMessage: {
+    marginBottom: theme.spacing(2),
+    color: theme.palette.error.main,
+  },
+}));
 
 function SignIn({ location }) {
   const classes = useStyles();
