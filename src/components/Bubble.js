@@ -33,6 +33,8 @@ function Bubble({ group, toggleElement, activeGroups, color }) {
 
   const styles = checked ? classes.active : classes.inactive;
 
+  const ellipsis = group[1].length > 7 ? "…" : "";
+
   return (
     <>
       <span
@@ -43,7 +45,7 @@ function Bubble({ group, toggleElement, activeGroups, color }) {
         className={styles}
       >
         <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
-          {group[1]}
+          {group[1].substring(0, 7).concat(ellipsis)}
         </Avatar>
       </span>
     </>
