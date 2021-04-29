@@ -3,6 +3,7 @@ import React from "react";
 import { RecoilRoot } from "recoil";
 import "./App.css";
 import Home from "./components/Home/Home";
+import { LogIn, SignUp } from "./components/LoginSignup/index";
 // import ToDo from "./components/ToDo/ToDo";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -20,11 +21,14 @@ function App() {
       <RecoilRoot>
         <Router>
           <Home path="/" default />
+          <LogIn path="login" />
+          <SignUp path="signup" />
           <ToDo path="todo" />
           <Media path="media" />
           <Finance path="finance" />
           <Calendar path="calendar" />
           <Settings path="settings" />
+          {/* <ToDo path="todo" /> */}
         </Router>
       </RecoilRoot>
     </ThemeProvider>
