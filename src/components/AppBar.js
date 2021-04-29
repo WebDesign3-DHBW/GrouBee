@@ -8,8 +8,6 @@ import { MdSettings } from "react-icons/md";
 import { navigate, useLocation } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
-
-
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
@@ -25,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   date: {
     fontWeight: "700",
-    fontSize: 30,
+    fontSize: 20,
   },
 }));
 
