@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 function CreateGroup() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [setOpen] = useState(false);
   const [value, setValue] = useState();
   const [generatedID, setGeneratedID] = useState();
 

@@ -69,14 +69,11 @@ export default function FullWidthTabs() {
           textColor="primary"
           variant="fullWidth"
           aria-label="full width tabs example"
-          padding="0px"
-          className={classes.tabs}
         >
-          <Tab label="Gruppe erstellen" {...a11yProps(0)} width="100%" style={{ padding: 0 }} />
-          <Tab label="Gruppe beitreten" {...a11yProps(1)} width="100%" />
+          <Tab label="Gruppe erstellen" {...a11yProps(0)} />
+          <Tab label="Gruppe beitreten" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
-
       <TabPanel value={value} index={0} dir={theme.direction}>
         <CreateGroup />
       </TabPanel>
