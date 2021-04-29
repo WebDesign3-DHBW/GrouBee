@@ -4,7 +4,7 @@ import ButtonAppBar from "../AppBar";
 function Finance() {
   return (
     <>
-      <Link to="/home">Home</Link>
+      <Link to="/">Home</Link>
       <ButtonAppBar title="Finanzen" />
 
       <h1>Finance</h1>

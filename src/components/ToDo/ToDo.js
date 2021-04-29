@@ -3,7 +3,7 @@ import ButtonAppBar from "../AppBar";
 function ToDo() {
   return (
     <>
-      <Link to="/home">Home</Link>
+      <Link to="/">Home</Link>
       <ButtonAppBar title="ToDo" />
       <h1>ToDo</h1>
     </>
