@@ -7,7 +7,7 @@ import ButtonAppBar from "../AppBar";
 import Popup from "../Settings/Popup";
 import { useState } from "react";
 
-function Settings() {
+export default function Settings() {
   const [open, setOpen] = useState(false);
 
   const onClickSignOut = async () => {
