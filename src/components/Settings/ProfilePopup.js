@@ -94,6 +94,11 @@ export default function ProfilePopup({ open, close }) {
         profileImage,
       };
       await updateCurrentUserData(profileImage ? { ...changes, profileImage } : changes);
+      setSnackbarContent({
+        message: "Dein Änderungen wurden erfolgreich gespeichert.",
+        status: "success",
+        open: true,
+      });
       close();
     } else {
       setSnackbarContent({
@@ -130,7 +135,7 @@ export default function ProfilePopup({ open, close }) {
       );
       setSnackbarContent({
         message: "Dein Bild wird hochgeladen. Vergiss nicht zu speichern!",
-        status: "success",
+        status: "info",
         open: true,
       });
     }
