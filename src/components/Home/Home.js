@@ -10,7 +10,6 @@ import {
   MdOpacity,
   MdMovie,
 } from "react-icons/md";
-import { Link } from "@reach/router";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { useEffect, useState } from "react";
 import Skeleton from "@material-ui/lab/Skeleton";
