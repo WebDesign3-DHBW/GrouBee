@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Avatar, Button, Dialog, DialogActions, TextField } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  Slide,
+  Snackbar,
+  TextField,
+} from "@material-ui/core";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
+import { updateCurrentUserData, updateUserName } from "../../firebase/updateCurrentUserData";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +37,7 @@ export default function ProfilePopup({ open, close }) {
   const [userName, setUserName] = useState();
   const [profileImage, setProfileImage] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [snackbarContent, setSnackbarContent] = useState();
 
   // load user data in state
   useEffect(() => {
@@ -41,37 +52,85 @@ export default function ProfilePopup({ open, close }) {
     loadUserData();
   }, []);
 
-  const handleChange = (event, newValue) => {
-    setUserName(newValue);
+  const handleChange = (event) => {
+    setUserName(event.target.value);
   };
 
-  const handleSave = (newValue) => {};
+  const handleSave = () => {
+    if (userName) {
+      saveUserNameToDB();
+    } else {
+      setSnackbarContent({
+        message: "Dein Name darf nicht leer sein.",
+        status: "error",
+        open: true,
+      });
+    }
+  };
+
+  async function saveUserNameToDB() {
+    updateCurrentUserData({ userName });
+    setSnackbarContent({
+      message: "Du hast deinen Nutzernamen erfolgreich geändert!",
+      status: "success",
+      open: true,
+    });
+  }
 
   return (
-    <Dialog open={open} onClose={close}>
-      <div className={classes.root}>
-        <Avatar alt="Avatar" src="https://flerka.github.io/personal-blog/img/avatar-icon.png" />
-        <Button>Bild ändern</Button>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Name"
-          type="textfield"
-          fullWidth
-          value={userName}
-          onChange={handleChange}
-        />
-        <DialogActions className={classes.buttons}>
-          <Button onClick={close} className={classes.button}>
-            Schließen
-          </Button>
-          <Button color="primary" onClick={handleSave} className={classes.button}>
-            Speichern
-          </Button>
-        </DialogActions>
-      </div>
-    </Dialog>
+    <>
+      {snackbarContent?.open && (
+        <Snackbar
+          open={snackbarContent.open}
+          autoHideDuration={5000}
+          onClose={() =>
+            setSnackbarContent((prevState) => {
+              return { ...prevState, open: false };
+            })
+          }
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={Slide}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            className={classes.snackbar}
+            severity={snackbarContent.status}
+            onClose={() =>
+              setSnackbarContent((prevState) => {
+                return { ...prevState, open: false };
+              })
+            }
+          >
+            {snackbarContent.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
+      <Dialog open={open} onClose={close}>
+        <div className={classes.root}>
+          <Avatar alt="Avatar" src="https://flerka.github.io/personal-blog/img/avatar-icon.png" />
+          <Button>Bild ändern</Button>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="textfield"
+            fullWidth
+            value={userName}
+            onChange={handleChange}
+          />
+          <DialogActions className={classes.buttons}>
+            <Button onClick={close} className={classes.button}>
+              Schließen
+            </Button>
+            <Button color="primary" onClick={handleSave} className={classes.button}>
+              Speichern
+            </Button>
+          </DialogActions>
+        </div>
+      </Dialog>
+    </>
   );
 }
 
