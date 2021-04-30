@@ -8,6 +8,10 @@ function Settings() {
   const [open, setOpen] = useState(false);
   const [tiggerUpdate, setTriggerUpdate] = useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <ButtonAppBar title="Einstellungen" />
