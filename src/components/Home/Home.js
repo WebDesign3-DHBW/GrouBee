@@ -48,14 +48,11 @@ function Home() {
     loadUserData();
   }, []);
 
-  if (time.getHours() >= 0) {
-    console.log(time.getHours);
+  if (time.getHours() <= 11) {
     greeting = "Guten Morgen";
-  } else if (time.getHours() > 11) {
-    console.log(time.getHours);
+  } else if (time.getHours() <= 18) {
     greeting = "Hallo";
-  } else if (time.getHours() >= 18) {
-    console.log(time.getHours);
+  } else {
     greeting = "Guten Abend";
   }
 
