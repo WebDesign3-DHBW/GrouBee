@@ -24,43 +24,20 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfilePopup({ open, close }) {
   const classes = useStyles();
   const [nameValue, setNameValue] = useState();
+  const [profileImage, setProfileImage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // aus octo waffle
-  //   handleUpload = e => {
-  //     if (e.target.files[0] && e.target.files[0] !== this.state.image) {
-  //       const image = e.target.files[0];
-  //       this.setState(
-  //         () => ({ image }),
-  //         () => {
-  //           const { image } = this.state;
-  //           const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
-  //           uploadTask.on(
-  //             "state_changed",
-  //             snapshot => {
-  //               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-  //               this.setState({ progress });
-  //             },
-  //             error => {
-  //               console.log(error);
-  //             },
-  //             () => {
-  //               storage
-  //                 .ref("profileImages")
-  //                 .child(image.name)
-  //                 .getDownloadURL()
-  //                 .then(imageUrl => {
-  //                   this.setState({ imageUrl }, () => {
-  //                     db.collection("Users")
-  //                       .doc(this.props.registeredUserId)
-  //                       .update({ profileImageUrl: this.state.imageUrl });
-  //                   });
-  //                 });
-  //             }
-  //           );
-  //         }
-  //       );
-  //     }
-  //   };
+  // load user data in state
+  useEffect(() => {
+    const loadUserData = async () => {
+      setIsLoading(true);
+      const currentUserData = await getCurrentUserData();
+      setUserName(currentUserData.userName);
+      setProfileImage(currentUserData.profileImage);
+      setIsLoading(false);
+    };
+    loadUserData();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setNameValue(newValue);
@@ -93,3 +70,40 @@ export default function ProfilePopup({ open, close }) {
     </Dialog>
   );
 }
+
+//   aus octo waffle
+//   handleUpload = e => {
+//     if (e.target.files[0] && e.target.files[0] !== this.state.image) {
+//       const image = e.target.files[0];
+//       this.setState(
+//         () => ({ image }),
+//         () => {
+//           const { image } = this.state;
+//           const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
+//           uploadTask.on(
+//             "state_changed",
+//             snapshot => {
+//               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+//               this.setState({ progress });
+//             },
+//             error => {
+//               console.log(error);
+//             },
+//             () => {
+//               storage
+//                 .ref("profileImages")
+//                 .child(image.name)
+//                 .getDownloadURL()
+//                 .then(imageUrl => {
+//                   this.setState({ imageUrl }, () => {
+//                     db.collection("Users")
+//                       .doc(this.props.registeredUserId)
+//                       .update({ profileImageUrl: this.state.imageUrl });
+//                   });
+//                 });
+//             }
+//           );
+//         }
+//       );
+//     }
+//   };
