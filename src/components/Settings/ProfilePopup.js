@@ -12,6 +12,7 @@ import {
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { updateCurrentUserData, updateUserName } from "../../firebase/updateCurrentUserData";
 import MuiAlert from "@material-ui/lab/Alert";
+import { storage } from "../../index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,14 +31,19 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 0,
     paddingRight: 0,
   },
+  profileImage: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
 }));
 
 export default function ProfilePopup({ open, close }) {
   const classes = useStyles();
   const [userName, setUserName] = useState();
-  const [profileImage, setProfileImage] = useState();
+  const [imageUrl, setImageUrl] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState();
+  const [progress, setProgress] = useState(0);
 
   // load user data in state
   useEffect(() => {
@@ -45,7 +51,7 @@ export default function ProfilePopup({ open, close }) {
       setIsLoading(true);
       const currentUserData = await getCurrentUserData();
       setUserName(currentUserData.userName);
-      setProfileImage(currentUserData.profileImage);
+      setImageUrl(currentUserData.profileImage);
       setIsLoading(false);
       console.log("infinite loop warning!");
     };
@@ -56,9 +62,13 @@ export default function ProfilePopup({ open, close }) {
     setUserName(event.target.value);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (userName) {
-      saveUserNameToDB();
+      const changes = {
+        userName,
+        imageUrl,
+      };
+      await updateCurrentUserData(imageUrl ? { ...changes, imageUrl } : changes);
     } else {
       setSnackbarContent({
         message: "Dein Name darf nicht leer sein.",
@@ -76,6 +86,33 @@ export default function ProfilePopup({ open, close }) {
       open: true,
     });
   }
+
+  const handleUpload = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      setImageUrl(image);
+      const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          setProgress(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("profileImages")
+            .child(image.name)
+            .getDownloadURL()
+            .then((imageUrl) => {
+              setImageUrl(imageUrl);
+            });
+        }
+      );
+    }
+  };
 
   return (
     <>
@@ -108,8 +145,11 @@ export default function ProfilePopup({ open, close }) {
       )}
       <Dialog open={open} onClose={close}>
         <div className={classes.root}>
-          <Avatar alt="Avatar" src="https://flerka.github.io/personal-blog/img/avatar-icon.png" />
-          <Button>Bild ändern</Button>
+          <Avatar alt="Avatar" src={imageUrl} className={classes.profileImage} />
+          <Button onChange={handleUpload}>
+            Bild ändern
+            <input type="file" style={{ display: "none" }} accept="image/*" />
+          </Button>
           <TextField
             autoFocus
             margin="dense"
@@ -133,40 +173,3 @@ export default function ProfilePopup({ open, close }) {
     </>
   );
 }
-
-//   aus octo waffle
-//   handleUpload = e => {
-//     if (e.target.files[0] && e.target.files[0] !== this.state.image) {
-//       const image = e.target.files[0];
-//       this.setState(
-//         () => ({ image }),
-//         () => {
-//           const { image } = this.state;
-//           const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
-//           uploadTask.on(
-//             "state_changed",
-//             snapshot => {
-//               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-//               this.setState({ progress });
-//             },
-//             error => {
-//               console.log(error);
-//             },
-//             () => {
-//               storage
-//                 .ref("profileImages")
-//                 .child(image.name)
-//                 .getDownloadURL()
-//                 .then(imageUrl => {
-//                   this.setState({ imageUrl }, () => {
-//                     db.collection("Users")
-//                       .doc(this.props.registeredUserId)
-//                       .update({ profileImageUrl: this.state.imageUrl });
-//                   });
-//                 });
-//             }
-//           );
-//         }
-//       );
-//     }
-//   };
