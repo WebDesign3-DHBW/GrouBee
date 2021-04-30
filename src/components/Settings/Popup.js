@@ -61,7 +61,7 @@ export default function FullWidthTabs({ open, close }) {
   };
 
   return (
-    <Dialog open={true} onClose={close}>
+    <Dialog open={open} onClose={close}>
       <div className={classes.root}>
         <AppBar position="static" color="default" variant="outlined" className={classes.appbar}>
           <Tabs

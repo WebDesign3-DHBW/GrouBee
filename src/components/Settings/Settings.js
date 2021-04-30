@@ -17,15 +17,14 @@ function Settings() {
       alert(e.message);
     }
   };
-  const openModal = () => {};
 
   return (
     <>
       <ButtonAppBar title="Einstellungen" />
       <Bubbles />
-      <FAB open={openModal} />
+      <FAB open={() => setOpen(true)} />
       <h1>Settings</h1>
-      <Popup />
+      <Popup open={open} close={() => setOpen(false)} />
       <Button onClick={onClickSignOut}>Ausloggen</Button>
     </>
   );
