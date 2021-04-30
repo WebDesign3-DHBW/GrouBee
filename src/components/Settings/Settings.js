@@ -4,8 +4,13 @@ import { signOut } from "../../auth/signOut";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
+import Popup from "../Settings/Popup";
+import { useState } from "react";
 
 function Settings() {
+  const [open, setOpen] = useState(false);
+  const [tiggerUpdate, setTriggerUpdate] = useState(false);
+
   const onClickSignOut = async () => {
     try {
       await signOut();
@@ -14,14 +19,18 @@ function Settings() {
       alert(e.message);
     }
   };
-  const openModal = () => {};
 
   return (
     <>
       <ButtonAppBar title="Einstellungen" />
-      <Bubbles />
-      <FAB open={openModal} />
+      <Bubbles updateMe={tiggerUpdate} />
+      <FAB open={() => setOpen(true)} />
       <h1>Settings</h1>
+      <Popup
+        open={open}
+        close={() => setOpen(false)}
+        updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
+      />
       <Button onClick={onClickSignOut}>Ausloggen</Button>
     </>
   );
