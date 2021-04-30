@@ -104,6 +104,11 @@ export default function ProfilePopup({ open, close }) {
             });
         }
       );
+      setSnackbarContent({
+        message: "Dein Bild wird hochgeladen. Vergiss nicht zu speichern!",
+        status: "success",
+        open: true,
+      });
     }
   };
 
