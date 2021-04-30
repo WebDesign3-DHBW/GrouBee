@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FullWidthTabs({ open, close }) {
+export default function FullWidthTabs({ open, close, updateBubbles }) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
@@ -79,7 +79,7 @@ export default function FullWidthTabs({ open, close }) {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <CreateGroup close={close} />
+          <CreateGroup close={close} updateBubbles={updateBubbles} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <JoinGroup close={close} />

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateGroup({ close }) {
+function CreateGroup({ close, updateBubbles }) {
   const classes = useStyles();
   const [value, setValue] = useState();
   const [generatedID, setGeneratedID] = useState();
@@ -49,6 +49,7 @@ function CreateGroup({ close }) {
     user.groups[groupID] = groupname;
     addGroupToUser(user.groups);
     setGeneratedID(groupname + "/" + groupID);
+    updateBubbles();
     setSnackbarContent({
       message: "Du hast erfolgreich eine Gruppe erstellt. Kopiere den Code, um Andere einzuladen!",
       status: "success",
