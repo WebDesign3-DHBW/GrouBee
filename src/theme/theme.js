@@ -5,6 +5,7 @@ const themeGlobal = {
     h1: {
       fontSize: 20,
       letterSpacing: "0.15px",
+      fontWeight: 500,
     },
     h2: {
       fontSize: 14,
