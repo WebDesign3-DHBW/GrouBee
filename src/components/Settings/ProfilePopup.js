@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   Button,
@@ -35,6 +35,30 @@ const useStyles = makeStyles((theme) => ({
   button: {
     paddingLeft: 0,
     paddingRight: 0,
+  },
+
+  buttonProgress: {
+    position: "absolute",
+    top: "35%",
+    left: "35%",
+  },
+
+  avatarContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  wrapper: {
+    position: "relative",
+    height: "100%",
+  },
+
+  profileImage: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -189,40 +213,3 @@ export default function ProfilePopup({ open, close }) {
     </>
   );
 }
-
-//   aus octo waffle
-//   handleUpload = e => {
-//     if (e.target.files[0] && e.target.files[0] !== this.state.image) {
-//       const image = e.target.files[0];
-//       this.setState(
-//         () => ({ image }),
-//         () => {
-//           const { image } = this.state;
-//           const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
-//           uploadTask.on(
-//             "state_changed",
-//             snapshot => {
-//               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-//               this.setState({ progress });
-//             },
-//             error => {
-//               console.log(error);
-//             },
-//             () => {
-//               storage
-//                 .ref("profileImages")
-//                 .child(image.name)
-//                 .getDownloadURL()
-//                 .then(imageUrl => {
-//                   this.setState({ imageUrl }, () => {
-//                     db.collection("Users")
-//                       .doc(this.props.registeredUserId)
-//                       .update({ profileImageUrl: this.state.imageUrl });
-//                   });
-//                 });
-//             }
-//           );
-//         }
-//       );
-//     }
-//   };

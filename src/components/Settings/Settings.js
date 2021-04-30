@@ -7,26 +7,23 @@ import { Button } from "@material-ui/core";
 import ProfilePopup from "./ProfilePopup";
 
 function Settings() {
-  const [open, setOpen] = useState(false);
+  const [openGroupPopup, setOpenGroupPopup] = useState(false);
+  const [openEditProfile, setOpenEditProfile] = useState(false);
   const [tiggerUpdate, setTriggerUpdate] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   return (
     <>
       <ButtonAppBar title="Einstellungen" />
       <Bubbles updateMe={tiggerUpdate} />
-      <FAB open={() => setOpen(true)} />
+      <FAB open={() => setOpenGroupPopup(true)} />
       <h1>Settings</h1>
       <Popup
-        open={open}
-        close={() => setOpen(false)}
+        open={openGroupPopup}
+        close={() => setOpenGroupPopup(false)}
         updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
       />
-      <Button onClick={handleClickOpen}>Profil bearbeiten</Button>
-      <ProfilePopup open={open} close={() => setOpen(false)} />
+      <Button onClick={() => setOpenEditProfile(true)}>Profil bearbeiten</Button>
+      <ProfilePopup open={openEditProfile} close={() => setOpenEditProfile(false)} />
     </>
   );
 }
