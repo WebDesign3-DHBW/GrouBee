@@ -71,7 +71,15 @@ function CreateGroup({ close }) {
   }
 
   const handleCreate = () => {
-    addGroupToDB(value);
+    if (value) {
+      addGroupToDB(value);
+    } else {
+      setSnackbarContent({
+        message: "Deine Gruppe braucht einen Namen.",
+        status: "error",
+        open: true,
+      });
+    }
   };
 
   const handleChange = (event) => {
