@@ -36,7 +36,8 @@ function SignUp({ location }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSignUpClicked = async () => {
+  const onSignUpClicked = async (e) => {
+    e.preventDefault();
     setErrorMessage("");
     const validationError = validateForm();
     if (validationError) {
@@ -104,16 +105,17 @@ function SignUp({ location }) {
             className={classes.textField}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth={true}
+            className={classes.button}
+            onClick={onSignUpClicked}
+          >
+            Registrieren
+          </Button>
         </form>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth={true}
-          className={classes.button}
-          onClick={onSignUpClicked}
-        >
-          Registrieren
-        </Button>
         <Button
           variant="outlined"
           color="primary"
