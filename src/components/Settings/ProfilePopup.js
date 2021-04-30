@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Avatar, Button, Dialog, DialogActions, TextField } from "@material-ui/core";
+import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfilePopup({ open, close }) {
   const classes = useStyles();
-  const [nameValue, setNameValue] = useState();
+  const [userName, setUserName] = useState();
   const [profileImage, setProfileImage] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,50 +36,16 @@ export default function ProfilePopup({ open, close }) {
       setUserName(currentUserData.userName);
       setProfileImage(currentUserData.profileImage);
       setIsLoading(false);
+      console.log("infinite loop warning!");
     };
     loadUserData();
   }, []);
 
-  // aus octo waffle
-  //   handleUpload = e => {
-  //     if (e.target.files[0] && e.target.files[0] !== this.state.image) {
-  //       const image = e.target.files[0];
-  //       this.setState(
-  //         () => ({ image }),
-  //         () => {
-  //           const { image } = this.state;
-  //           const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
-  //           uploadTask.on(
-  //             "state_changed",
-  //             snapshot => {
-  //               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-  //               this.setState({ progress });
-  //             },
-  //             error => {
-  //               console.log(error);
-  //             },
-  //             () => {
-  //               storage
-  //                 .ref("profileImages")
-  //                 .child(image.name)
-  //                 .getDownloadURL()
-  //                 .then(imageUrl => {
-  //                   this.setState({ imageUrl }, () => {
-  //                     db.collection("Users")
-  //                       .doc(this.props.registeredUserId)
-  //                       .update({ profileImageUrl: this.state.imageUrl });
-  //                   });
-  //                 });
-  //             }
-  //           );
-  //         }
-  //       );
-  //     }
-  //   };
-
   const handleChange = (event, newValue) => {
-    setNameValue(newValue);
+    setUserName(newValue);
   };
+
+  const handleSave = (newValue) => {};
 
   return (
     <Dialog open={open} onClose={close}>
@@ -92,14 +59,14 @@ export default function ProfilePopup({ open, close }) {
           label="Name"
           type="textfield"
           fullWidth
-          value={nameValue}
+          value={userName}
           onChange={handleChange}
         />
         <DialogActions className={classes.buttons}>
           <Button onClick={close} className={classes.button}>
             Schließen
           </Button>
-          <Button color="primary" onClick={handleChange} className={classes.button}>
+          <Button color="primary" onClick={handleSave} className={classes.button}>
             Speichern
           </Button>
         </DialogActions>
