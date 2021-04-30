@@ -45,7 +45,13 @@ export default function JoinGroup({ close }) {
   }
 
   const handleJoin = () => {
-    if (value.includes("/")) {
+    if (!value) {
+      setSnackbarContent({
+        message: "Bitte gib einen validen Gruppencode ein.",
+        status: "error",
+        open: true,
+      });
+    } else if (value.includes("/")) {
       const groupObject = generateGroupObject(value);
       addGroupToDB(groupObject);
       setSnackbarContent({
