@@ -46,7 +46,7 @@ function SignUp({ location }) {
 
     try {
       const signUpSuccessful = await signUp(usernameValue, emailValue, passwordValue);
-      signUpSuccessful && navigate(`/login`, { state: { signUpSuccessful } });
+      signUpSuccessful && navigate(`/`);
     } catch (e) {
       switch (e.message) {
         case "auth/email-already-in-use":
@@ -120,7 +120,7 @@ function SignUp({ location }) {
           fullWidth={true}
           className={classes.button}
           onClick={async (event) => {
-            navigate("/login");
+            navigate("/signin");
           }}
         >
           Einloggen

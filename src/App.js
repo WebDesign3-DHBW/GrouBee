@@ -1,35 +1,35 @@
-import { Router } from "@reach/router";
-import React from "react";
 import { RecoilRoot } from "recoil";
 import "./App.css";
-import Home from "./components/Home/Home";
-import { SignIn, SignUp } from "./components/LoginSignup/index";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { useMediaQuery } from "react-responsive";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import themeLight from "./theme/themeLight";
-import ToDo from "./components/ToDo/ToDo";
-import Media from "./components/Media/Media";
-import Finance from "./components/Finance/Finance";
-import Calendar from "./components/Calendar/Calendar";
-import Settings from "./components/Settings/Settings";
+import Routes from "./routes/Routes";
 
 function App() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-device-width: 1025px)",
+  });
+  const isMobileDevice = useMediaQuery({
+    query: "(max-device-width: 1024px )",
+  });
+
   return (
-    <ThemeProvider theme={themeLight}>
-      <CssBaseline />
-      <RecoilRoot>
-        <Router>
-          <Home path="/" default />
-          <SignIn path="login" />
-          <SignUp path="signup" />
-          <ToDo path="todo" />
-          <Media path="media" />
-          <Finance path="finance" />
-          <Calendar path="calendar" />
-          <Settings path="settings" />
-        </Router>
-      </RecoilRoot>
-    </ThemeProvider>
+    <>
+      {isDesktopOrLaptop && (
+        <ThemeProvider theme={themeLight}>
+          <h1>LOL wer entwickelt denn für Desktop 🤪</h1>
+        </ThemeProvider>
+      )}
+      {isMobileDevice && (
+        <ThemeProvider theme={themeLight}>
+          <CssBaseline />
+          <RecoilRoot>
+            <Routes />
+          </RecoilRoot>
+        </ThemeProvider>
+      )}
+    </>
   );
 }
 
