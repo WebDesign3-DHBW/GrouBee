@@ -51,9 +51,9 @@ function Home() {
   if (time.getHours() >= 0) {
     console.log(time.getHours);
     greeting = "Guten Morgen";
-  } else if (time.getHours() > 14) {
+  } else if (time.getHours() > 11) {
     console.log(time.getHours);
-    greeting = "Servus";
+    greeting = "Hallo";
   } else if (time.getHours() >= 18) {
     console.log(time.getHours);
     greeting = "Guten Abend";
