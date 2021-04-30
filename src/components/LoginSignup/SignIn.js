@@ -80,18 +80,17 @@ function SignIn() {
               className={classes.textField}
               onChange={(e) => setPasswordValue(e.target.value)}
             />
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              fullWidth={true}
+              className={classes.button}
+              onClick={onSignInClicked}
+            >
+              Einloggen
+            </Button>
           </form>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth={true}
-            className={classes.button}
-            onClick={onSignInClicked}
-            type="submit"
-            form="loginForm"
-          >
-            Einloggen
-          </Button>
           <Button
             variant="outlined"
             color="primary"
