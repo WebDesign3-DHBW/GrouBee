@@ -3,8 +3,7 @@ import { useState } from "react";
 import { navigate } from "@reach/router";
 import { signIn } from "../../auth/signIn";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Snackbar, Slide } from "@material-ui/core/";
-import MuiAlert from "@material-ui/lab/Alert";
+import { TextField, Button } from "@material-ui/core/";
 import { Wrapper } from "./Wrapper";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,12 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn({ location }) {
+function SignIn() {
   const classes = useStyles();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [open, setOpen] = useState(true);
 
   const onSignInClicked = async (e) => {
     e.preventDefault();
@@ -64,24 +62,6 @@ function SignIn({ location }) {
 
   return (
     <>
-      {location.state?.signUpSuccessful && (
-        <Snackbar
-          open={open}
-          autoHideDuration={7000}
-          onClose={() => setOpen(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          TransitionComponent={Slide}
-        >
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            severity="success"
-            onClose={() => setOpen(false)}
-          >
-            Deine Registrierung war erfolgreich 🎉 <br /> Du kannst dich nun einloggen.
-          </MuiAlert>
-        </Snackbar>
-      )}
       <Wrapper>
         <div>
           {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}

@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import { getCurrentUser } from "./getCurrentUser";
 
 /*
  * This function returns the page data based on active groups and the collection name
@@ -8,6 +9,7 @@ export const getActiveGroupData = async (activeGroupIDs, collectionName) => {
     return [];
   }
   try {
+    const currentUser = getCurrentUser();
     let pageData = activeGroupIDs.map((groupID) =>
       firebase.firestore().collection(collectionName).where("groupID", "==", groupID).get()
     );
@@ -25,8 +27,7 @@ export const getActiveGroupData = async (activeGroupIDs, collectionName) => {
           return {
             ...doc.data(),
             // probably don't need this
-            // but if, should be current user id
-            createdBy: "Xq6qvtZxtdrtvpzIfIWP",
+            createdBy: currentUser.id,
             // probably nedded later to update/delete the todo
             docId: doc.id,
           };
