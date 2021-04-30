@@ -9,6 +9,11 @@ import { addGroupToUser } from "../../firebase/addGroupToUser";
 import MuiAlert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
+  textField: {
+    "& label.Mui-focused": {
+      color: theme.palette.grey[900],
+    },
+  },
   buttons: {
     display: "flex",
     justifyContent: "space-between",
@@ -79,6 +84,7 @@ function CreateGroup({ close }) {
       {!generatedID && (
         <TextField
           autoFocus
+          className={classes.textField}
           margin="dense"
           id="name"
           label="Name"

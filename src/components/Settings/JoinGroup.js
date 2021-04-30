@@ -8,7 +8,12 @@ import { addGroupToUser } from "../../firebase/addGroupToUser";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    "& label.Mui-focused": {
+      color: theme.palette.grey[900],
+    },
+  },
   buttons: {
     display: "flex",
     justifyContent: "space-between",
@@ -19,7 +24,7 @@ const useStyles = makeStyles({
     paddingLeft: 0,
     paddingRight: 0,
   },
-});
+}));
 
 export default function JoinGroup({ close }) {
   const classes = useStyles();
@@ -65,6 +70,7 @@ export default function JoinGroup({ close }) {
       <DialogContentText>Gib deinen Gruppencode ein, um einer Gruppe beizutreten</DialogContentText>
       <TextField
         autoFocus
+        className={classes.textField}
         margin="dense"
         id="name"
         label="Gruppencode"
