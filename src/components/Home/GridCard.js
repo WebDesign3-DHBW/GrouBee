@@ -2,6 +2,7 @@ import { navigate } from "@reach/router";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
@@ -51,12 +52,14 @@ function GridCard(props) {
           navigate(props.link);
         }}
       >
-        <div className={classes.cardItems}>
-          {<props.icon className={classes.icon} />}
-          <Typography variant="h2" component="h3">
-            {props.name}
-          </Typography>
-        </div>
+        <CardActionArea>
+          <div className={classes.cardItems}>
+            {<props.icon className={classes.icon} />}
+            <Typography variant="h2" component="h3">
+              {props.name}
+            </Typography>
+          </div>
+        </CardActionArea>
       </Card>
     </>
   );
