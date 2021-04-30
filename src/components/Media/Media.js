@@ -1,5 +1,4 @@
 import ButtonAppBar from "../AppBar";
-import { Link } from "@reach/router";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 
@@ -14,7 +13,6 @@ function Media() {
   return (
     <>
       <ButtonAppBar title="Filme & Serien" />
-      <Link to="/home">Home</Link>
       <Bubbles />
 
       <h1>Media</h1>
