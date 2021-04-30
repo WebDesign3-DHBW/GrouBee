@@ -82,5 +82,3 @@ export const getActiveGroupData = async (activeGroupIDs, collectionName) => {
 //     console.log("Something went really wrong ._.", e);
 //   }
 // };
-
-// low bob variante (backup)
