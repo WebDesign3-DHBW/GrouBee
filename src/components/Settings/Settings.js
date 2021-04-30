@@ -3,14 +3,12 @@ import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
 import Popup from "../Settings/Popup";
 import { useState } from "react";
+import { Button } from "@material-ui/core";
+import ProfilePopup from "./ProfilePopup";
 
 function Settings() {
   const [open, setOpen] = useState(false);
   const [tiggerUpdate, setTriggerUpdate] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,6 +25,8 @@ function Settings() {
         close={() => setOpen(false)}
         updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
       />
+      <Button onClick={handleClickOpen}>Profil bearbeiten</Button>
+      <ProfilePopup open={open} close={() => setOpen(false)} />
     </>
   );
 }

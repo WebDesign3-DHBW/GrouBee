@@ -169,3 +169,40 @@ export default function ProfilePopup({ open, close }) {
     </>
   );
 }
+
+//   aus octo waffle
+//   handleUpload = e => {
+//     if (e.target.files[0] && e.target.files[0] !== this.state.image) {
+//       const image = e.target.files[0];
+//       this.setState(
+//         () => ({ image }),
+//         () => {
+//           const { image } = this.state;
+//           const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
+//           uploadTask.on(
+//             "state_changed",
+//             snapshot => {
+//               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+//               this.setState({ progress });
+//             },
+//             error => {
+//               console.log(error);
+//             },
+//             () => {
+//               storage
+//                 .ref("profileImages")
+//                 .child(image.name)
+//                 .getDownloadURL()
+//                 .then(imageUrl => {
+//                   this.setState({ imageUrl }, () => {
+//                     db.collection("Users")
+//                       .doc(this.props.registeredUserId)
+//                       .update({ profileImageUrl: this.state.imageUrl });
+//                   });
+//                 });
+//             }
+//           );
+//         }
+//       );
+//     }
+//   };
