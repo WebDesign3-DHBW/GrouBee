@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles();
   const time = new Date();
-  let greeting = "Servus";
+  let greeting = "Hallo";
   const [userName, setUserName] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
