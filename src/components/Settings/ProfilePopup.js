@@ -3,6 +3,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Avatar,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   Slide,
@@ -10,12 +11,16 @@ import {
   TextField,
 } from "@material-ui/core";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import { updateCurrentUserData, updateUserName } from "../../firebase/updateCurrentUserData";
+import { updateCurrentUserData } from "../../firebase/updateCurrentUserData";
 import MuiAlert from "@material-ui/lab/Alert";
 import { storage } from "../../index";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     backgroundColor: "white",
     maxWidth: 500,
     height: "100%",
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfilePopup({ open, close }) {
   const classes = useStyles();
   const [userName, setUserName] = useState();
-  const [imageUrl, setImageUrl] = useState();
+  const [profileImage, setProfileImage] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState();
   const [progress, setProgress] = useState(0);
@@ -47,7 +52,7 @@ export default function ProfilePopup({ open, close }) {
       setIsLoading(true);
       const currentUserData = await getCurrentUserData();
       setUserName(currentUserData.userName);
-      setImageUrl(currentUserData.profileImage);
+      setProfileImage(currentUserData.profileImage);
       setIsLoading(false);
       console.log("infinite loop warning!");
     };
@@ -62,9 +67,10 @@ export default function ProfilePopup({ open, close }) {
     if (userName) {
       const changes = {
         userName,
-        imageUrl,
+        profileImage,
       };
-      await updateCurrentUserData(imageUrl ? { ...changes, imageUrl } : changes);
+      await updateCurrentUserData(profileImage ? { ...changes, profileImage } : changes);
+      close();
     } else {
       setSnackbarContent({
         message: "Dein Name darf nicht leer sein.",
@@ -74,19 +80,10 @@ export default function ProfilePopup({ open, close }) {
     }
   };
 
-  async function saveUserNameToDB() {
-    updateCurrentUserData({ userName });
-    setSnackbarContent({
-      message: "Du hast deinen Nutzernamen erfolgreich geändert!",
-      status: "success",
-      open: true,
-    });
-  }
-
   const handleUpload = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      setImageUrl(image);
+      setProfileImage(image);
       const uploadTask = storage.ref(`profileImages/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
@@ -102,8 +99,8 @@ export default function ProfilePopup({ open, close }) {
             .ref("profileImages")
             .child(image.name)
             .getDownloadURL()
-            .then((imageUrl) => {
-              setImageUrl(imageUrl);
+            .then((profileImage) => {
+              setProfileImage(profileImage);
             });
         }
       );
@@ -141,26 +138,44 @@ export default function ProfilePopup({ open, close }) {
       )}
       <Dialog open={open} onClose={close}>
         <div className={classes.root}>
-          <Avatar alt="Avatar" src={imageUrl} className={classes.profileImage} />
-          <Button onChange={handleUpload}>
-            Bild ändern
-            <input type="file" style={{ display: "none" }} accept="image/*" />
-          </Button>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="textfield"
-            fullWidth
-            value={userName}
-            onChange={handleChange}
-          />
+          <div className={classes.avatarContainer}>
+            <div className={classes.wrapper}>
+              <Avatar alt="Avatar" src={profileImage} className={classes.profileImage} />
+              {progress < 100 && progress > 0 && (
+                <CircularProgress size={24} className={classes.buttonProgress} />
+              )}
+            </div>
+            <Button onChange={handleUpload} component="label">
+              Bild ändern
+              <input type="file" style={{ display: "none" }} accept="image/*" />
+            </Button>
+          </div>
+          {isLoading ? (
+            <>
+              <Skeleton variant="rect" className={classes.textfield} height={48} animation="wave" />
+            </>
+          ) : (
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Name"
+              type="textfield"
+              fullWidth
+              defaultValue={userName}
+              onChange={handleChange}
+            />
+          )}
           <DialogActions className={classes.buttons}>
             <Button onClick={close} className={classes.button}>
               Schließen
             </Button>
-            <Button color="primary" onClick={handleSave} className={classes.button}>
+            <Button
+              color="primary"
+              onClick={handleSave}
+              className={classes.button}
+              disabled={progress < 100 && progress > 0}
+            >
               Speichern
             </Button>
           </DialogActions>
