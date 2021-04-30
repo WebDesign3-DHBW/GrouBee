@@ -12,6 +12,10 @@ function Settings() {
     setOpen(true);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <ButtonAppBar title="Einstellungen" />

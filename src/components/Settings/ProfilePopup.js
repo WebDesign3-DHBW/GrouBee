@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Avatar,
@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
   button: {
     paddingLeft: 0,
     paddingRight: 0,
-  },
-  profileImage: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
   },
 }));
 
