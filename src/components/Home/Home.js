@@ -63,7 +63,7 @@ function Home() {
     <>
       <ButtonAppBar title="Home" />
       <div className={classes.wrapper}>
-        <Typography variant="h1" component="h2">
+        <Typography variant="h1" component="h2" className={classes.greeting}>
           {isLoading ? <Skeleton width={200} /> : greeting + ", " + userName}
         </Typography>
         <div className={classes.grid}>
