@@ -1,15 +1,8 @@
-import firebase from "firebase/app";
+import { getCurrentUser } from "./getCurrentUser";
+import { getUserInfo } from "./getUserData";
 
 export const getCurrentUserData = async () => {
-  const userRef = firebase
-    .firestore()
-    .collection("User")
-    // This should later be replaced by the real current user
-    .doc("Xq6qvtZxtdrtvpzIfIWP");
-  const doc = await userRef.get();
-  if (!doc.exists) {
-    console.log("No such document!");
-  } else {
-    return doc.data();
-  }
+  const currentUser = getCurrentUser();
+  if (!currentUser) return null;
+  return await getUserInfo(currentUser.id);
 };
