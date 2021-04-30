@@ -8,7 +8,7 @@ import { colors } from "../theme/bubbleColors";
 import Bubble from "./Bubble";
 import { getCurrentUserData } from "../firebase/getCurrentUserData";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     whiteSpace: "nowrap",
     overflowX: "auto",
@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar": {
       display: "none" /*Chrome, Safari and Opera*/,
     },
+  },
+  skeleton: {
+    margin: "12px",
   },
 }));
 
@@ -52,7 +55,13 @@ function Bubbles() {
 
   // Todo: styles
   if (isLoading) {
-    return <Skeleton variant="circle" width={64} height={64} />;
+    return (
+      <div style={{ display: "flex" }}>
+        <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+        <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+        <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+      </div>
+    );
   }
 
   return (
