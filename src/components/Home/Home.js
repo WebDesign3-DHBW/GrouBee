@@ -10,6 +10,10 @@ import {
   MdOpacity,
   MdMovie,
 } from "react-icons/md";
+import { Link } from "@reach/router";
+import { getCurrentUserData } from "../../firebase/getCurrentUserData";
+import { useEffect, useState } from "react";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -27,14 +31,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home() {
-  const classes = useStyles();
+  const time = new Date();
+  let greeting = "Servus";
+  const [userName, setUserName] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // load user data in state
+  useEffect(() => {
+    const loadUserData = async () => {
+      setIsLoading(true);
+      const currentUserData = await getCurrentUserData();
+      setUserName(currentUserData.userName);
+      setIsLoading(false);
+      console.log("infinite loop warning!");
+    };
+    loadUserData();
+  }, []);
+
+  if (time.getHours() >= 0) {
+    console.log(time.getHours);
+    greeting = "Guten Morgen";
+  } else if (time.getHours() > 14) {
+    console.log(time.getHours);
+    greeting = "Servus";
+  } else if (time.getHours() >= 18) {
+    console.log(time.getHours);
+    greeting = "Guten Abend";
+  }
 
   return (
     <>
       <ButtonAppBar title="Home" />
       <div className={classes.wrapper}>
-        <Typography variant="h1" component="h2" className={classes.greeting}>
-          Hallo, Felix the machine
+        <Typography variant="h1" component="h2">
+          {isLoading ? <Skeleton width={200} /> : greeting + ", " + userName}
         </Typography>
         <div className={classes.grid}>
           <GridCard width={2} link={"/calendar"} name={"Kalender"} icon={MdEvent} />
