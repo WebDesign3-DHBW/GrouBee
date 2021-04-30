@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home() {
+  const classes = useStyles();
   const time = new Date();
   let greeting = "Servus";
   const [userName, setUserName] = useState();
