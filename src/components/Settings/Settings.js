@@ -7,9 +7,8 @@ import ButtonAppBar from "../AppBar";
 import Popup from "../Settings/Popup";
 import { useState } from "react";
 
-export default function Settings() {
+function Settings() {
   const [open, setOpen] = useState(false);
-
   const onClickSignOut = async () => {
     try {
       await signOut();
@@ -27,7 +26,6 @@ export default function Settings() {
       <FAB open={openModal} />
       <h1>Settings</h1>
       <Popup />
-      <FAB />
       <Button onClick={onClickSignOut}>Ausloggen</Button>
     </>
   );
