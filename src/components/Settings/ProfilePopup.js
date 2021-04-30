@@ -22,9 +22,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "white",
-    maxWidth: 500,
     height: "100%",
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   buttons: {
     display: "flex",
@@ -56,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   profileImage: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(15),
+    height: theme.spacing(15),
     marginBottom: theme.spacing(1),
   },
 }));
