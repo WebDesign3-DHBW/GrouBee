@@ -6,6 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 import { MdHome } from "react-icons/md";
 import { MdSettings } from "react-icons/md";
 import { navigate, useLocation } from "@reach/router";
+import { signOut } from "../auth/signOut";
+import { BiLogOut } from "react-icons/bi";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -31,6 +33,15 @@ function ButtonAppBar({ title }) {
   const classes = useStyles();
 
   const location = useLocation();
+
+  const onClickSignOut = async () => {
+    try {
+      await signOut();
+      navigate(`/signin`);
+    } catch (e) {
+      alert(e.message);
+    }
+  };
 
   const isHome = location.pathname === "/";
   return (
@@ -67,17 +78,22 @@ function ButtonAppBar({ title }) {
           >
             {title}
           </Typography>
-          <IconButton
-            edge="end"
-            style={location.pathname === "/settings" ? { visibility: "hidden" } : null}
-            color="inherit"
-            aria-label="Settings"
-            onClick={() => {
-              navigate("/settings");
-            }}
-          >
-            <MdSettings />
-          </IconButton>
+          {location.pathname === "/settings" ? (
+            <IconButton edge="end" color="inherit" aria-label="Logout" onClick={onClickSignOut}>
+              <BiLogOut />
+            </IconButton>
+          ) : (
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="Settings"
+              onClick={() => {
+                navigate("/settings");
+              }}
+            >
+              <MdSettings />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
     </div>
