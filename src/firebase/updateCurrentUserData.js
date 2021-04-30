@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import { getCurrentUser } from "./getCurrentUser";
 
-export const updateCurrentUserInfo = async (updates) => {
+export const updateCurrentUserData = async (updates) => {
   const currentUser = getCurrentUser();
 
   if (!currentUser) return;
