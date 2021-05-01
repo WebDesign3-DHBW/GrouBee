@@ -43,7 +43,6 @@ function Home() {
       const currentUserData = await getCurrentUserData();
       setUserName(currentUserData.userName);
       setIsLoading(false);
-      console.log("infinite loop warning!");
     };
     loadUserData();
   }, []);

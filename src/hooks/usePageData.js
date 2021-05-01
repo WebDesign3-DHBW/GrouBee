@@ -9,7 +9,6 @@ function usePageData(pageName) {
   const [loading, setLoading] = useState(true);
 
   const activeGroupIDs = activeGroups.map((groupArr) => groupArr[0]);
-  console.log("activeGroupIDs", activeGroupIDs);
   useEffect(() => {
     async function fetchData() {
       try {

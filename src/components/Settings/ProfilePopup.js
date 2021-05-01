@@ -77,7 +77,6 @@ export default function ProfilePopup({ open, close }) {
       setUserName(currentUserData.userName);
       setProfileImage(currentUserData.profileImage);
       setIsLoading(false);
-      console.log("infinite loop warning!");
     };
     loadUserData();
   }, []);
