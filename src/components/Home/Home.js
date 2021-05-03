@@ -10,9 +10,8 @@ import {
   MdOpacity,
   MdMovie,
 } from "react-icons/md";
-import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import { useEffect, useState } from "react";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -31,21 +30,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
   const classes = useStyles();
+  const [userData, isLoading] = useCurrentUser();
+
   const time = new Date();
   let greeting = "Hallo";
-  const [userName, setUserName] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-
-  // load user data in state
-  useEffect(() => {
-    const loadUserData = async () => {
-      setIsLoading(true);
-      const currentUserData = await getCurrentUserData();
-      setUserName(currentUserData.userName);
-      setIsLoading(false);
-    };
-    loadUserData();
-  }, []);
 
   if (time.getHours() <= 11) {
     greeting = "Guten Morgen";
@@ -60,7 +48,7 @@ function Home() {
       <ButtonAppBar title="Home" />
       <div className={classes.wrapper}>
         <Typography variant="h1" component="h2" className={classes.greeting}>
-          {isLoading ? <Skeleton width={200} /> : greeting + ", " + userName}
+          {isLoading ? <Skeleton width={200} /> : greeting + ", " + userData.userName}
         </Typography>
         <div className={classes.grid}>
           <GridCard width={2} link={"/calendar"} name={"Kalender"} icon={MdEvent} />

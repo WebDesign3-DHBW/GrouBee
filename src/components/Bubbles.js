@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { activeGroupsState } from "../utils/recoil";
 import { useRecoilState } from "recoil";
@@ -6,7 +5,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { colors } from "../theme/bubbleColors";
 
 import Bubble from "./Bubble";
-import { getCurrentUserData } from "../firebase/getCurrentUserData";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,8 +24,7 @@ const useStyles = makeStyles(() => ({
 function Bubbles({ updateMe }) {
   const classes = useStyles();
   const [activeGroups, setActiveGroups] = useRecoilState(activeGroupsState);
-  const [groups, setGroups] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [userData, isLoading] = useCurrentUser(updateMe);
 
   // add or delete active group
   const toggleElement = (group) => {
@@ -41,19 +39,6 @@ function Bubbles({ updateMe }) {
     }
   };
 
-  // load all groupes
-  useEffect(() => {
-    const loadInitialFeedData = async () => {
-      setIsLoading(true);
-      const currentUserData = await getCurrentUserData();
-      setGroups(currentUserData.groups);
-      setIsLoading(false);
-    };
-
-    loadInitialFeedData();
-  }, [updateMe]);
-
-  // Todo: styles
   if (isLoading) {
     return (
       <div style={{ display: "flex" }}>
@@ -66,7 +51,7 @@ function Bubbles({ updateMe }) {
 
   return (
     <div className={classes.root}>
-      {Object.entries(groups)
+      {Object.entries(userData.groups)
         // Sort by group name
         .sort((a, b) => a[1].localeCompare(b[1]))
         // Place "ICH" at the beginning
