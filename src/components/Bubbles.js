@@ -23,7 +23,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Bubbles({ updateMe }) {
-  console.log("updateMe", updateMe);
   const classes = useStyles();
   const [activeGroups, setActiveGroups] = useRecoilState(activeGroupsState);
   const [groups, setGroups] = useState([]);

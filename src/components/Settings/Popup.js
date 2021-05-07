@@ -82,7 +82,7 @@ export default function FullWidthTabs({ open, close, updateBubbles }) {
           <CreateGroup close={close} updateBubbles={updateBubbles} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <JoinGroup close={close} />
+          <JoinGroup close={close} updateBubbles={updateBubbles} />
         </TabPanel>
       </div>
     </Dialog>

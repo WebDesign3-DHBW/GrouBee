@@ -26,15 +26,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function JoinGroup({ close }) {
+export default function JoinGroup({ close, updateBubbles }) {
   const classes = useStyles();
   const [value, setValue] = useState();
-  const [open, setOpen] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState();
 
-  async function addGroupToDB(groupObject) {
-    let user = await getCurrentUserData();
-    user.groups[groupObject[1]] = groupObject[0];
+  const checkIfGroupsExists = async (user, groupID) => {
+    const currentUserGroups = user.groups;
+    return groupID in currentUserGroups ? true : false;
+  };
+
+  async function addGroupToDB(user, groupName, groupID) {
+    user.groups[groupID] = groupName;
     addGroupToUser(user.groups);
   }
 
@@ -44,27 +47,40 @@ export default function JoinGroup({ close }) {
     return [groupName, groupID];
   }
 
-  const handleJoin = () => {
+  const handleJoin = async () => {
     if (!value) {
       setSnackbarContent({
         message: "Bitte gib einen validen Gruppencode ein.",
         status: "error",
         open: true,
       });
-    } else if (value.includes("/")) {
-      const groupObject = generateGroupObject(value);
-      addGroupToDB(groupObject);
+      return;
+    }
+
+    const [groupName, groupID] = generateGroupObject(value);
+    let user = await getCurrentUserData();
+
+    if (await checkIfGroupsExists(user, groupID)) {
+      setSnackbarContent({
+        message: "Du bist dieser Gruppe bereits beigetreten!",
+        status: "info",
+        open: true,
+      });
+    } else if (value.includes("/_") && value.length >= 12) {
+      await addGroupToDB(user, groupName, groupID);
       setSnackbarContent({
         message: "Du bist der Gruppe erfolgreich beigetreten!",
         status: "success",
+        open: true,
       });
+      updateBubbles();
     } else {
       setSnackbarContent({
         message: "Dein Gruppencode ist nicht valide",
         status: "error",
+        open: true,
       });
     }
-    setOpen(true);
   };
 
   const handleChange = (event) => {
@@ -86,11 +102,15 @@ export default function JoinGroup({ close }) {
         fullWidth
       />
 
-      {open && (
+      {snackbarContent?.open && (
         <Snackbar
-          open={open}
+          open={snackbarContent.open}
           autoHideDuration={2000}
-          onClose={() => setOpen(false)}
+          onClose={() =>
+            setSnackbarContent((prevState) => {
+              return { ...prevState, open: false };
+            })
+          }
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           TransitionComponent={Slide}
         >
@@ -99,7 +119,11 @@ export default function JoinGroup({ close }) {
             variant="filled"
             className={classes.snackbar}
             severity={snackbarContent.status}
-            onClose={() => setOpen(false)}
+            onClose={() =>
+              setSnackbarContent((prevState) => {
+                return { ...prevState, open: false };
+              })
+            }
           >
             {snackbarContent.message}
           </MuiAlert>
