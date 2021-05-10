@@ -3,10 +3,10 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import { makeStyles, Snackbar, Slide } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -102,33 +102,7 @@ export default function JoinGroup({ close, updateBubbles }) {
         fullWidth
       />
 
-      {snackbarContent?.open && (
-        <Snackbar
-          open={snackbarContent.open}
-          autoHideDuration={2000}
-          onClose={() =>
-            setSnackbarContent((prevState) => {
-              return { ...prevState, open: false };
-            })
-          }
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          TransitionComponent={Slide}
-        >
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            className={classes.snackbar}
-            severity={snackbarContent.status}
-            onClose={() =>
-              setSnackbarContent((prevState) => {
-                return { ...prevState, open: false };
-              })
-            }
-          >
-            {snackbarContent.message}
-          </MuiAlert>
-        </Snackbar>
-      )}
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       <DialogActions className={classes.buttons}>
         <Button onClick={close} className={classes.button}>
