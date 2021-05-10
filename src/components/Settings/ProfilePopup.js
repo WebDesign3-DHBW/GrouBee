@@ -6,15 +6,13 @@ import {
   CircularProgress,
   Dialog,
   DialogActions,
-  Slide,
-  Snackbar,
   TextField,
 } from "@material-ui/core";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { updateCurrentUserData } from "../../firebase/updateCurrentUserData";
-import MuiAlert from "@material-ui/lab/Alert";
 import { storage } from "../../index";
 import Skeleton from "@material-ui/lab/Skeleton";
+import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -141,33 +139,7 @@ export default function ProfilePopup({ open, close }) {
 
   return (
     <>
-      {snackbarContent?.open && (
-        <Snackbar
-          open={snackbarContent.open}
-          autoHideDuration={5000}
-          onClose={() =>
-            setSnackbarContent((prevState) => {
-              return { ...prevState, open: false };
-            })
-          }
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          TransitionComponent={Slide}
-        >
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            className={classes.snackbar}
-            severity={snackbarContent.status}
-            onClose={() =>
-              setSnackbarContent((prevState) => {
-                return { ...prevState, open: false };
-              })
-            }
-          >
-            {snackbarContent.message}
-          </MuiAlert>
-        </Snackbar>
-      )}
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close}>
         <div className={classes.root}>
           <div className={classes.avatarContainer}>
