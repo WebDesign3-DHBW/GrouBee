@@ -8,20 +8,16 @@ import { MdSettings } from "react-icons/md";
 import { navigate, useLocation } from "@reach/router";
 import { signOut } from "../auth/signOut";
 import { BiLogOut } from "react-icons/bi";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(0, 2.5),
+  },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
-  },
-
-  appbar: {
-    backgroundColor: "white",
-    "&:after": {
-      margin: "0 1.2rem",
-      border: "0.5px solid black",
-      content: "''",
-    },
+    padding: 0,
   },
   date: {
     fontWeight: "700",
@@ -45,58 +41,61 @@ function ButtonAppBar({ title }) {
 
   const isHome = location.pathname === "/";
   return (
-    <div className={classes.root}>
-      <AppBar elevation={0} className={classes.appbar} position="static">
-        <Toolbar className={classes.toolbar}>
-          <Typography
-            variant="h1"
-            className={classes.date}
-            style={!isHome ? { display: "none" } : null}
-          >
-            {new Date().toLocaleDateString("de-DE", {
-              weekday: "short",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </Typography>
-          <IconButton
-            edge="start"
-            style={isHome ? { visibility: "hidden" } : null}
-            color="inherit"
-            aria-label="Home"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            <MdHome />
-          </IconButton>
-          <Typography
-            variant="h1"
-            className={classes.title}
-            style={isHome ? { visibility: "hidden" } : null}
-          >
-            {title}
-          </Typography>
-          {location.pathname === "/settings" ? (
-            <IconButton edge="end" color="inherit" aria-label="Logout" onClick={onClickSignOut}>
-              <BiLogOut />
-            </IconButton>
-          ) : (
+    <>
+      <div className={classes.root}>
+        <AppBar elevation={0} className={classes.appbar} position="static" color="transparent">
+          <Toolbar className={classes.toolbar}>
+            <Typography
+              variant="h1"
+              className={classes.date}
+              style={!isHome ? { display: "none" } : null}
+            >
+              {new Date().toLocaleDateString("de-DE", {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </Typography>
             <IconButton
-              edge="end"
+              edge="start"
+              style={isHome ? { visibility: "hidden" } : null}
               color="inherit"
-              aria-label="Settings"
+              aria-label="Home"
               onClick={() => {
-                navigate("/settings");
+                navigate("/");
               }}
             >
-              <MdSettings />
+              <MdHome />
             </IconButton>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
+            <Typography
+              variant="h1"
+              className={classes.title}
+              style={isHome ? { visibility: "hidden" } : null}
+            >
+              {title}
+            </Typography>
+            {location.pathname === "/settings" ? (
+              <IconButton edge="end" color="inherit" aria-label="Logout" onClick={onClickSignOut}>
+                <BiLogOut />
+              </IconButton>
+            ) : (
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="Settings"
+                onClick={() => {
+                  navigate("/settings");
+                }}
+              >
+                <MdSettings />
+              </IconButton>
+            )}
+          </Toolbar>
+        </AppBar>
+        <Divider />
+      </div>
+    </>
   );
 }
 
