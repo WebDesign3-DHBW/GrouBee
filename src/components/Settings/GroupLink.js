@@ -58,7 +58,6 @@ function GroupLink({ groupID, open, close }) {
           <Typography variant="h1" className={classes.groupID}>
             {groupID}
           </Typography>
-          {/* Hier muss der generierte Gruppenlink angezeigt werden */}
         </DialogContent>
         <input value={groupID} ref={inputRef} readOnly hidden />
         <DialogActions className={classes.buttons}>
