@@ -5,11 +5,13 @@ import Popup from "../Settings/Popup";
 import { useState } from "react";
 import { Button } from "@material-ui/core";
 import ProfilePopup from "./ProfilePopup";
+import GroupLink from "./GroupLink";
 
 function Settings() {
   const [openGroupPopup, setOpenGroupPopup] = useState(false);
   const [openEditProfile, setOpenEditProfile] = useState(false);
   const [tiggerUpdate, setTriggerUpdate] = useState(false);
+  const [openGroupLink, setOpenGroupLink] = useState(false);
 
   return (
     <>
@@ -24,6 +26,8 @@ function Settings() {
       />
       <Button onClick={() => setOpenEditProfile(true)}>Profil bearbeiten</Button>
       <ProfilePopup open={openEditProfile} close={() => setOpenEditProfile(false)} />
+
+      <GroupLink open={openGroupLink} close={() => setOpenGroupLink(false)} />
     </>
   );
 }
