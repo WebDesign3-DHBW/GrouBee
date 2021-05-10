@@ -45,7 +45,7 @@ const title = [
 
 const ellipsis = title.length > 20 ? "…" : "";
 
-function MediaList() {
+function MediaList({ media }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState("panel1");
 
@@ -57,7 +57,7 @@ function MediaList() {
     <div>
       <Accordion square expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
         <AccordionSummary expandIcon={<MdExpandMore />} id="panel1-header">
-          <Typography className={classes.heading}>Begonnene Filme</Typography>
+          <Typography className={classes.heading}>Begonnene {media}</Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           <List component="nav">
@@ -84,7 +84,7 @@ function MediaList() {
       </Accordion>
       <Accordion square expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
         <AccordionSummary expandIcon={<MdExpandMore />} id="panel2-header">
-          <Typography className={classes.heading}>Neue Filme</Typography>
+          <Typography className={classes.heading}>Neue {media}</Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           <List component="nav">
@@ -111,7 +111,7 @@ function MediaList() {
       </Accordion>
       <Accordion square expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
         <AccordionSummary expandIcon={<MdExpandMore />} id="panel3-header">
-          <Typography className={classes.heading}>Abgeschlossen Filme</Typography>
+          <Typography className={classes.heading}>Abgeschlossen {media}</Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           <List component="nav">
@@ -138,7 +138,7 @@ function MediaList() {
       </Accordion>
       <Accordion square expanded={expanded === "panel4"} onChange={handleChange("panel4")}>
         <AccordionSummary expandIcon={<MdExpandMore />} id="panel4-header">
-          <Typography className={classes.heading}>Abgebrochene Filme</Typography>
+          <Typography className={classes.heading}>Abgebrochene {media}</Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           <List component="nav">

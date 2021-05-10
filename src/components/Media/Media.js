@@ -90,10 +90,10 @@ function Media() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <MediaList />
+          <MediaList media="Filme" />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Serien
+          <MediaList media="Serien" />
         </TabPanel>
       </SwipeableViews>
     </>
