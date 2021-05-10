@@ -7,14 +7,18 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Slide,
+  Snackbar,
   TextField,
   Typography,
   withStyles,
 } from "@material-ui/core";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
+import MuiAlert from "@material-ui/lab/Alert";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { getAllUserData } from "../../firebase/getAllUserData";
+import { addListEntry } from "../../firebase/addListEntry";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddCard({ open, close }) {
+export default function AddCard({ open, close, cardTitle }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
@@ -49,6 +53,7 @@ export default function AddCard({ open, close }) {
   const [userData, isUserData] = useCurrentUser();
   const [isLoading, setIsLoading] = useState(true);
   const [allUserInGroup, setAllUserInGroup] = useState();
+  const [snackbarContent, setSnackbarContent] = useState();
 
   useEffect(() => {
     const getUserInGroup = async () => {
@@ -61,6 +66,7 @@ export default function AddCard({ open, close }) {
           id: user.userId,
         }));
       setAllUserInGroup(groupUserNames);
+      console.log(allUserInGroup);
       setIsLoading(false);
     };
     getUserInGroup();
@@ -82,73 +88,117 @@ export default function AddCard({ open, close }) {
     setTitel(e.target.value);
   };
 
-  const handleSave = (e) => {
-    close();
-    setSelectedGroup("");
-    setTitel("");
-    setSelectedDate("");
-    setSelectedUser("");
+  const handleSave = async (e) => {
+    if (title || selectedDate) {
+      const userId = allUserInGroup.map((user) => user.userName === selectedUser).id;
+      await addListEntry(title, selectedDate, selectedGroup, userId, "todo"); // Liste abstrahieren
+      setSnackbarContent({
+        message: "Dein Eintrag wurde erfolgreich erstellt.",
+        status: "success",
+        open: true,
+      });
+      close();
+      setSelectedGroup("");
+      setTitel("");
+      setSelectedDate("");
+      setSelectedUser("");
+    } else {
+      setSnackbarContent({
+        message: "Fülle bitte alle Felder aus!",
+        status: "error",
+        open: true,
+      });
+    }
   };
 
   return (
-    <Dialog open={open} onClose={close} className={classes.dialog}>
-      <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
-        <Typography variant="h1">ToDos hinzufügen</Typography>
-      </DialogTitle>
-      <DialogContent dividers>
-        <form className={classes.root} noValidate autoComplete="off">
-          <TextField
-            id="movie title"
-            label="Titel"
-            onChange={handleTitel}
-            value={title}
-            style={{ marginBottom: 10 }}
-            className={classes.textField}
-          />
-          <TextField
-            id="date"
-            onChange={handleSelectDate}
-            label="Frist"
-            type="date"
-            value={selectedDate}
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-            <Select native value={selectedGroup} onChange={handleDropDown}>
-              {!isUserData &&
-                Object.entries(userData.groups).map((group, idx) => (
-                  <option key={idx} value={group[0]}>
-                    {group[1]}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="selectGroup">Teilnehmer</InputLabel>
-            <Select native value={selectedUser} onChange={handleSelectUser}>
-              {!isLoading &&
-                allUserInGroup.map((user, idx) => (
-                  <option key={idx} value={user.id}>
-                    {user.name}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-        </form>
-      </DialogContent>
-      <DialogActions className={classes.buttons}>
-        <Button autoFocus onClick={close}>
-          Abbrechen
-        </Button>
-        <Button autoFocus onClick={handleSave} color="primary">
-          Speichern
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <>
+      {snackbarContent?.open && (
+        <Snackbar
+          open={snackbarContent.open}
+          autoHideDuration={5000}
+          onClose={() =>
+            setSnackbarContent((prevState) => {
+              return { ...prevState, open: false };
+            })
+          }
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={Slide}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            className={classes.snackbar}
+            severity={snackbarContent.status}
+            onClose={() =>
+              setSnackbarContent((prevState) => {
+                return { ...prevState, open: false };
+              })
+            }
+          >
+            {snackbarContent.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
+      <Dialog open={open} onClose={close} className={classes.dialog}>
+        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
+          <Typography variant="h1"> {cardTitle} hinzufügen</Typography>
+        </DialogTitle>
+        <DialogContent dividers>
+          <form className={classes.root} noValidate autoComplete="off">
+            <TextField
+              id="movie title"
+              label="Titel"
+              onChange={handleTitel}
+              value={title}
+              style={{ marginBottom: 10 }}
+              className={classes.textField}
+            />
+            <TextField
+              id="date"
+              onChange={handleSelectDate}
+              label="Frist"
+              type="date"
+              value={selectedDate}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
+              <Select native value={selectedGroup} onChange={handleDropDown}>
+                {!isUserData &&
+                  Object.entries(userData.groups).map((group, idx) => (
+                    <option key={idx} value={group[0]}>
+                      {group[1]}
+                    </option>
+                  ))}
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="selectGroup">Zuständige*r</InputLabel>
+              <Select native value={selectedUser} onChange={handleSelectUser}>
+                {!isLoading &&
+                  allUserInGroup.map((user, idx) => (
+                    <option key={idx} value={user.id}>
+                      {user.name}
+                    </option>
+                  ))}
+              </Select>
+            </FormControl>
+          </form>
+        </DialogContent>
+        <DialogActions className={classes.buttons}>
+          <Button autoFocus onClick={close}>
+            Abbrechen
+          </Button>
+          <Button autoFocus onClick={handleSave} color="primary">
+            Speichern
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 
