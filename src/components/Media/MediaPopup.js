@@ -77,7 +77,6 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     });
   };
 
-  console.log(title, selectedGroup, isMovie);
 
   return (
     <>
