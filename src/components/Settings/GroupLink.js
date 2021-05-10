@@ -48,7 +48,6 @@ function GroupLink({ groupID, open, close }) {
 
   return (
     <span>
-      {/* Muss durch Bubble ersetzt werden */}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Dein Gruppenlink</DialogTitle>
