@@ -21,7 +21,12 @@ function ToDo() {
         <li key={idx}>{todo.title}</li>
       ))}
       <FAB open={() => setOpenAddCard(true)} />
-      <AddCard open={openAddCard} close={() => setOpenAddCard(false)} cardTitle="ToDo"></AddCard>
+      <AddCard
+        open={openAddCard}
+        close={() => setOpenAddCard(false)}
+        cardTitle="ToDo"
+        list="todo"
+      ></AddCard>
     </>
   );
 }

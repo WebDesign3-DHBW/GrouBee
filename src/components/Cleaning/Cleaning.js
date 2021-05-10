@@ -25,6 +25,7 @@ function Cleaning() {
         open={openAddCard}
         close={() => setOpenAddCard(false)}
         cardTitle="Haushaltsaufgabe"
+        list="putzen"
       ></AddCard>
     </>
   );
