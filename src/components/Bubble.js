@@ -1,5 +1,7 @@
 import { Avatar, makeStyles } from "@material-ui/core";
+import { useLocation } from "@reach/router";
 import { useState } from "react";
+import GroupLink from "./Settings/GroupLink";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -26,6 +28,9 @@ function Bubble({ group, toggleElement, activeGroups, color }) {
   const classes = useStyles();
 
   const [active, setActive] = useState(false);
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const isSettings = location.pathname === "/settings";
 
   const checked = activeGroups.some((groupArr) => groupArr[0] === group[0]);
 
@@ -35,10 +40,17 @@ function Bubble({ group, toggleElement, activeGroups, color }) {
 
   return (
     <>
+      <GroupLink groupID={`${group[1]}/${group[0]}`} open={open} close={() => setOpen(false)} />
       <span
         onClick={() => {
-          setActive(!active);
-          toggleElement(group);
+          if (!isSettings) {
+            setActive(!active);
+            toggleElement(group);
+          } else if (group[1] === "ICH") {
+            return;
+          } else {
+            setOpen(true);
+          }
         }}
         className={`${styles} ${classes.bubble}`}
       >

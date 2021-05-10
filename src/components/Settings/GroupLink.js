@@ -1,44 +1,77 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
+import Snackbar from "../Snackbar";
 
-export default function FormDialog() {
-  const [open, setOpen] = React.useState(false);
+const useStyles = makeStyles((theme) => ({
+  buttons: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: 25,
+    paddingTop: 20,
+  },
+  button: {
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  groupID: {
+    fontWeight: 500,
+    textAlign: "center",
+    display: "inline-block",
+    width: "100%",
+    margin: `${theme.spacing(2)}px 0`,
+  },
+}));
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+function GroupLink({ groupID, open, close }) {
+  const classes = useStyles();
+  const [snackbarContent, setSnackbarContent] = useState();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const inputRef = useRef();
+
+  function copyToClipboard() {
+    inputRef.current.style.display = "block";
+    inputRef.current.select();
+    document.execCommand("copy");
+    inputRef.current.style.display = "none";
+    setSnackbarContent({
+      message: "Gruppencode kopiert!",
+      status: "success",
+      open: true,
+    });
+  }
 
   return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Gruppenlink kopieren
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <span>
+      {/* Muss durch Bubble ersetzt werden */}
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
+      <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Dein Gruppenlink</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Kopiere deinen Gruppenlink, um weitere Freunde einzuladen.
           </DialogContentText>
-          <TextField autoFocus margin="dense" id="name" label="Gruppenlink" fullWidth />
+          <Typography variant="h1" className={classes.groupID}>
+            {groupID}
+          </Typography>
+          {/* Hier muss der generierte Gruppenlink angezeigt werden */}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Schließen</Button>
-          <Button onClick={handleClose} color="primary">
+        <input value={groupID} ref={inputRef} readOnly hidden />
+        <DialogActions className={classes.buttons}>
+          <Button onClick={close} className={classes.button}>
+            Schließen
+          </Button>
+          <Button onClick={copyToClipboard} color="primary" className={classes.button}>
             Kopieren
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </span>
   );
 }
+export default GroupLink;
