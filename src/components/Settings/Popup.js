@@ -38,7 +38,6 @@ export function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "white",
     maxWidth: 500,
     height: "100%",
   },
@@ -47,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   appbar: {
     minWidth: 310,
-    backgroundColor: "#fff",
   },
 }));
 
