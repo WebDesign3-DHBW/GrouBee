@@ -5,7 +5,7 @@ import { signUp } from "../../auth/signUp";
 import { validate as isEmail } from "isemail";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core/";
-import { Wrapper } from "./Wrapper";
+import { Container } from "./Container";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -73,7 +73,7 @@ function SignUp({ location }) {
   };
 
   return (
-    <Wrapper>
+    <Container>
       <div>
         {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
         <form noValidate autoComplete="off">
@@ -128,7 +128,7 @@ function SignUp({ location }) {
           Einloggen
         </Button>
       </div>
-    </Wrapper>
+    </Container>
   );
 }
 
