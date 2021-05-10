@@ -21,7 +21,12 @@ function Groceries() {
         <li key={idx}>{todo.title}</li>
       ))}
       <FAB open={() => setOpenAddCard(true)} />
-      <AddCard open={openAddCard} close={() => setOpenAddCard(false)} cardTitle="Artikel"></AddCard>
+      <AddCard
+        open={openAddCard}
+        close={() => setOpenAddCard(false)}
+        cardTitle="Artikel"
+        list="einkaufen"
+      ></AddCard>
     </>
   );
 }
