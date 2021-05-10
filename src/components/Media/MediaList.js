@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
   accordionDetails: {
     display: "inherit",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+    padding: "0px 16px",
+  },
+  list: {
+    paddingTop: 0,
   },
   p0: {
     paddingLeft: theme.spacing(0),
@@ -31,6 +36,9 @@ const Accordion = withStyles({
     boxShadow: "none",
     "&$expanded": {
       margin: "0",
+      "&:before": {
+        opacity: 1,
+      },
     },
   },
   expanded: {},
@@ -60,7 +68,7 @@ function MediaList({ media }) {
           <Typography className={classes.heading}>Begonnene {media}</Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
-          <List component="nav">
+          <List component="nav" className={classes.list}>
             {title.map((val, idx) => {
               return (
                 <ListItem className={classes.p0} key={idx}>
