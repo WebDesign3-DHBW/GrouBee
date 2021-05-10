@@ -1,9 +1,13 @@
+import { useState } from "react";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
+import FAB from "../FAB";
+import MediaPopup from "./MediaPopup";
 
 function Media() {
   const [mediaData, isLoading] = usePageData("Media");
+  const [open, setOpen] = useState(false);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -21,6 +25,8 @@ function Media() {
           <li>Title: {data.title}</li>
         ))}
       </ul>
+      <FAB open={() => setOpen(true)} />
+      <MediaPopup open={open} close={() => setOpen(false)} />
     </>
   );
 }
