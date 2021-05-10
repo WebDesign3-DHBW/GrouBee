@@ -1,9 +1,10 @@
 import { RecoilRoot } from "recoil";
 import "./App.css";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme, responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
 import { useMediaQuery } from "react-responsive";
+import useMediaQueryUI from "@material-ui/core/useMediaQuery";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import globalTheme from "./theme/theme";
+import { themeGlobal } from "./theme/theme";
 import Routes from "./routes/Routes";
 
 function App() {
@@ -14,15 +15,28 @@ function App() {
     query: "(max-device-width: 1024px )",
   });
 
+  const prefersDarkMode = useMediaQueryUI("(prefers-color-scheme: dark)");
+
+  const darkTheme = responsiveFontSizes(
+    createMuiTheme(
+      {
+        palette: { type: "dark" },
+      },
+      themeGlobal
+    )
+  );
+
+  const lightTheme = responsiveFontSizes(createMuiTheme(themeGlobal));
+
   return (
     <>
       {isDesktopOrLaptop && (
-        <ThemeProvider theme={globalTheme}>
+        <ThemeProvider theme={themeGlobal}>
           <h1>LOL wer entwickelt denn für Desktop 🤪</h1>
         </ThemeProvider>
       )}
       {isMobileDevice && (
-        <ThemeProvider theme={globalTheme}>
+        <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
           <CssBaseline />
           <RecoilRoot>
             <Routes />
