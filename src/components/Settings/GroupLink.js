@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 0,
   },
   groupID: {
-    fontWeight: 500,
+    fontWeight: theme.typography.fontWeightMedium,
     textAlign: "center",
     display: "inline-block",
     width: "100%",
