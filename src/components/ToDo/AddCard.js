@@ -68,7 +68,6 @@ export default function AddCard({ open, close, cardTitle, list }) {
         }));
       setAllUserInGroup(groupUserNames);
       setIsLoading(false);
-      console.log("infinite loop warning");
     };
     getUserInGroup();
   }, [selectedGroup]);
