@@ -1,12 +1,12 @@
 import firebase from "firebase/app";
 
-export const addListEntry = async (media) => {
-  const { title, date, group, userId, list } = media;
+export const addListEntry = async (listObj) => {
+  const { title, date, groupID, assignedTo, list } = listObj;
   firebase.firestore().collection("ToDo").doc().set({
-    userId,
+    assignedTo,
     date,
-    done: "false",
-    group,
+    done: false,
+    groupID,
     list,
     title,
   });

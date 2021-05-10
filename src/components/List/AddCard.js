@@ -7,15 +7,11 @@ import {
   FormControl,
   InputLabel,
   Select,
-  Slide,
-  Snackbar,
   TextField,
-  Typography,
   withStyles,
 } from "@material-ui/core";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import MuiAlert from "@material-ui/lab/Alert";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { getAllUserData } from "../../firebase/getAllUserData";
 import { addListEntry } from "../../firebase/addListEntry";
@@ -34,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: "center",
+    "& h2": {
+      fontSize: "2rem",
+      fontWeight: 500,
+    },
   },
   textField: {
     display: "flex",
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddCard({ open, close, cardTitle, list }) {
+export default function AddCard({ open, close, cardTitle, list, triggerUpdate }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
@@ -89,14 +89,20 @@ export default function AddCard({ open, close, cardTitle, list }) {
   };
 
   const handleSave = async (e) => {
-    if (title || selectedDate) {
-      const userId = allUserInGroup.map((user) => user.userName === selectedUser).id;
-      await addListEntry(title, selectedDate, selectedGroup, userId, list); // Liste abstrahieren
+    if (title && selectedDate && selectedGroup && selectedUser) {
+      await addListEntry({
+        title,
+        date: selectedDate,
+        groupID: selectedGroup,
+        assignedTo: selectedUser,
+        list,
+      }); // Liste abstrahieren
       setSnackbarContent({
         message: "Dein Eintrag wurde erfolgreich erstellt.",
         status: "success",
         open: true,
       });
+      triggerUpdate();
       close();
       setSelectedGroup("");
       setTitel("");
@@ -115,8 +121,8 @@ export default function AddCard({ open, close, cardTitle, list }) {
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close} className={classes.dialog}>
-        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
-          <Typography variant="h1"> {cardTitle} hinzufügen</Typography>
+        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle} variant="h1">
+          {cardTitle} hinzufügen
         </DialogTitle>
         <DialogContent dividers>
           <form className={classes.root} noValidate autoComplete="off">
@@ -142,6 +148,7 @@ export default function AddCard({ open, close, cardTitle, list }) {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select native value={selectedGroup} onChange={handleDropDown}>
+                <option aria-label="None" value="" />
                 {!isUserData &&
                   Object.entries(userData.groups).map((group, idx) => (
                     <option key={idx} value={group[0]}>
@@ -151,8 +158,9 @@ export default function AddCard({ open, close, cardTitle, list }) {
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="selectGroup">Zuständige*r</InputLabel>
+              <InputLabel htmlFor="zuständiger">Zuständige*r</InputLabel>
               <Select native value={selectedUser} onChange={handleSelectUser}>
+                <option aria-label="None" value="" />
                 {!isLoading &&
                   allUserInGroup.map((user, idx) => (
                     <option key={idx} value={user.id}>
