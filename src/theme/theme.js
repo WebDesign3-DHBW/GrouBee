@@ -1,51 +1,54 @@
-const themeGlobal = {
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+
+let themeGlobal = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#fdcb6e",
+    },
+    secondary: {
+      main: "#6dacfc",
+    },
+  },
   typography: {
     fontFamily:
       "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
     h1: {
-      fontSize: 20,
-      letterSpacing: "0.15px",
-      fontWeight: 500,
+      fontSize: "3.25rem",
+      fontWeight: 400,
     },
     h2: {
-      fontSize: 14,
-      fontWeight: 500,
-      letterSpacing: "0.1px",
+      fontSize: "1.75rem",
+      fontWeight: 400,
     },
-    body1: {
-      fontSize: 16,
-    },
-    body2: {
-      fontSize: 12,
-    },
-    subtitle1: {
-      fontSize: 14,
-      letterSpacing: "0.5%",
-      lineHeight: 1.5,
-    },
-    subtitle2: {
-      fontSize: 12,
-    },
-    caption: {
+    h3: {
+      fontSize: "1.5rem",
       fontWeight: 500,
     },
-    overline: {
+    h4: {
+      fontSize: "1.25rem",
       fontWeight: 500,
+    },
+    h5: {
+      fontSize: "1rem",
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: ".75rem",
+      fontWeight: 700,
     },
   },
   overrides: {
-    MuiPaper: {
-      elevation5: {
-        boxShadow:
-          "0px 1px 4px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 1px 12px rgba(0, 0, 0, 0.12)",
+    MuiCard: {
+      root: {
+        borderRadius: 10,
       },
     },
-    MuiCardMedia: {
-      media: {
-        borderRadius: 8,
+    MuiDivider: {
+      root: {
+        height: "2px",
       },
     },
   },
-};
+});
 
-export default themeGlobal;
+export default themeGlobal = responsiveFontSizes(themeGlobal);
