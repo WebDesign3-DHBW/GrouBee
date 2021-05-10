@@ -10,7 +10,7 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
-import { MdCheck, MdClose, MdDelete, MdExpandMore } from "react-icons/md";
+import { MdCheck, MdClose, MdDelete, MdExpandMore, MdPlayArrow, MdStar } from "react-icons/md";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -101,11 +101,8 @@ function MediaList({ media }) {
                 <ListItem className={classes.p0} key={idx}>
                   <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="complete">
-                      <MdCheck />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="cancel">
-                      <MdClose />
+                    <IconButton edge="end" aria-label="start">
+                      <MdPlayArrow />
                     </IconButton>
                     <IconButton edge="end" aria-label="delete">
                       <MdDelete />
@@ -128,11 +125,8 @@ function MediaList({ media }) {
                 <ListItem className={classes.p0} key={idx}>
                   <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="complete">
-                      <MdCheck />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="cancel">
-                      <MdClose />
+                    <IconButton edge="end" aria-label="rate">
+                      <MdStar />
                     </IconButton>
                     <IconButton edge="end" aria-label="delete">
                       <MdDelete />
@@ -154,17 +148,6 @@ function MediaList({ media }) {
               return (
                 <ListItem className={classes.p0} key={idx}>
                   <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="complete">
-                      <MdCheck />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="cancel">
-                      <MdClose />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <MdDelete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
                 </ListItem>
               );
             })}
