@@ -82,7 +82,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close}>
         <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
-          <Typography variant="h1">Film / Serie Hinzufügen</Typography>
+          <Typography variant="h1">Film / Serie hinzufügen</Typography>
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">

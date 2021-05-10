@@ -46,6 +46,7 @@ function Media() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
+  // Die Daten brauchen wir später noch. Ist uns bekannt 😋
   console.log(mediaData);
 
   const handleChange = (event, newValue) => {
