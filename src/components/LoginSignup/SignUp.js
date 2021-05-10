@@ -11,16 +11,16 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(2),
     "& label.Mui-focused": {
-      color: theme.palette.grey[900],
+      color: theme.palette.text.primary,
     },
   },
   button: {
     marginTop: theme.spacing(2),
-    color: theme.palette.grey[900],
+    color: theme.palette.text.primary,
   },
   link: {
     textDecoration: "none",
-    color: theme.palette.grey[900],
+    color: theme.palette.text.primary,
   },
   errorMessage: {
     marginBottom: theme.spacing(2),
