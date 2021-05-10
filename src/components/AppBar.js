@@ -19,10 +19,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     padding: 0,
   },
-  date: {
-    fontWeight: "700",
-    fontSize: 20,
-  },
 }));
 
 function ButtonAppBar({ title }) {
@@ -45,11 +41,7 @@ function ButtonAppBar({ title }) {
       <div className={classes.root}>
         <AppBar elevation={0} className={classes.appbar} position="static" color="transparent">
           <Toolbar className={classes.toolbar}>
-            <Typography
-              variant="h1"
-              className={classes.date}
-              style={!isHome ? { display: "none" } : null}
-            >
+            <Typography variant="h4" component="h2" style={!isHome ? { display: "none" } : null}>
               {new Date().toLocaleDateString("de-DE", {
                 weekday: "short",
                 year: "numeric",
@@ -69,7 +61,8 @@ function ButtonAppBar({ title }) {
               <MdHome />
             </IconButton>
             <Typography
-              variant="h1"
+              variant="h4"
+              component="h1"
               className={classes.title}
               style={isHome ? { visibility: "hidden" } : null}
             >
