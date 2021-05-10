@@ -50,19 +50,16 @@ export default function AddCard({ open, close }) {
   const [isLoading, setIsLoading] = useState(true);
   const [allUserInGroup, setAllUserInGroup] = useState();
 
-  // load user data in state
   useEffect(() => {
     const getUserInGroup = async () => {
       setIsLoading(true);
       const allUserData = await getAllUserData();
-      console.log(allUserData);
       const groupUserNames = allUserData
         .filter((user) => Object.keys(user.groups).some((id) => id === selectedGroup))
         .map((user) => ({
           name: user.userName,
           id: user.userId,
         }));
-      console.log(groupUserNames);
       setAllUserInGroup(groupUserNames);
       setIsLoading(false);
     };
@@ -89,6 +86,8 @@ export default function AddCard({ open, close }) {
     close();
     setSelectedGroup("");
     setTitel("");
+    setSelectedDate("");
+    setSelectedUser("");
   };
 
   return (
@@ -109,7 +108,7 @@ export default function AddCard({ open, close }) {
           <TextField
             id="date"
             onChange={handleSelectDate}
-            label="Due date"
+            label="Frist"
             type="date"
             value={selectedDate}
             className={classes.textField}
