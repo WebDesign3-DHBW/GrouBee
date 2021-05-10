@@ -26,7 +26,7 @@ function ToDo() {
         close={() => setOpenAddCard(false)}
         cardTitle="ToDo"
         list="todo"
-      ></AddCard>
+      />
     </>
   );
 }
