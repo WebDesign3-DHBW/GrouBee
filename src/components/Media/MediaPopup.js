@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function MediaPopup({ open, close }) {
+export default function MediaPopup({ open, close, triggerUpdate }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
   const [title, setTitel] = useState("");
@@ -66,6 +66,7 @@ export default function MediaPopup({ open, close }) {
       groupID: selectedGroup,
       isMovie,
     });
+    triggerUpdate();
     close();
     setSelectedGroup("");
     setTitel("");

@@ -6,13 +6,13 @@ import FAB from "../FAB";
 import MediaPopup from "./MediaPopup";
 
 function Media() {
-  const [mediaData, isLoading] = usePageData("Media");
+  const [update, setUpdate] = useState(true);
+  const [mediaData, isLoading] = usePageData("Media", update);
   const [open, setOpen] = useState(false);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
-  console.log("mediaData", mediaData);
 
   return (
     <>
@@ -26,7 +26,11 @@ function Media() {
         ))}
       </ul>
       <FAB open={() => setOpen(true)} />
-      <MediaPopup open={open} close={() => setOpen(false)} />
+      <MediaPopup
+        open={open}
+        close={() => setOpen(false)}
+        triggerUpdate={() => setUpdate(!update)}
+      />
     </>
   );
 }

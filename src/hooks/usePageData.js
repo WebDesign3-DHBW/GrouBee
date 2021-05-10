@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../utils/recoil";
 import { useEffect, useState } from "react";
 
-function usePageData(pageName) {
+function usePageData(pageName, update) {
   const activeGroups = useRecoilValue(activeGroupsState);
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ function usePageData(pageName) {
 
     fetchData();
     // eslint-disable-next-line
-  }, [activeGroups, pageName]);
+  }, [activeGroups, pageName, update]);
 
   return [result, loading];
 }
