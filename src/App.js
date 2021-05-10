@@ -3,7 +3,7 @@ import "./App.css";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useMediaQuery } from "react-responsive";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import themeLight from "./theme/themeLight";
+import globalTheme from "./theme/theme";
 import Routes from "./routes/Routes";
 
 function App() {
@@ -17,12 +17,12 @@ function App() {
   return (
     <>
       {isDesktopOrLaptop && (
-        <ThemeProvider theme={themeLight}>
+        <ThemeProvider theme={globalTheme}>
           <h1>LOL wer entwickelt denn für Desktop 🤪</h1>
         </ThemeProvider>
       )}
       {isMobileDevice && (
-        <ThemeProvider theme={themeLight}>
+        <ThemeProvider theme={globalTheme}>
           <CssBaseline />
           <RecoilRoot>
             <Routes />

@@ -47,8 +47,8 @@ function Home() {
     <>
       <ButtonAppBar title="Home" />
       <div className={classes.wrapper}>
-        <Typography variant="h1" component="h2" className={classes.greeting}>
-          {isLoading ? <Skeleton width={200} /> : greeting + ", " + userData.userName}
+        <Typography variant="h1" className={classes.greeting}>
+          {isLoading ? <Skeleton width={200} /> : greeting + " " + userData.userName}
         </Typography>
         <div className={classes.grid}>
           <GridCard width={2} link={"/calendar"} name={"Kalender"} icon={MdEvent} />

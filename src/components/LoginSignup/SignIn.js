@@ -4,7 +4,7 @@ import { navigate } from "@reach/router";
 import { signIn } from "../../auth/signIn";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core/";
-import { Wrapper } from "./Wrapper";
+import { Container } from "./Container";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -62,7 +62,7 @@ function SignIn() {
 
   return (
     <>
-      <Wrapper>
+      <Container>
         <div>
           {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
           <form noValidate autoComplete="off">
@@ -103,7 +103,7 @@ function SignIn() {
             Registrieren
           </Button>
         </div>
-      </Wrapper>
+      </Container>
     </>
   );
 }

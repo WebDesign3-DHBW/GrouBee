@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center",
   },
   icon: {
-    fontSize: "350%",
+    fontSize: "300%",
     flexGrow: "1",
   },
 }));
@@ -47,7 +47,7 @@ function GridCard(props) {
         {...(props.width === 3 && {
           className: `${classes.gridItem} ${classes.gridItem3}`,
         })}
-        elevation={5}
+        elevation={3}
         onClick={async (event) => {
           navigate(props.link);
         }}
@@ -55,7 +55,7 @@ function GridCard(props) {
         <CardActionArea>
           <div className={classes.cardItems}>
             {<props.icon className={classes.icon} />}
-            <Typography variant="h2" component="h3">
+            <Typography variant="h5" component="h2">
               {props.name}
             </Typography>
           </div>
