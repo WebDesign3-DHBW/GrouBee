@@ -71,7 +71,7 @@ function Media() {
         close={() => setOpen(false)}
         triggerUpdate={() => setUpdate(!update)}
       />
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="transparent" elevation="0">
         <Tabs
           value={value}
           onChange={handleChange}
