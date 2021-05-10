@@ -7,12 +7,15 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Slide,
+  Snackbar,
   TextField,
   Typography,
   withStyles,
 } from "@material-ui/core";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
+import MuiAlert from "@material-ui/lab/Alert";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { getAllUserData } from "../../firebase/getAllUserData";
 import { addListEntry } from "../../firebase/addListEntry";

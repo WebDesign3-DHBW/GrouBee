@@ -26,7 +26,7 @@ function Groceries() {
         close={() => setOpenAddCard(false)}
         cardTitle="Artikel"
         list="einkaufen"
-      ></AddCard>
+      />
     </>
   );
 }
