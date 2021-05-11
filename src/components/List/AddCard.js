@@ -91,7 +91,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
         groupID: selectedGroup,
         assignedTo: selectedUser,
         list,
-      }); // Liste abstrahieren
+      });
       setSnackbarContent({
         message: "Dein Eintrag wurde erfolgreich erstellt.",
         status: "success",
