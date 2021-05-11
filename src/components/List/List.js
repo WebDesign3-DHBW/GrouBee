@@ -27,9 +27,7 @@ function List() {
   }
 
   if (isLoading) {
-    <>
-      <Skeleton variant="rect" height={48} animation="wave" />
-    </>;
+    return <Skeleton variant="rect" height={48} animation="wave" />;
   }
   return (
     <>
