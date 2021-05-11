@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    backgroundColor: "white",
     height: "100%",
     padding: theme.spacing(3),
   },

@@ -11,7 +11,7 @@ import Snackbar from "../Snackbar";
 const useStyles = makeStyles((theme) => ({
   textField: {
     "& label.Mui-focused": {
-      color: theme.palette.grey[900],
+      color: theme.palette.text.primary,
     },
   },
   buttons: {
