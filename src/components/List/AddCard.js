@@ -124,7 +124,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
             <TextField
               id="movie title"
               label="Titel"
-              onChange={handleTitel}
+              onChange={handleTitle}
               value={title}
               style={{ marginBottom: 10 }}
               className={classes.textField}
