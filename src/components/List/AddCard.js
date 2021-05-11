@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: "center",
-    "& h2": {
-      fontSize: "2rem",
-      fontWeight: 500,
-    },
   },
   textField: {
     display: "flex",
