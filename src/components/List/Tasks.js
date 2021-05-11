@@ -42,18 +42,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tasks({ tasks, update }) {
+export default function Tasks({ tasks, update, category }) {
   const classes = useStyles();
 
-  const sortByDate = tasks.sort(function (a, b) {
-    const dateA = new Date(a.date),
-      dateB = new Date(b.date);
-    return dateA - dateB;
-  });
+  const sortByDateAndCateogry = tasks
+    .filter((task) => task.list === category)
+    .sort(function (a, b) {
+      const dateA = new Date(a.date),
+        dateB = new Date(b.date);
+      return dateA - dateB;
+    });
 
   const renderTaskByCategory = (status) => {
     const isDone = status === "done" ? true : false;
-    const taskBycategory = sortByDate
+    const taskBycategory = sortByDateAndCateogry
       .filter((task) => task.done === isDone)
       .map((task, idx) => (
         <List dense className={classes.root} key={idx}>

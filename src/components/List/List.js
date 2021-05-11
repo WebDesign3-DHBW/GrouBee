@@ -34,7 +34,11 @@ function List() {
     <>
       <ButtonAppBar title={listName} />
       <Bubbles />
-      <Tasks tasks={tasks} update={() => setUpdate(!update)} />
+      <Tasks
+        tasks={tasks}
+        update={() => setUpdate(!update)}
+        category={listName.toLocaleLowerCase()}
+      />
       <FAB open={() => setOpenAddCard(true)} />
       <ListPopup
         open={openAddCard}
