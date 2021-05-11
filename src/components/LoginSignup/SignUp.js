@@ -14,7 +14,11 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.primary,
     },
   },
-  button: {
+  btnContained: {
+    marginTop: theme.spacing(2),
+    color: theme.palette.grey[900],
+  },
+  btnOutlined: {
     marginTop: theme.spacing(2),
     color: theme.palette.text.primary,
   },
@@ -110,7 +114,7 @@ function SignUp({ location }) {
             color="primary"
             type="submit"
             fullWidth={true}
-            className={classes.button}
+            className={classes.btnContained}
             onClick={onSignUpClicked}
           >
             Registrieren
@@ -120,7 +124,7 @@ function SignUp({ location }) {
           variant="outlined"
           color="primary"
           fullWidth={true}
-          className={classes.button}
+          className={classes.btnOutlined}
           onClick={async (event) => {
             navigate("/signin");
           }}

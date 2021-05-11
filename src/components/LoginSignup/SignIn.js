@@ -13,13 +13,16 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.primary,
     },
   },
-  button: {
+  btnContained: {
+    marginTop: theme.spacing(2),
+    color: theme.palette.grey[900],
+  },
+  btnOutlined: {
     marginTop: theme.spacing(2),
     color: theme.palette.text.primary,
   },
   link: {
     textDecoration: "none",
-    color: theme.palette.text.primary,
   },
   errorMessage: {
     marginBottom: theme.spacing(2),
@@ -85,7 +88,7 @@ function SignIn() {
               color="primary"
               type="submit"
               fullWidth={true}
-              className={classes.button}
+              className={classes.btnContained}
               onClick={onSignInClicked}
             >
               Einloggen
@@ -95,7 +98,7 @@ function SignIn() {
             variant="outlined"
             color="primary"
             fullWidth={true}
-            className={classes.button}
+            className={classes.btnOutlined}
             onClick={async (event) => {
               navigate("/signup");
             }}
