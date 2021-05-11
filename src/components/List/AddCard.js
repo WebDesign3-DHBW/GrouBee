@@ -79,8 +79,8 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
     setSelectedDate(e.target.value);
   };
 
-  const handleTitel = (e) => {
-    setTitel(e.target.value);
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
   };
 
   const handleSave = async (e) => {
