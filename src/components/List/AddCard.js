@@ -19,7 +19,6 @@ import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "white",
     maxWidth: 500,
     width: "100%",
     height: "100%",
