@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 function usePageData(pageName, update) {
   const activeGroups = useRecoilValue(activeGroupsState);
-  const [result, setResult] = useState();
+  const [result, setResult] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const activeGroupIDs = activeGroups.map((groupArr) => groupArr[0]);

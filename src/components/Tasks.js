@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -26,92 +26,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const array = [
-  {
-    date: "2020-05-16",
-    done: true,
-    assignedTo: "ASJdfaöo",
-    list: "einkaufen",
-    title: "wichtige Todo1",
-    groupID: "ALKSDJSA",
-  },
-  {
-    date: "2020-05-14",
-    done: true,
-    assignedTo: "ASJdfaöo",
-    list: "einkaufen",
-    title: "wichtige Todo2",
-    groupID: "ALKSDJSA",
-  },
-  {
-    date: "2020-05-15",
-    done: false,
-    assignedTo: "ASJdfaöo",
-    list: "einkaufen",
-    title: "wichtige Todo3",
-    groupID: "ALKSDJSA",
-  },
-];
-
-const sortedArray = array.sort(function (a, b) {
-  const dateA = new Date(a.date),
-    dateB = new Date(b.date);
-  return dateA - dateB;
-});
-
-const isDone = array.filter((task) => task.done === true);
-console.log(isDone);
-
-const isOpen = array.filter((task) => task.done === false);
-console.log(isOpen);
-
-export default function Tasks() {
+export default function Tasks({ tasks }) {
+  console.log(tasks, "hfhdfhdjhfdjskhfjs");
   const classes = useStyles();
-  const [isLoading, setIsLoading] = useState();
-  const [allTasks, setAllTasks] = useState();
 
-  useEffect(() => {
-    const getAllTasksForGroups = async () => {
-      setIsLoading(true);
-      const allTasks = await getAllTasks();
-      const groupTasks = allTasks
-        .filter((task) => Object.keys(task.groupID).some((id) => id === selectedGroup)) //hier wird nicht über mehrere Gruppen iterriert, Vergleich Bubble-Gruppe mit Task Gruppe
-        .map((task) => ({
-          date: task.date,
-          done: task.done,
-          assignedTo: task.assignedTo,
-          list: task.list,
-          title: task.title,
-          groupID: task.groupID,
-        }));
-      setAllTasks(groupTasks);
-      setIsLoading(false);
-      console.log("infinite loop warning");
-    };
-    getAllTasksForGroups();
-  }, []);
+  const sortByDate = tasks.sort(function (a, b) {
+    const dateA = new Date(a.date),
+      dateB = new Date(b.date);
+    return dateA - dateB;
+  });
+
+  const isDone = sortByDate.filter((task) => task.done === true);
+  console.log(isDone);
+
+  const isOpen = sortByDate.filter((task) => task.done === false);
+  console.log(isOpen);
 
   return (
-    <>
-      {isLoading ? (
-        <Skeleton width={200} />
-      ) : (
-        <div className={classes.wrapper}>
-          <Typography variant="h4">Aufgaben</Typography>
-          <List dense className={classes.root}>
-            {isOpen.map((task, idx) => (
-              <Task task={task} />
-            ))}
-          </List>
-          <Typography variant="h4">Erledigt</Typography>
-          <List dense className={classes.root}>
-            {isDone.map((task, idx) => (
-              <Task task={task} />
-            ))}
-          </List>
-        </div>
-      )}
-    </>
+    <div className={classes.wrapper}>
+      <Typography variant="h4">Aufgaben</Typography>
+      <List dense className={classes.root}>
+        {isOpen.map((task, idx) => (
+          <Task task={task} />
+        ))}
+      </List>
+      <Typography variant="h4">Erledigt</Typography>
+      <List dense className={classes.root}>
+        {isDone.map((task, idx) => (
+          <Task task={task} />
+        ))}
+      </List>
+    </div>
   );
 }
 
@@ -125,13 +70,13 @@ function Task({ task }) {
     setChecked();
   };
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      const userData = await getUserData(task.assignedTo);
-      setProfileImage(userData.profileImage);
-    };
-    loadUserData();
-  }, []);
+  // useEffect(() => {
+  //   const loadUserData = async () => {
+  //     const userData = await getUserData(task.assignedTo);
+  //     setProfileImage(userData.profileImage);
+  //   };
+  //   loadUserData();
+  // }, []);
 
   return (
     <ListItem button>
