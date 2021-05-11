@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MuiAccordion from "@material-ui/core/Accordion";
 import {
   AccordionDetails,
@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { MdCheck, MdClose, MdDelete, MdExpandMore, MdPlayArrow, MdStar } from "react-icons/md";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import RatingPopup from "./RatingPopup";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -56,13 +57,15 @@ const ellipsis = title.length > 20 ? "…" : "";
 function MediaList({ media }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState("panel1");
+  const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState(true);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   return (
-    <div>
+    <>
       <Accordion square expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
         <AccordionSummary expandIcon={<MdExpandMore />} id="panel1-header">
           <Typography className={classes.heading}>Begonnene {media}</Typography>
@@ -125,7 +128,7 @@ function MediaList({ media }) {
                 <ListItem className={classes.p0} key={idx}>
                   <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="rate">
+                    <IconButton edge="end" aria-label="rate" onClick={() => setOpen(true)}>
                       <MdStar />
                     </IconButton>
                     <IconButton edge="end" aria-label="delete">
@@ -154,7 +157,13 @@ function MediaList({ media }) {
           </List>
         </AccordionDetails>
       </Accordion>
-    </div>
+      <RatingPopup
+        title={title}
+        open={open}
+        close={() => setOpen(false)}
+        triggerUpdate={() => setUpdate(!update)}
+      />
+    </>
   );
 }
 
