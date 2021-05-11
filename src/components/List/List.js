@@ -5,6 +5,7 @@ import FAB from "../FAB";
 import { useState } from "react";
 import AddCard from "./AddCard";
 import { useLocation } from "@reach/router";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 function List() {
   const [update, setUpdate] = useState(false);
@@ -26,7 +27,9 @@ function List() {
   }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    <>
+      <Skeleton variant="rect" height={48} animation="wave" />
+    </>;
   }
   return (
     <>

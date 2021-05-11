@@ -20,7 +20,6 @@ import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "white",
     maxWidth: 500,
     width: "100%",
     height: "100%",
@@ -89,7 +88,7 @@ export default function AddCard({ open, close, cardTitle, list }) {
   const handleSave = async (e) => {
     if (title || selectedDate) {
       const userId = allUserInGroup.map((user) => user.userName === selectedUser).id;
-      await addListEntry(title, selectedDate, selectedGroup, userId, list); // Liste abstrahieren
+      await addListEntry(title, selectedDate, selectedGroup, userId, list);
       setSnackbarContent({
         message: "Dein Eintrag wurde erfolgreich erstellt.",
         status: "success",
@@ -113,13 +112,13 @@ export default function AddCard({ open, close, cardTitle, list }) {
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close} className={classes.dialog}>
-        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
+        <DialogTitle id="aufgabe-hinzufügen" className={classes.dialogTitle}>
           <Typography variant="h1"> {cardTitle} hinzufügen</Typography>
         </DialogTitle>
         <DialogContent dividers>
           <form className={classes.root} noValidate autoComplete="off">
             <TextField
-              id="movie title"
+              id="title field"
               label="Titel"
               onChange={handleTitel}
               value={title}
