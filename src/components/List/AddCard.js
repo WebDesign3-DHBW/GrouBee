@@ -100,7 +100,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
       triggerUpdate();
       close();
       setSelectedGroup("");
-      setTitel("");
+      setTitle("");
       setSelectedDate("");
       setSelectedUser("");
     } else {
