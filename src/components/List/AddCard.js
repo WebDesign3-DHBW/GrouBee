@@ -121,7 +121,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close} className={classes.dialog}>
-        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle} variant="h1">
+        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
           {cardTitle} hinzufügen
         </DialogTitle>
         <DialogContent dividers>
