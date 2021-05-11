@@ -10,9 +10,9 @@ import Avatar from "@material-ui/core/Avatar";
 import { Typography } from "@material-ui/core";
 import { MdDelete } from "react-icons/md";
 import IconButton from "@material-ui/core/IconButton";
-import { updateListmodul } from "../firebase/updateListmodul";
-import { deleteListItem } from "../firebase/deleteListItem";
-import { getUserData } from "../firebase/getUserData";
+import { updateListmodul } from "../../firebase/updateListmodul";
+import { deleteListItem } from "../../firebase/deleteListItem";
+import { getUserData } from "../../firebase/getUserData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
