@@ -45,7 +45,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const [title, setTitel] = useState("");
+  const [title, setTitle] = useState("");
   const [userData, isUserData] = useCurrentUser();
   const [isLoading, setIsLoading] = useState(true);
   const [allUserInGroup, setAllUserInGroup] = useState();
