@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MediaList({ media, data, update }) {
-  console.log("data", data);
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
