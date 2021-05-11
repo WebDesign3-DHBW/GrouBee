@@ -12,6 +12,7 @@ import {
 } from "react-icons/md";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -47,9 +48,15 @@ function Home() {
     <>
       <ButtonAppBar title="Home" />
       <div className={classes.wrapper}>
-        <Typography variant="h1" className={classes.greeting}>
-          {isLoading ? <Skeleton width={200} /> : greeting + " " + userData.userName}
-        </Typography>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: [0, 1], y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Typography variant="h1" className={classes.greeting}>
+            {isLoading ? <Skeleton width={200} /> : greeting + " " + userData.userName}
+          </Typography>
+        </motion.div>
         <div className={classes.grid}>
           <GridCard width={2} link={"/calendar"} name={"Kalender"} icon={MdEvent} />
           <GridCard width={2} link={"/finance"} name={"Finanzen"} icon={MdAccountBalanceWallet} />

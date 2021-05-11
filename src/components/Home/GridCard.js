@@ -3,11 +3,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
     display: "flex",
     justifyContent: "center",
+    width: "100%",
   },
   gridItem1: {
     gridColumn: "span 6",
@@ -35,22 +37,32 @@ const useStyles = makeStyles((theme) => ({
 
 function GridCard(props) {
   const classes = useStyles();
+
+  function randomDelay() {
+    return 0 + "." + Math.floor(Math.random() * 3);
+  }
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 1] }}
+      transition={{ delay: randomDelay() }}
+      whileTap={{ scale: 0.9 }}
+      {...(props.width === 1 && {
+        className: `${classes.gridItem} ${classes.gridItem1}`,
+      })}
+      {...(props.width === 2 && {
+        className: `${classes.gridItem} ${classes.gridItem2}`,
+      })}
+      {...(props.width === 3 && {
+        className: `${classes.gridItem} ${classes.gridItem3}`,
+      })}
+    >
       <Card
-        {...(props.width === 1 && {
-          className: `${classes.gridItem} ${classes.gridItem1}`,
-        })}
-        {...(props.width === 2 && {
-          className: `${classes.gridItem} ${classes.gridItem2}`,
-        })}
-        {...(props.width === 3 && {
-          className: `${classes.gridItem} ${classes.gridItem3}`,
-        })}
         elevation={3}
         onClick={async (event) => {
           navigate(props.link);
         }}
+        className={classes.gridItem}
       >
         <CardActionArea>
           <div className={classes.cardItems}>
@@ -61,7 +73,7 @@ function GridCard(props) {
           </div>
         </CardActionArea>
       </Card>
-    </>
+    </motion.div>
   );
 }
 
