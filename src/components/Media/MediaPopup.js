@@ -16,6 +16,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { addMedia } from "../../firebase/addMedia";
 import Snackbar from "../Snackbar";
+import { str2bool } from "../../utils";
 
 const useStyles = makeStyles(() => ({
   buttons: {
@@ -48,7 +49,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     setTitel(e.target.value);
   };
   const handleMedia = (e) => {
-    setIsMovie(e.target.value);
+    setIsMovie(str2bool(e.target.value));
   };
 
   const handleSave = async (e) => {

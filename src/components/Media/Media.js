@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
@@ -9,35 +8,7 @@ import SwipeableViews from "react-swipeable-views";
 import MediaList from "./MediaList";
 import FAB from "../FAB";
 import MediaPopup from "./MediaPopup";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && <div>{children}</div>}
-    </div>
-  );
-}
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
-  };
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+import { TabPanel, a11yProps } from "../Settings/Popup";
 
 function Media() {
   const [update, setUpdate] = useState(true);
@@ -46,10 +17,7 @@ function Media() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
-  // Die Daten brauchen wir später noch. Ist uns bekannt 😋
-  console.log(mediaData);
-
-  const handleChange = (event, newValue) => {
+  const handleChange = (e, newValue) => {
     setValue(newValue);
   };
 
@@ -60,6 +28,11 @@ function Media() {
   if (isLoading) {
     return <p>Loading...</p>;
   }
+
+  const getMediaData = (type) => {
+    const isMovie = type === "Film" ? true : false;
+    return mediaData.filter((media) => media.isMovie === isMovie);
+  };
 
   return (
     <>
@@ -91,10 +64,14 @@ function Media() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <MediaList media="Filme" />
+          <MediaList media="Filme" data={getMediaData("Film")} update={() => setUpdate(!update)} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <MediaList media="Serien" />
+          <MediaList
+            media="Serien"
+            data={getMediaData("Serie")}
+            update={() => setUpdate(!update)}
+          />
         </TabPanel>
       </SwipeableViews>
     </>

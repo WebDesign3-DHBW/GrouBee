@@ -13,6 +13,8 @@ import {
 import { MdCheck, MdClose, MdDelete, MdExpandMore, MdPlayArrow, MdStar } from "react-icons/md";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import RatingPopup from "./RatingPopup";
+import { updateMedia } from "../../firebase/updateMedia";
+import { removeMedia } from "../../firebase/removeMedia";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -31,6 +33,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function MediaList({ media, data, update }) {
+  console.log("data", data);
+  const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
+  const renderMediaForCategory = (category) => {
+    return data
+      .filter((mediaItem) => mediaItem.status === category)
+      .map((mediaItem) => (
+        <MediaItem
+          data={mediaItem}
+          open={() => setOpen(true)}
+          category={category}
+          update={update}
+        />
+      ));
+  };
+
+  return (
+    <>
+      {["begonnen", "neu", "abgeschlossen", "abgebrochen"].map((type, idx) => (
+        <Accordion square expanded={expanded === idx} onChange={handleChange(idx)}>
+          <AccordionSummary expandIcon={<MdExpandMore />} id={`${idx}-header`}>
+            <Typography className={classes.heading}>{`${
+              type.charAt(0).toUpperCase() + type.slice(1)
+            }e ${media}`}</Typography>
+          </AccordionSummary>
+          {renderMediaForCategory(type)}
+        </Accordion>
+      ))}
+
+      <RatingPopup open={open} close={() => setOpen(false)} />
+    </>
+  );
+}
+
+export default MediaList;
+
 const Accordion = withStyles({
   root: {
     backgroundColor: "transparent",
@@ -45,126 +91,61 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const title = [
-  "Forrest Gump",
-  "Harry Potter",
-  "Titanic",
-  "Der Herr der Ringe: Die Rückkehr des Königs",
-];
-
-const ellipsis = title.length > 20 ? "…" : "";
-
-function MediaList({ media }) {
+const MediaItem = ({ data, open, category, update }) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState("panel1");
-  const [open, setOpen] = useState(false);
-  const [update, setUpdate] = useState(true);
 
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+  const handleUpdate = async (status) => {
+    if (status === "delete") {
+      await removeMedia(data.docId);
+    } else {
+      await updateMedia(data.docId, { status });
+    }
+    update();
   };
 
   return (
-    <>
-      <Accordion square expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
-        <AccordionSummary expandIcon={<MdExpandMore />} id="panel1-header">
-          <Typography className={classes.heading}>Begonnene {media}</Typography>
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetails}>
-          <List component="nav" className={classes.list}>
-            {title.map((val, idx) => {
-              return (
-                <ListItem className={classes.p0} key={idx}>
-                  <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="complete">
-                      <MdCheck />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="cancel">
-                      <MdClose />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <MdDelete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
-        <AccordionSummary expandIcon={<MdExpandMore />} id="panel2-header">
-          <Typography className={classes.heading}>Neue {media}</Typography>
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetails}>
-          <List component="nav">
-            {title.map((val, idx) => {
-              return (
-                <ListItem className={classes.p0} key={idx}>
-                  <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="start">
-                      <MdPlayArrow />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <MdDelete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
-        <AccordionSummary expandIcon={<MdExpandMore />} id="panel3-header">
-          <Typography className={classes.heading}>Abgeschlossen {media}</Typography>
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetails}>
-          <List component="nav">
-            {title.map((val, idx) => {
-              return (
-                <ListItem className={classes.p0} key={idx}>
-                  <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="rate" onClick={() => setOpen(true)}>
-                      <MdStar />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <MdDelete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion square expanded={expanded === "panel4"} onChange={handleChange("panel4")}>
-        <AccordionSummary expandIcon={<MdExpandMore />} id="panel4-header">
-          <Typography className={classes.heading}>Abgebrochene {media}</Typography>
-        </AccordionSummary>
-        <AccordionDetails className={classes.accordionDetails}>
-          <List component="nav">
-            {title.map((val, idx) => {
-              return (
-                <ListItem className={classes.p0} key={idx}>
-                  <ListItemText primary={val.substring(0, 20).concat(ellipsis)} />
-                </ListItem>
-              );
-            })}
-          </List>
-        </AccordionDetails>
-      </Accordion>
-      <RatingPopup
-        title={title}
-        open={open}
-        close={() => setOpen(false)}
-        triggerUpdate={() => setUpdate(!update)}
-      />
-    </>
-  );
-}
+    <AccordionDetails className={classes.accordionDetails}>
+      <List component="nav" className={classes.list}>
+        <ListItem className={classes.p0}>
+          <ListItemText primary={data.title} />
 
-export default MediaList;
+          <ListItemSecondaryAction>
+            {category === "begonnen" && (
+              <IconButton
+                edge="end"
+                aria-label="complete"
+                onClick={() => handleUpdate("abgeschlossen")}
+              >
+                <MdCheck />
+              </IconButton>
+            )}
+            {category === "neu" && (
+              <IconButton edge="end" aria-label="start" onClick={() => handleUpdate("begonnen")}>
+                <MdPlayArrow />
+              </IconButton>
+            )}
+            {category === "abgeschlossen" && (
+              <IconButton edge="end" aria-label="rate" onClick={open}>
+                <MdStar />
+              </IconButton>
+            )}
+            {(category === "begonnen" || category === "neu") && (
+              <>
+                <IconButton
+                  edge="end"
+                  aria-label="cancel"
+                  onClick={() => handleUpdate("abgebrochen")}
+                >
+                  <MdClose />
+                </IconButton>
+              </>
+            )}
+            <IconButton edge="end" aria-label="delete" onClick={() => handleUpdate("delete")}>
+              <MdDelete />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
+    </AccordionDetails>
+  );
+};
