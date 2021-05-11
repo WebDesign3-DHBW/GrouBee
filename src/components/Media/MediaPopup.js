@@ -77,7 +77,6 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     });
   };
 
-
   return (
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
