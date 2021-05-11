@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
@@ -8,12 +8,12 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Checkbox from "@material-ui/core/Checkbox";
 import Avatar from "@material-ui/core/Avatar";
 import { Typography } from "@material-ui/core";
-import { MdDelete, MdUpdate } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import IconButton from "@material-ui/core/IconButton";
 import { updateListmodul } from "../firebase/updateListmodul";
-import { getCurrentUserData } from "../firebase/getCurrentUserData";
+import { deleteListItem } from "../firebase/deleteListItem";
 import { getUserData } from "../firebase/getUserData";
-import Skeleton from "@material-ui/lab/Skeleton";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -22,12 +22,27 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+  },
+  info: {
+    display: "flex",
+    marginTop: theme.spacing(2),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  infoIcon: {
+    fontSize: "1.5rem",
+    marginRight: theme.spacing(1),
+  },
+  center: {
+    textAlign: "center",
+    margin: theme.spacing(3, 0),
+  },
+  title: {
+    margin: theme.spacing(1, 0),
   },
 }));
 
-export default function Tasks({ tasks }) {
-  console.log(tasks, "hfhdfhdjhfdjskhfjs");
+export default function Tasks({ tasks, update }) {
   const classes = useStyles();
 
   const sortByDate = tasks.sort(function (a, b) {
@@ -36,62 +51,102 @@ export default function Tasks({ tasks }) {
     return dateA - dateB;
   });
 
-  const isDone = sortByDate.filter((task) => task.done === true);
-  console.log(isDone);
+  const renderTaskByCategory = (status) => {
+    const isDone = status === "done" ? true : false;
+    const taskBycategory = sortByDate
+      .filter((task) => task.done === isDone)
+      .map((task, idx) => (
+        <List dense className={classes.root} key={idx}>
+          <Task task={task} update={update} />
+        </List>
+      ));
 
-  const isOpen = sortByDate.filter((task) => task.done === false);
-  console.log(isOpen);
+    if (taskBycategory.length === 0 && status === "open") {
+      return (
+        <Typography
+          variant="subtitle1"
+          color="textSecondary"
+          className={`${classes.info} ${classes.center}`}
+        >
+          <AiOutlineInfoCircle className={classes.infoIcon} />
+          Du hast keine offenen Aufgaben
+        </Typography>
+      );
+    }
+    return taskBycategory;
+  };
 
   return (
     <div className={classes.wrapper}>
-      <Typography variant="h4">Aufgaben</Typography>
-      <List dense className={classes.root}>
-        {isOpen.map((task, idx) => (
-          <Task task={task} />
-        ))}
-      </List>
-      <Typography variant="h4">Erledigt</Typography>
-      <List dense className={classes.root}>
-        {isDone.map((task, idx) => (
-          <Task task={task} />
-        ))}
-      </List>
+      <Typography variant="h2" className={classes.title}>
+        Aufgaben
+      </Typography>
+      {renderTaskByCategory("open")}
+      {renderTaskByCategory("done").length !== 0 && (
+        <>
+          <Typography variant="h2" className={classes.title}>
+            Erledigt
+          </Typography>
+          {renderTaskByCategory("done")}
+        </>
+      )}
     </div>
   );
 }
 
-function Task({ task }) {
-  const classes = useStyles();
-  const [checked, setChecked] = useState(false);
+function Task({ task, update }) {
   const [profileImage, setProfileImage] = useState();
+
   const handleChecked = (e) => {
-    setChecked(!checked);
-    updateListmodul(task.id, checked);
-    setChecked();
+    updateListmodul(task.docId, !task.done);
+    update();
   };
 
-  // useEffect(() => {
-  //   const loadUserData = async () => {
-  //     const userData = await getUserData(task.assignedTo);
-  //     setProfileImage(userData.profileImage);
-  //   };
-  //   loadUserData();
-  // }, []);
+  const handleDelete = (e) => {
+    deleteListItem(task.docId);
+    update();
+  };
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const userData = await getUserData(task.assignedTo);
+      setProfileImage(userData.profileImage);
+    };
+    loadUserData();
+  }, [task.assignedTo]);
 
   return (
     <ListItem button>
       <ListItemAvatar>
-        <Avatar alt="Avatar" src={profileImage} className={classes.profileImage} />
+        <Avatar alt="Avatar" src={profileImage} />
       </ListItemAvatar>
-      <ListItemText primary={task.title} secondary={task.date} />
+      <ListItemText
+        primary={task.title}
+        secondary={new Date(task.date).toLocaleDateString("de-DE", {
+          weekday: "short",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      />
 
-      <IconButton edge="start" color="inherit" aria-label="Delete">
+      <IconButton edge="start" color="inherit" aria-label="Delete" onClick={handleDelete}>
         <MdDelete />
       </IconButton>
 
       <ListItemSecondaryAction>
-        <Checkbox edge="end" onChange={handleChecked} />
+        <PrimaryCheckbox edge="end" checked={task.done} onChange={handleChecked} />
       </ListItemSecondaryAction>
     </ListItem>
   );
 }
+
+const PrimaryCheckbox = withStyles((theme) => ({
+  root: {
+    color: theme.palette.primary.main,
+    "&$checked": {
+      color: theme.palette.primary.main,
+    },
+  },
+  checked: {},
+}))((props) => <Checkbox color="default" {...props} />);
