@@ -121,7 +121,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close} className={classes.dialog}>
-        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle} variant="h1">
+        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
           {cardTitle} hinzufügen
         </DialogTitle>
         <DialogContent dividers>
@@ -158,7 +158,7 @@ export default function AddCard({ open, close, cardTitle, list, triggerUpdate })
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="zuständiger">Zuständige*r</InputLabel>
+              <InputLabel htmlFor="zuständiger">Zuständig</InputLabel>
               <Select native value={selectedUser} onChange={handleSelectUser}>
                 <option aria-label="None" value="" />
                 {!isLoading &&
