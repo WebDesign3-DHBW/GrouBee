@@ -8,7 +8,7 @@ import SwipeableViews from "react-swipeable-views";
 import MediaList from "./MediaList";
 import FAB from "../FAB";
 import MediaPopup from "./MediaPopup";
-import { TabPanel, a11yProps } from "../Settings/Popup";
+import { TabPanel, a11yProps } from "../Settings/GroupPopup";
 
 function Media() {
   const [update, setUpdate] = useState(true);

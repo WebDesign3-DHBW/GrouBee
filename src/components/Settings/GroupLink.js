@@ -26,6 +26,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: `${theme.spacing(2)}px 0`,
   },
+  dialogTitle: {
+    textAlign: "center",
+    "& h2": {
+      fontSize: theme.typography.h2.fontSize,
+      fontWeight: theme.typography.h2.fontWeight,
+    },
+  },
 }));
 
 function GroupLink({ groupID, open, close }) {
@@ -50,12 +57,14 @@ function GroupLink({ groupID, open, close }) {
     <span>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Dein Gruppenlink</DialogTitle>
+        <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>
+          Dein Gruppenlink
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Kopiere deinen Gruppenlink, um weitere Freunde einzuladen.
           </DialogContentText>
-          <Typography variant="h1" className={classes.groupID}>
+          <Typography variant="h2" className={classes.groupID}>
             {groupID}
           </Typography>
         </DialogContent>

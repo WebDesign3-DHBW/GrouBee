@@ -15,61 +15,102 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import RatingPopup from "./RatingPopup";
 import { updateMedia } from "../../firebase/updateMedia";
 import { removeMedia } from "../../firebase/removeMedia";
+import { Rating } from "@material-ui/lab";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
     fontWeight: theme.typography.fontWeightMedium,
+    color: theme.palette.primary.main,
+  },
+  accordionSummary: {
+    padding: "0 0",
+  },
+  expandIcon: {
+    color: theme.palette.primary.main,
   },
   accordionDetails: {
     display: "inherit",
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-    padding: "0px 16px",
+    padding: "0 0",
   },
   list: {
     paddingTop: 0,
   },
-  p0: {
+  listItem: {
     paddingLeft: theme.spacing(0),
+    alignItems: "start",
+    flexDirection: "column",
+  },
+  infoIcon: {
+    fontSize: "1rem",
+    marginRight: theme.spacing(1),
+    textAlign: "center",
+  },
+  info: {
+    fontSize: "1rem",
+    display: "flex",
+    alignItems: "center",
+  },
+  rating: {
+    fontSize: 15,
   },
 }));
 
 function MediaList({ media, data, update }) {
   const classes = useStyles();
 
-  const [open, setOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  //contains the index for every open accordion
+  const [expanded, setExpanded] = useState([0]);
 
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+  const handleChange = (panel) => {
+    // Check if accordion is already in Array
+    if (expanded.some((el) => el === panel)) {
+      // If in array -> remove
+      setExpanded((prevState) => [...prevState.filter((accID) => accID !== panel)]);
+    } else {
+      // else -> add
+      setExpanded((prevArray) => [...prevArray, panel]);
+    }
   };
 
   const renderMediaForCategory = (category) => {
     return data
       .filter((mediaItem) => mediaItem.status === category)
-      .map((mediaItem) => (
-        <MediaItem
-          data={mediaItem}
-          open={() => setOpen(true)}
-          category={category}
-          update={update}
-        />
-      ));
+      .map((mediaItem) => <MediaItem data={mediaItem} category={category} update={update} />);
   };
 
   return (
     <>
       {["begonnen", "neu", "abgeschlossen", "abgebrochen"].map((type, idx) => (
-        <Accordion square expanded={expanded === idx} onChange={handleChange(idx)}>
-          <AccordionSummary expandIcon={<MdExpandMore />} id={`${idx}-header`}>
+        <Accordion
+          square
+          expanded={expanded.some((accordion) => accordion === idx)}
+          onChange={() => handleChange(idx)}
+        >
+          <AccordionSummary
+            expandIcon={<MdExpandMore className={classes.expandIcon} />}
+            id={`${idx}-header`}
+            className={classes.accordionSummary}
+          >
             <Typography className={classes.heading}>{`${
               type.charAt(0).toUpperCase() + type.slice(1)
             }e ${media}`}</Typography>
           </AccordionSummary>
-          {renderMediaForCategory(type)}
+          {renderMediaForCategory(type).length !== 0 ? (
+            renderMediaForCategory(type)
+          ) : (
+            <Typography
+              variant="subtitle1"
+              color="textSecondary"
+              className={`${classes.info} ${classes.center}`}
+            >
+              <AiOutlineInfoCircle className={classes.infoIcon} />
+              Hier ist gähnende Leere
+            </Typography>
+          )}
         </Accordion>
       ))}
-
-      <RatingPopup open={open} close={() => setOpen(false)} />
     </>
   );
 }
@@ -90,8 +131,10 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const MediaItem = ({ data, open, category, update }) => {
+const MediaItem = ({ data, category, update }) => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
 
   const handleUpdate = async (status) => {
     if (status === "delete") {
@@ -102,49 +145,57 @@ const MediaItem = ({ data, open, category, update }) => {
     update();
   };
 
-  return (
-    <AccordionDetails className={classes.accordionDetails}>
-      <List component="nav" className={classes.list}>
-        <ListItem className={classes.p0}>
-          <ListItemText primary={data.title} />
+  const ellipsis = data.title.length > 25 ? "…" : "";
 
-          <ListItemSecondaryAction>
-            {category === "begonnen" && (
-              <IconButton
-                edge="end"
-                aria-label="complete"
-                onClick={() => handleUpdate("abgeschlossen")}
-              >
-                <MdCheck />
-              </IconButton>
-            )}
-            {category === "neu" && (
-              <IconButton edge="end" aria-label="start" onClick={() => handleUpdate("begonnen")}>
-                <MdPlayArrow />
-              </IconButton>
-            )}
-            {category === "abgeschlossen" && (
-              <IconButton edge="end" aria-label="rate" onClick={open}>
-                <MdStar />
-              </IconButton>
-            )}
-            {(category === "begonnen" || category === "neu") && (
-              <>
+  return (
+    <>
+      <AccordionDetails className={classes.accordionDetails}>
+        <List component="nav" className={classes.list}>
+          <ListItem className={classes.listItem}>
+            <ListItemText primary={data.title.substring(0, 25).concat(ellipsis)} />
+
+            <ListItemSecondaryAction>
+              {category === "begonnen" && (
                 <IconButton
                   edge="end"
-                  aria-label="cancel"
-                  onClick={() => handleUpdate("abgebrochen")}
+                  aria-label="complete"
+                  onClick={() => handleUpdate("abgeschlossen")}
                 >
-                  <MdClose />
+                  <MdCheck />
                 </IconButton>
-              </>
+              )}
+              {category === "neu" && (
+                <IconButton edge="end" aria-label="start" onClick={() => handleUpdate("begonnen")}>
+                  <MdPlayArrow />
+                </IconButton>
+              )}
+              {category === "abgeschlossen" && (
+                <IconButton edge="end" aria-label="rate" onClick={() => setOpen(true)}>
+                  <MdStar />
+                </IconButton>
+              )}
+              {(category === "begonnen" || category === "neu") && (
+                <>
+                  <IconButton
+                    edge="end"
+                    aria-label="cancel"
+                    onClick={() => handleUpdate("abgebrochen")}
+                  >
+                    <MdClose />
+                  </IconButton>
+                </>
+              )}
+              <IconButton edge="end" aria-label="delete" onClick={() => handleUpdate("delete")}>
+                <MdDelete />
+              </IconButton>
+            </ListItemSecondaryAction>
+            {category === "abgeschlossen" && (
+              <Rating value={data.rating} className={classes.rating} />
             )}
-            <IconButton edge="end" aria-label="delete" onClick={() => handleUpdate("delete")}>
-              <MdDelete />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-    </AccordionDetails>
+          </ListItem>
+        </List>
+      </AccordionDetails>
+      <RatingPopup open={open} close={() => setOpen(false)} data={data} update={update} />
+    </>
   );
 };

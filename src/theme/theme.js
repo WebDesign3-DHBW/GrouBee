@@ -1,8 +1,5 @@
 export const themeGlobal = {
   palette: {
-    primary: {
-      main: "#fdcb6e",
-    },
     secondary: {
       main: "#6dacfc",
     },

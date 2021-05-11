@@ -3,7 +3,7 @@ import usePageData from "../../hooks/usePageData";
 import ButtonAppBar from "../AppBar";
 import FAB from "../FAB";
 import { useState } from "react";
-import AddCard from "./AddCard";
+import ListPopup from "./ListPopup";
 import { useLocation } from "@reach/router";
 import Skeleton from "@material-ui/lab/Skeleton";
 
@@ -38,7 +38,7 @@ function List() {
         <li key={idx}>{list.title}</li>
       ))}
       <FAB open={() => setOpenAddCard(true)} />
-      <AddCard
+      <ListPopup
         open={openAddCard}
         close={() => setOpenAddCard(false)}
         cardTitle={cardTitle}

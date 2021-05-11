@@ -8,7 +8,6 @@ import {
   InputLabel,
   Select,
   TextField,
-  Typography,
   withStyles,
 } from "@material-ui/core";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -18,13 +17,17 @@ import { addMedia } from "../../firebase/addMedia";
 import Snackbar from "../Snackbar";
 import { str2bool } from "../../utils";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   buttons: {
     display: "flex",
     justifyContent: "space-between",
   },
   dialogTitle: {
     textAlign: "center",
+    "& h2": {
+      fontSize: theme.typography.h2.fontSize,
+      fontWeight: theme.typography.h2.fontWeight,
+    },
   },
   form: {
     height: 200,
@@ -83,7 +86,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close}>
         <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
-          <Typography variant="h1">Film / Serie hinzufügen</Typography>
+          Film / Serie hinzufügen
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
