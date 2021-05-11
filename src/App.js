@@ -1,5 +1,4 @@
 import { RecoilRoot } from "recoil";
-import "./App.css";
 import { createMuiTheme, responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
 import { useMediaQuery } from "react-responsive";
 import useMediaQueryUI from "@material-ui/core/useMediaQuery";
