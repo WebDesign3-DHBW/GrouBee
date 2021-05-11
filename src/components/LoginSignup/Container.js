@@ -4,7 +4,7 @@ import Wrapper from "../base/Wrapper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "90vh",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",

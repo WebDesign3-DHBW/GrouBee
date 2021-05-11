@@ -4,6 +4,7 @@ import { MdAdd } from "react-icons/md";
 const useStyles = makeStyles((theme) => ({
   icon: {
     fontSize: "1.5rem",
+    color: theme.palette.grey[900],
   },
   fab: {
     display: "flex",
