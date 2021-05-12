@@ -6,10 +6,11 @@ import { useState } from "react";
 import ListPopup from "./ListPopup";
 import { useLocation } from "@reach/router";
 import Skeleton from "@material-ui/lab/Skeleton";
+import Tasks from "./Tasks";
 
 function List() {
   const [update, setUpdate] = useState(false);
-  const [list, isLoading] = usePageData("ToDo", update);
+  const [tasks, isLoading] = usePageData("ToDo", update);
   const [openAddCard, setOpenAddCard] = useState(false);
   const location = useLocation();
 
@@ -33,10 +34,11 @@ function List() {
     <>
       <ButtonAppBar title={listName} />
       <Bubbles />
-      <h1>{listName}</h1>
-      {list.map((list, idx) => (
-        <li key={idx}>{list.title}</li>
-      ))}
+      <Tasks
+        tasks={tasks}
+        update={() => setUpdate(!update)}
+        category={listName.toLocaleLowerCase()}
+      />
       <FAB open={() => setOpenAddCard(true)} />
       <ListPopup
         open={openAddCard}
