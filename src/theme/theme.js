@@ -41,6 +41,19 @@ export const themeGlobal = {
         borderRadius: 10,
       },
     },
+    MuiCardActionArea: {
+      root: {
+        borderRadius: 10,
+      },
+    },
+    MuiTouchRipple: {
+      root: {
+        borderRadius: 10,
+      },
+      child: {
+        backgroundColor: "#fdcb6e",
+      },
+    },
     MuiDivider: {
       root: {
         height: "2px",
