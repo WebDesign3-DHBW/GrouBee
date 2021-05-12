@@ -36,7 +36,6 @@ function Settings() {
       <ButtonAppBar title="Einstellungen" />
       <Bubbles updateMe={tiggerUpdate} />
       <FAB open={() => setOpenGroupPopup(true)} />
-      <h1>Settings</h1>
       <GroupPopup
         open={openGroupPopup}
         close={() => setOpenGroupPopup(false)}
