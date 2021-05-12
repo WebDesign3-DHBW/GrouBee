@@ -1,7 +1,10 @@
 import { Avatar, makeStyles } from "@material-ui/core";
+import Badge from "@material-ui/core/Badge";
 import { useLocation } from "@reach/router";
 import { useState } from "react";
 import GroupLink from "./Settings/GroupLink";
+import { AiFillCloseCircle } from "react-icons/ai";
+import { removeGroupFromCurrentUser } from "../firebase/removeGroupFromCurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -22,9 +25,13 @@ const useStyles = makeStyles((theme) => ({
   inactive: {
     padding: "4px",
   },
+  badge: {
+    fontSize: theme.typography.h3.fontSize,
+    color: theme.palette.secondary.dark,
+  },
 }));
 
-function Bubble({ group, toggleElement, activeGroups, color }) {
+function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }) {
   const classes = useStyles();
 
   const [active, setActive] = useState(false);
@@ -41,23 +48,59 @@ function Bubble({ group, toggleElement, activeGroups, color }) {
   return (
     <>
       <GroupLink groupID={`${group[1]}/${group[0]}`} open={open} close={() => setOpen(false)} />
-      <span
-        onClick={() => {
-          if (!isSettings) {
+      {isSettings ? (
+        <>
+          <Badge
+            overlap="circle"
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            variant="standard"
+            badgeContent={
+              <AiFillCloseCircle
+                className={classes.badge}
+                style={group[1] === "ICH" ? { display: "none" } : null}
+                onClick={() => {
+                  if (group[1] !== "ICH") {
+                    removeGroupFromCurrentUser(group[0], allGroups);
+                    update();
+                  } else {
+                    return;
+                  }
+                }}
+              />
+            }
+          >
+            <span
+              onClick={() => {
+                if (group[1] !== "ICH") {
+                  setOpen(true);
+                } else {
+                  return;
+                }
+              }}
+              className={classes.bubble}
+            >
+              <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
+                {group[1].substring(0, 7).concat(ellipsis)}
+              </Avatar>
+            </span>
+          </Badge>
+        </>
+      ) : (
+        <span
+          onClick={() => {
             setActive(!active);
             toggleElement(group);
-          } else if (group[1] === "ICH") {
-            return;
-          } else {
-            setOpen(true);
-          }
-        }}
-        className={`${styles} ${classes.bubble}`}
-      >
-        <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
-          {group[1].substring(0, 7).concat(ellipsis)}
-        </Avatar>
-      </span>
+          }}
+          className={`${styles} ${classes.bubble}`}
+        >
+          <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
+            {group[1].substring(0, 7).concat(ellipsis)}
+          </Avatar>
+        </span>
+      )}
     </>
   );
 }

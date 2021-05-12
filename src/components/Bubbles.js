@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Bubbles({ updateMe }) {
+function Bubbles({ updateMe, updateBubbles }) {
   const classes = useStyles();
   const [activeGroups, setActiveGroups] = useRecoilState(activeGroupsState);
   const [userData, isLoading] = useCurrentUser(updateMe);
@@ -55,9 +55,9 @@ function Bubbles({ updateMe }) {
   return (
     <div className={classes.root}>
       <motion.div
-        initial={{ opacity: 0, x: 250 }}
+        initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: [0, 1], x: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.2 }}
       >
         {Object.entries(userData.groups)
           // Sort by group name
@@ -69,9 +69,11 @@ function Bubbles({ updateMe }) {
               <Bubble
                 key={idx}
                 group={group}
+                allGroups={userData.groups}
                 toggleElement={toggleElement}
                 activeGroups={activeGroups}
                 color={colors[idx]}
+                update={updateBubbles}
               />
             );
           })}

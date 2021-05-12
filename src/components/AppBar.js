@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(0, 2.5),
+    padding: theme.spacing(0, 2.2),
     overflow: "hidden",
   },
   toolbar: {
@@ -47,7 +47,7 @@ function ButtonAppBar({ title }) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1], x: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.2 }}
               style={!isHome ? { display: "none" } : null}
             >
               <Typography variant="h4" component="h2" style={!isHome ? { display: "none" } : null}>
@@ -59,23 +59,23 @@ function ButtonAppBar({ title }) {
                 })}
               </Typography>
             </motion.div>
-            <IconButton
-              edge="start"
-              style={isHome ? { visibility: "hidden" } : null}
-              color="inherit"
-              aria-label="Home"
-              onClick={() => {
-                navigate("/");
-              }}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: [0, 1], x: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1] }}
-                transition={{ duration: 0.5 }}
+              <IconButton
+                edge="start"
+                style={isHome ? { visibility: "hidden" } : null}
+                color="inherit"
+                aria-label="Home"
+                onClick={() => {
+                  navigate("/");
+                }}
               >
                 <MdHome />
-              </motion.div>
-            </IconButton>
+              </IconButton>
+            </motion.div>
             <Typography
               variant="h4"
               component="h1"
@@ -83,9 +83,9 @@ function ButtonAppBar({ title }) {
               style={isHome ? { visibility: "hidden" } : null}
             >
               <motion.div
-                initial={{ opacity: 0, x: 60 }}
+                initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: [0, 1], x: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.2 }}
               >
                 {title}
               </motion.div>
@@ -94,7 +94,7 @@ function ButtonAppBar({ title }) {
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: [0, 1], x: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.2 }}
               >
                 <IconButton edge="end" color="inherit" aria-label="Logout" onClick={onClickSignOut}>
                   <BiLogOut />
@@ -105,7 +105,7 @@ function ButtonAppBar({ title }) {
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: [0, 1], x: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.2 }}
                 style={isSettings ? { display: "none" } : null}
               >
                 <IconButton
@@ -124,7 +124,7 @@ function ButtonAppBar({ title }) {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1] }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.2 }}
                 style={isSettings ? { display: "none" } : null}
               >
                 <IconButton

@@ -25,6 +25,10 @@ function App() {
           primary: {
             main: "#fdcb6e",
           },
+          secondary: {
+            main: "#6dacfc",
+            dark: "#FFFFFF",
+          },
         },
       },
       themeGlobal
