@@ -70,7 +70,7 @@ function ButtonAppBar({ title }) {
             >
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1], x: 0 }}
+                animate={{ opacity: [0, 1] }}
                 transition={{ duration: 0.5 }}
               >
                 <MdHome />
@@ -123,7 +123,7 @@ function ButtonAppBar({ title }) {
             {location.pathname === "/" && (
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1], x: 0 }}
+                animate={{ opacity: [0, 1] }}
                 transition={{ duration: 0.5 }}
                 style={isSettings ? { display: "none" } : null}
               >
