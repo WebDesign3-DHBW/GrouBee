@@ -57,7 +57,7 @@ function Bubbles({ updateMe }) {
       <motion.div
         initial={{ opacity: 0, x: 250 }}
         animate={{ opacity: [0, 1], x: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5 }}
       >
         {Object.entries(userData.groups)
           // Sort by group name
