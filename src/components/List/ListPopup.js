@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddCard({ open, close, cardTitle, list, triggerUpdate }) {
+export default function ListPopup({ open, close, cardTitle, list, triggerUpdate }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedUser, setSelectedUser] = useState("");

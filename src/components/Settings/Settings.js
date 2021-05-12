@@ -1,7 +1,7 @@
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
-import Popup from "../Settings/Popup";
+import GroupPopup from "./GroupPopup";
 import { useState } from "react";
 import { Button } from "@material-ui/core";
 import ProfilePopup from "./ProfilePopup";
@@ -19,7 +19,7 @@ function Settings() {
       <Bubbles updateMe={tiggerUpdate} />
       <FAB open={() => setOpenGroupPopup(true)} />
       <h1>Settings</h1>
-      <Popup
+      <GroupPopup
         open={openGroupPopup}
         close={() => setOpenGroupPopup(false)}
         updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}

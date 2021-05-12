@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FullWidthTabs({ open, close, updateBubbles }) {
+export default function GroupPopup({ open, close, updateBubbles }) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);

@@ -20,13 +20,28 @@ function App() {
   const darkTheme = responsiveFontSizes(
     createMuiTheme(
       {
-        palette: { type: "dark" },
+        palette: {
+          type: "dark",
+          primary: {
+            main: "#fdcb6e",
+          },
+        },
       },
       themeGlobal
     )
   );
-
-  const lightTheme = responsiveFontSizes(createMuiTheme(themeGlobal));
+  const lightTheme = responsiveFontSizes(
+    createMuiTheme(
+      {
+        palette: {
+          primary: {
+            main: "#fcb93c",
+          },
+        },
+      },
+      themeGlobal
+    )
+  );
 
   return (
     <>
