@@ -34,7 +34,7 @@ function Settings() {
         updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
       />
       <Wrapper>
-        <List component="nav" aria-label="main mailbox folders">
+        <List component="nav" aria-label="settings options">
           <Divider />
           <ListItem button className={classes.button} onClick={() => setOpenEditProfile(true)}>
             <ListItemText primary="Profil bearbeiten" />
