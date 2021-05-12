@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 70,
     right: theme.spacing(12),
     zIndex: 2,
+    textAlign: "right",
   },
 }));
 
