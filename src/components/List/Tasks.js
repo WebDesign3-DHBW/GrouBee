@@ -118,7 +118,7 @@ function Task({ task, update }) {
   }, [task.assignedTo]);
 
   return (
-    <ListItem button>
+    <ListItem style={{ paddingLeft: "0" }}>
       <ListItemAvatar>
         <Avatar alt="Avatar" src={profileImage} />
       </ListItemAvatar>
