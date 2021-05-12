@@ -11,8 +11,7 @@ import { navigate } from "@reach/router";
 const useStyles = makeStyles((theme) => ({
   button: {
     padding: 0,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    padding: theme.spacing(1, 0),
   },
 }));
 
