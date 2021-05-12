@@ -3,7 +3,7 @@ import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
 import GroupPopup from "./GroupPopup";
 import { useState } from "react";
-import { Divider, List, ListItem, ListItemText, makeStyles } from "@material-ui/core";
+import { Divider, List, ListItem, ListItemText, makeStyles, Typography } from "@material-ui/core";
 import ProfilePopup from "./ProfilePopup";
 import GroupLink from "./GroupLink";
 import Wrapper from "../base/Wrapper";
@@ -12,6 +12,15 @@ const useStyles = makeStyles((theme) => ({
   button: {
     padding: 0,
     padding: theme.spacing(1, 0),
+  },
+  info: {
+    display: "flex",
+    alignItems: "center",
+    position: "fixed",
+    color: theme.palette.text.main,
+    bottom: 70,
+    right: theme.spacing(12),
+    zIndex: 2,
   },
 }));
 
@@ -61,6 +70,9 @@ function Settings() {
           </ListItem>
           <Divider />
         </List>
+        <Typography className={classes.info}>
+          Gruppe erstellen <br />& beitreten
+        </Typography>
         <FAB open={() => setOpenGroupPopup(true)} />
         <Popup
           open={openGroupPopup}
