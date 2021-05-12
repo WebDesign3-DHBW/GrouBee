@@ -132,7 +132,7 @@ function Task({ task, update }) {
         })}
       />
 
-      <IconButton edge="start" color="inherit" aria-label="Delete" onClick={handleDelete}>
+      <IconButton edge="end" aria-label="Delete" onClick={handleDelete}>
         <MdDelete />
       </IconButton>
 
