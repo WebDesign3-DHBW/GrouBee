@@ -73,11 +73,6 @@ function Settings() {
           Gruppe erstellen <br />& beitreten
         </Typography>
         <FAB open={() => setOpenGroupPopup(true)} />
-        <Popup
-          open={openGroupPopup}
-          close={() => setOpenGroupPopup(false)}
-          updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
-        />
         <ProfilePopup open={openEditProfile} close={() => setOpenEditProfile(false)} />
         <GroupLink open={openGroupLink} close={() => setOpenGroupLink(false)} />
       </Wrapper>
