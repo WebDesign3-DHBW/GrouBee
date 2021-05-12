@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
