@@ -10,7 +10,6 @@ import Wrapper from "../base/Wrapper";
 import { navigate } from "@reach/router";
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: 0,
     padding: theme.spacing(1, 0),
   },
   info: {
