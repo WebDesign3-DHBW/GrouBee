@@ -3,7 +3,7 @@ import FAB from "../FAB";
 import ButtonAppBar from "../AppBar";
 import GroupPopup from "./GroupPopup";
 import { useState } from "react";
-import { Button, Divider, makeStyles } from "@material-ui/core";
+import { Divider, List, ListItem, ListItemText, makeStyles } from "@material-ui/core";
 import ProfilePopup from "./ProfilePopup";
 import GroupLink from "./GroupLink";
 import Wrapper from "../base/Wrapper";
@@ -11,8 +11,8 @@ import { navigate } from "@reach/router";
 const useStyles = makeStyles((theme) => ({
   button: {
     padding: 0,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
 }));
 
@@ -35,37 +35,40 @@ function Settings() {
         updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
       />
       <Wrapper>
+        <List component="nav" aria-label="main mailbox folders">
+          <Divider />
+          <ListItem button className={classes.button} onClick={() => setOpenEditProfile(true)}>
+            <ListItemText primary="Profil bearbeiten" />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            className={classes.button}
+            onClick={() => {
+              navigate("/impressum");
+            }}
+          >
+            <ListItemText primary="Impressum" />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            className={classes.button}
+            onClick={() => {
+              navigate("/datenschutz");
+            }}
+          >
+            <ListItemText primary="Datenschutz" />
+          </ListItem>
+          <Divider />
+        </List>
         <FAB open={() => setOpenGroupPopup(true)} />
-        <Divider />
-        <Button className={classes.button} onClick={() => setOpenEditProfile(true)}>
-          Profil bearbeiten
-        </Button>
-        <Divider />
-        <Button
-          className={classes.button}
-          onClick={() => {
-            navigate("/impressum");
-          }}
-        >
-          Impressum
-        </Button>
-        <Divider />
-        <Button
-          className={classes.button}
-          onClick={() => {
-            navigate("/datenschutz");
-          }}
-        >
-          Datenschutz
-        </Button>
-        <Divider />
         <Popup
           open={openGroupPopup}
           close={() => setOpenGroupPopup(false)}
           updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
         />
         <ProfilePopup open={openEditProfile} close={() => setOpenEditProfile(false)} />
-
         <GroupLink open={openGroupLink} close={() => setOpenGroupLink(false)} />
       </Wrapper>
     </>
