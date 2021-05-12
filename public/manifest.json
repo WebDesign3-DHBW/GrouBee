@@ -3,7 +3,7 @@
   "name": "GrouBee",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
@@ -20,6 +20,7 @@
   ],
   "start_url": ".",
   "display": "fullscreen",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "theme_color": "#fafafa",
+  "background_color": "#fafafa",
+  "orientation": "portrait-primary"
 }
