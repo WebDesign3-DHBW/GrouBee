@@ -15,7 +15,7 @@ function Media() {
   const [mediaData, isLoading] = usePageData("Media", update);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
