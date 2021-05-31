@@ -152,6 +152,7 @@ export default function FinancePopup({ open, close }) {
                 id="date"
                 onChange={handleSelectDate}
                 type="date"
+                label="Bezahlt am"
                 value={selectedDate}
                 className={classes.textField}
                 InputLabelProps={{
