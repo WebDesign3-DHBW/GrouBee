@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ListPopup({ open, close, cardTitle, list, triggerUpdate }) {
   const classes = useStyles();
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [title, setTitle] = useState("");
@@ -56,7 +56,7 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
       setIsLoading(true);
       const allUserData = await getAllUserData();
       const groupUserNames = allUserData
-        .filter((user) => Object.keys(user.groups).some((id) => id === selectedGroup))
+        .filter((user) => Object.keys(user.groups).some((id) => id === selectedGroup.groupID))
         .map((user) => ({
           name: user.userName,
           id: user.userId,
@@ -68,7 +68,9 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
   }, [selectedGroup]);
 
   const handleDropDown = (e) => {
-    setSelectedGroup(e.target.value);
+    const groupID = e.target.value.substring(0, e.target.value.indexOf("/"));
+    const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
+    setSelectedGroup({ groupID, color });
   };
 
   const handleSelectUser = (e) => {
@@ -84,11 +86,12 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
   };
 
   const handleSave = async (e) => {
-    if (title && selectedDate && selectedGroup && selectedUser) {
+    if (title && selectedDate && selectedGroup.groupID && selectedUser) {
       await addListEntry({
         title,
         date: selectedDate,
-        groupID: selectedGroup,
+        groupID: selectedGroup.groupID,
+        color: selectedGroup.color,
         assignedTo: selectedUser,
         list,
       });
@@ -142,12 +145,16 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
             />
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-              <Select native value={selectedGroup} onChange={handleDropDown}>
+              <Select
+                native
+                value={`${selectedGroup.groupID}/${selectedGroup.color}`}
+                onChange={handleDropDown}
+              >
                 <option aria-label="None" value="" />
                 {!isUserData &&
                   Object.entries(userData.groups).map((group, idx) => (
-                    <option key={idx} value={group[0]}>
-                      {group[1]}
+                    <option key={idx} value={`${group[0]}/${group[1].color}`}>
+                      {group[1].name}
                     </option>
                   ))}
               </Select>
