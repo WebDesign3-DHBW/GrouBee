@@ -56,7 +56,7 @@ export default function FinancePopup({ open, close }) {
     setTitel(e.target.value);
   };
   const handleExpense = (e) => {
-    setExpense(e.target.value);
+    setExpense(parseInt(e.target.value));
   };
   const handleSelectDate = (e) => {
     setSelectedDate(e.target.value);
