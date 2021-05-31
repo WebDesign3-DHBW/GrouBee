@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -13,9 +13,9 @@ import {
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { addMedia } from "../../firebase/addMedia";
+import { addFinance } from "../../firebase/addFinance";
+import { getAllUserData } from "../../firebase/getAllUserData";
 import Snackbar from "../Snackbar";
-import { str2bool } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -37,14 +37,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaPopup({ open, close, triggerUpdate }) {
+export default function FinancePopup({ open, close }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
+  const [allUserInGroup, setAllUserInGroup] = useState();
   const [title, setTitel] = useState("");
   const [expense, setExpense] = useState("");
-  const [isMovie, setIsMovie] = useState(true);
-  const [userData, isLoading] = useCurrentUser();
+  const [userData, isUserData] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleDropDown = (e) => {
     setSelectedGroup(e.target.value);
@@ -55,13 +58,15 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
   const handleExpense = (e) => {
     setExpense(e.target.value);
   };
-  const handleMedia = (e) => {
-    setIsMovie(str2bool(e.target.value));
+  const handleSelectDate = (e) => {
+    setSelectedDate(e.target.value);
+  };
+  const handleSelectUser = (e) => {
+    setSelectedUser(e.target.value);
   };
 
   const handleSave = async (e) => {
-    const mediaType = isMovie ? "Dein Film" : "Deine Serie";
-    if (!title || !selectedGroup) {
+    if (!title || !selectedGroup || !expense || !selectedDate) {
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
         status: "error",
@@ -69,21 +74,39 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
       });
       return;
     }
-    await addMedia({
+    await addFinance({
       title,
+      expense,
+      selectedDate,
       groupID: selectedGroup,
-      isMovie,
+      selectedUser,
     });
-    triggerUpdate();
     close();
     setSelectedGroup("");
     setTitel("");
     setSnackbarContent({
-      message: `${mediaType} wurde erfolgreich hinzugefügt`,
+      message: `Der Eintrag wurde erfolgreich hinzugefügt`,
       status: "success",
       open: true,
     });
   };
+
+  useEffect(() => {
+    const getUserInGroup = async () => {
+      console.log("infinite loop warning");
+      setIsLoading(true);
+      const allUserData = await getAllUserData();
+      const groupUserNames = allUserData
+        .filter((user) => Object.keys(user.groups).some((id) => id === selectedGroup))
+        .map((user) => ({
+          name: user.userName,
+          id: user.userId,
+        }));
+      setAllUserInGroup(groupUserNames);
+      setIsLoading(false);
+    };
+    getUserInGroup();
+  }, [selectedGroup]);
 
   return (
     <>
@@ -106,13 +129,35 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select native value={selectedGroup} onChange={handleDropDown}>
                 <option aria-label="None" value="" />
-                {!isLoading &&
+                {!isUserData &&
                   Object.entries(userData.groups).map((group, idx) => (
                     <option key={idx} value={group[0]}>
                       {group[1]}
                     </option>
                   ))}
               </Select>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="zuständiger">Bezahlt von</InputLabel>
+                <Select native value={selectedUser} onChange={handleSelectUser}>
+                  <option aria-label="None" value="" />
+                  {!isLoading &&
+                    allUserInGroup.map((user, idx) => (
+                      <option key={idx} value={user.id}>
+                        {user.name}
+                      </option>
+                    ))}
+                </Select>
+              </FormControl>
+              <TextField
+                id="date"
+                onChange={handleSelectDate}
+                type="date"
+                value={selectedDate}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </FormControl>
           </form>
         </DialogContent>
