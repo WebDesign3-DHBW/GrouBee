@@ -81,7 +81,6 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
       title: title,
       isAppointment: isAppointment,
     });
-    //triggerUpdate();
     close();
     setSelectedGroup("");
     setTitel("");
@@ -160,6 +159,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
 
 const DialogContent = withStyles((theme) => ({
   root: {
+    margin: 0,
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
