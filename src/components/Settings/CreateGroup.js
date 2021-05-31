@@ -6,6 +6,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import { makeStyles, Typography } from "@material-ui/core";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
+import { materialColor } from "../../theme/bubbleColors";
 import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 0,
   },
   generatedID: {
-    fontWeight: 500,
+    fontWeight: theme.typography.fontWeightMedium,
     textAlign: "center",
     display: "inline-block",
     width: "100%",
-    margin: `${theme.spacing(5)}px 0`,
+    margin: `${theme.spacing(2)}px 0`,
   },
 }));
 
@@ -45,10 +46,11 @@ function CreateGroup({ close, updateBubbles }) {
 
   async function addGroupToDB(groupname) {
     const groupID = generateGroupID();
+    const groupColor = materialColor();
     let user = await getCurrentUserData();
-    user.groups[groupID] = groupname;
+    user.groups[groupID] = { name: groupname, color: "#" + groupColor };
     addGroupToUser(user.groups);
-    setGeneratedID(groupname + "/" + groupID);
+    setGeneratedID(groupname + "/" + groupID + groupColor);
     updateBubbles();
     setSnackbarContent({
       message: "Du hast erfolgreich eine Gruppe erstellt. Kopiere den Code, um Andere einzuladen!",
@@ -107,7 +109,7 @@ function CreateGroup({ close, updateBubbles }) {
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       {generatedID && (
-        <Typography variant="h1" className={classes.generatedID}>
+        <Typography variant="h2" className={classes.generatedID}>
           {generatedID}
         </Typography>
       )}
