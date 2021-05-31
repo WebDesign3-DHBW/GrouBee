@@ -7,6 +7,8 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import { useEffect, useState } from "react";
+import { getUserData } from "../../firebase/getUserData";
 
 const useStyles = makeStyles((theme) => ({
   crossedOut: {
@@ -18,25 +20,47 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ExpenseItem(props) {
+  const [profileImage, setProfileImage] = useState();
+  const [profileName, setProfileName] = useState();
+  const [groupName, setGroupName] = useState();
   const classes = useStyles();
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const userData = await getUserData(props.paidBy);
+      try {
+        setProfileImage(userData.profileImage);
+        setProfileName(userData.userName);
+        setGroupName(props.currentUserData.groups[props.groupID]);
+      } catch {}
+    };
+    loadUserData();
+  }, [props.paidBy, props.currentUserData.groups, props.groupID]);
 
   return (
     <>
       <ListItem className="nplr">
         <ListItemAvatar>
-          <Avatar
-            alt="Avatar"
-            src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"
-          />
+          <Avatar alt="Avatar" src={profileImage} />
         </ListItemAvatar>
-        <ListItemText primary={props.title} secondary={`${props.name} | ${props.date}`} />
+        <ListItemText
+          primary={props.title}
+          secondary={`${profileName} ${
+            props.multipleSelected ? "@" + groupName + " | " : "|"
+          } ${new Date(props.currentDate).toLocaleDateString("de-DE", {
+            weekday: "short",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}`}
+        />
         <ListItemSecondaryAction className="nr">
           <Typography
             className={`${props.settled && classes.crossedOut} ${
               !props.settled && classes.textPrimary
             }`}
           >
-            {props.value} €
+            {props.expense} €
           </Typography>
         </ListItemSecondaryAction>
       </ListItem>
