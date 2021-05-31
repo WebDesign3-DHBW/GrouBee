@@ -111,7 +111,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
               </Select>
             </FormControl>
             <FormControl>
-              <InputLabel htmlFor="selectGroup">Media Typ</InputLabel>
+              <InputLabel htmlFor="selectGroup">Medien Typ</InputLabel>
               <Select native value={isMovie} onChange={handleMedia}>
                 <option value={true}>Film</option>
                 <option value={false}>Serie</option>
