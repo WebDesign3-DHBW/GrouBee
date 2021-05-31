@@ -8,6 +8,6 @@ export const addFinance = async (entry) => {
     selectedDate,
     groupID,
     paidBy,
-    status: "neu",
+    status: "nicht beglichen",
   });
 };

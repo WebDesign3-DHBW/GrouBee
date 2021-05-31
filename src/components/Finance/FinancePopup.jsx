@@ -79,7 +79,7 @@ export default function FinancePopup({ open, close }) {
       expense,
       selectedDate,
       groupID: selectedGroup,
-      selectedUser,
+      paidBy: selectedUser,
     });
     close();
     setSelectedGroup("");
