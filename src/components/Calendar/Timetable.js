@@ -14,6 +14,11 @@ function Timetable() {
     return <p>Loading...</p>;
   }
 
+  const setFormattedDate = (date) => {
+    const realDate = date.setHours(date.getHours() + 2);
+    return setDate(new Date(realDate).toISOString().split("T")[0]);
+  };
+
   const calendarData = pageData[0];
   const todos = pageData[1];
 
@@ -23,28 +28,28 @@ function Timetable() {
       <Bubbles />
 
       <Wrapper>
-        <Calendar onChange={setDate} value={date} />
-        {
-          (date.setHours(date.getHours() + 2),
-          console.log("CalendarData", date.toISOString().split("T")[0]))
-        }
+        <Calendar onChange={setFormattedDate} value={new Date(date)} />
 
         <ul>
-          {calendarData?.map((data, idx) => (
-            <li key={idx}>
-              Calendar Data: {data.title} {data.date}
-            </li>
-          ))}
+          {calendarData
+            ?.filter((entry) => entry.date === date)
+            .map((data, idx) => (
+              <li key={idx}>
+                Calendar Data: {data.title} {data.date}
+              </li>
+            ))}
         </ul>
         <h2>Todos</h2>
         <ul>
-          {todos?.map((data, idx) => {
-            return (
-              <li key={idx}>
-                Todos: {data.title}, done: {data.done}
-              </li>
-            );
-          })}
+          {todos
+            ?.filter((entry) => entry.date === date)
+            .map((data, idx) => {
+              return (
+                <li key={idx}>
+                  Todos: {data.title}, done: {data.done}
+                </li>
+              );
+            })}
         </ul>
       </Wrapper>
     </>
