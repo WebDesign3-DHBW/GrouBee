@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }) {
+function Bubble({ group, toggleElement, activeGroups, allGroups, update }) {
   const classes = useStyles();
 
   const [active, setActive] = useState(false);
@@ -43,11 +43,15 @@ function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }
 
   const styles = checked ? classes.active : classes.inactive;
 
-  const ellipsis = group[1].length > 7 ? "…" : "";
+  const ellipsis = group[1].name.length > 7 ? "…" : "";
 
   return (
     <>
-      <GroupLink groupID={`${group[1]}/${group[0]}`} open={open} close={() => setOpen(false)} />
+      <GroupLink
+        groupID={`${group[1].name}/${group[0]}${group[1].color.replace("#", "")}`}
+        open={open}
+        close={() => setOpen(false)}
+      />
       {isSettings ? (
         <>
           <Badge
@@ -60,7 +64,7 @@ function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }
             badgeContent={
               <AiFillCloseCircle
                 className={classes.badge}
-                style={group[1] === "ICH" ? { display: "none" } : null}
+                style={group[1].name === "ICH" ? { display: "none" } : null}
                 onClick={() => {
                   if (group[1] !== "ICH") {
                     removeGroupFromCurrentUser(group[0], allGroups);
@@ -74,7 +78,7 @@ function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }
           >
             <span
               onClick={() => {
-                if (group[1] !== "ICH") {
+                if (group[1].name !== "ICH") {
                   setOpen(true);
                 } else {
                   return;
@@ -82,8 +86,8 @@ function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }
               }}
               className={classes.bubble}
             >
-              <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
-                {group[1].substring(0, 7).concat(ellipsis)}
+              <Avatar className={classes.avatar} style={{ backgroundColor: group[1].color }}>
+                {group[1].name.substring(0, 7).concat(ellipsis)}
               </Avatar>
             </span>
           </Badge>
@@ -96,8 +100,8 @@ function Bubble({ group, toggleElement, activeGroups, color, allGroups, update }
           }}
           className={`${styles} ${classes.bubble}`}
         >
-          <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
-            {group[1].substring(0, 7).concat(ellipsis)}
+          <Avatar className={classes.avatar} style={{ backgroundColor: group[1].color }}>
+            {group[1].name.substring(0, 7).concat(ellipsis)}
           </Avatar>
         </span>
       )}
