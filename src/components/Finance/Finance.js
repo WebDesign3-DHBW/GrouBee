@@ -4,20 +4,33 @@ import Wrapper from "../base/Wrapper";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
-import { Divider } from "@material-ui/core";
+import {
+  Avatar,
+  Divider,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+} from "@material-ui/core";
 // import BalanceCard from "./BalanceCard";
 import ExpenseItem from "./ExpenseItem";
 import { useEffect, useState } from "react";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { useRecoilValue } from "recoil";
+import { activeGroupsState } from "../../utils/recoil";
 
 function Finance() {
   const [currentUserData, setCurrentUserData] = useState();
-  const [multipleSelected, setMultipleSelected] = useState(false);
   const [financeData, isLoading] = usePageData("Finance");
+  const [multipleSelected, setMultipleSelected] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
   const [sortedData, setSortedData] = useState(null);
   const [settlementData, setSettlementData] = useState(null);
 
+  const activeGroups = useRecoilValue(activeGroupsState);
+
   useEffect(() => {
+    const activeGroupIDs = activeGroups.map((groupArr) => groupArr[0]);
     const loadUserData = async () => {
       const userData = await getCurrentUserData();
       setCurrentUserData(userData);
@@ -31,18 +44,8 @@ function Finance() {
           return dateB - dateA;
         })
       );
-      function getGroupIDs() {
-        let IDs = [];
-        financeData.map((data) => {
-          if (IDs.indexOf(data.groupID)) {
-            IDs.push(data.groupID);
-          }
-          return null;
-        });
-        return IDs;
-      }
       function multipleGroupsSelected() {
-        if (1 < Object.keys(getGroupIDs()).length) {
+        if (1 < Object.keys(activeGroupIDs).length) {
           return true;
         }
       }
@@ -51,16 +54,39 @@ function Finance() {
       } else {
         setMultipleSelected(false);
       }
-      let sData = Object.keys(getGroupIDs()).length !== 0 && getSettlementData(getGroupIDs());
+      let sData = Object.keys(activeGroupIDs).length !== 0 && getSettlementData(activeGroupIDs);
       sData.then((data) => {
         setSettlementData([...data]);
       });
     } catch {}
     setDataLoading(false);
-  }, [financeData]);
+  }, [financeData, activeGroups]);
 
-  if (dataLoading && isLoading) {
-    return <p>Loading...</p>;
+  //if (dataLoading && isLoading) {
+  if (false) {
+    return (
+      <>
+        <ButtonAppBar title="Finanzen" />
+        <Bubbles />
+        <Wrapper>
+          <ListItem className="nplr" style={{ marginBottom: 4, marginTop: 4 }}>
+            <ListItemAvatar>
+              <Skeleton variant="circle">
+                <Avatar />
+              </Skeleton>
+            </ListItemAvatar>
+            <ListItemText>
+              <Skeleton animation="wave" height={20} width="60%" style={{ marginBottom: 5 }} />
+              <Skeleton animation="wave" height={15} width="40%" />
+            </ListItemText>
+            <ListItemSecondaryAction className="nr">
+              <Skeleton animation="wave" height={30} width="2rem" />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+        </Wrapper>
+      </>
+    );
   } else {
     return (
       <>
