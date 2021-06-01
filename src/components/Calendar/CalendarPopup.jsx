@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MediaPopup({ open, close, triggerUpdate }) {
   const classes = useStyles();
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [title, setTitel] = useState("");
   const [isAppointment, setIsAppointment] = useState(true);
   const [userData, isLoading] = useCurrentUser();
@@ -48,7 +48,9 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
   const [selectedTime, setSelectedTime] = useState("");
 
   const handleDropDown = (e) => {
-    setSelectedGroup(e.target.value);
+    const groupID = e.target.value.substring(0, e.target.value.indexOf("/"));
+    const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
+    setSelectedGroup({ groupID, color });
   };
   const handleTitel = (e) => {
     setTitel(e.target.value);
@@ -66,7 +68,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
 
   const handleSave = async (e) => {
     const mediaType = isAppointment ? "Dein Termin" : "Dein ToDo";
-    if (!title || !selectedGroup) {
+    if (!title || !selectedGroup || !selectedTime || !selectedDate) {
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
         status: "error",
@@ -77,13 +79,16 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     await addCalendar({
       date: selectedDate,
       time: selectedTime,
-      groupID: selectedGroup,
+      groupID: selectedGroup.groupID,
+      color: selectedGroup.color,
       title: title,
       isAppointment: isAppointment,
     });
     close();
     setSelectedGroup("");
     setTitel("");
+    setSelectedDate("");
+    setSelectedTime("");
     setSnackbarContent({
       message: `${mediaType} wurde erfolgreich hinzugefügt`,
       status: "success",
@@ -103,12 +108,16 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
             <TextField id="title" label="Titel" onChange={handleTitel} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-              <Select native value={selectedGroup} onChange={handleDropDown}>
+              <Select
+                native
+                value={`${selectedGroup.groupID}/${selectedGroup.color}`}
+                onChange={handleDropDown}
+              >
                 <option aria-label="None" value="" />
                 {!isLoading &&
                   Object.entries(userData.groups).map((group, idx) => (
-                    <option key={idx} value={group[0]}>
-                      {group[1]}
+                    <option key={idx} value={`${group[0]}/${group[1].color}`}>
+                      {group[1].name}
                     </option>
                   ))}
               </Select>
