@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 export default function FinancePopup({ open, close }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [allUserInGroup, setAllUserInGroup] = useState();
   const [title, setTitel] = useState("");
@@ -58,15 +57,12 @@ export default function FinancePopup({ open, close }) {
   const handleExpense = (e) => {
     setExpense(parseInt(e.target.value));
   };
-  const handleSelectDate = (e) => {
-    setSelectedDate(e.target.value);
-  };
   const handleSelectUser = (e) => {
     setSelectedUser(e.target.value);
   };
 
   const handleSave = async (e) => {
-    if (!title || !selectedGroup || !expense || !selectedDate) {
+    if (!title || !selectedGroup || !expense) {
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
         status: "error",
@@ -77,7 +73,6 @@ export default function FinancePopup({ open, close }) {
     await addFinance({
       title,
       expense,
-      selectedDate,
       groupID: selectedGroup,
       paidBy: selectedUser,
     });
@@ -148,17 +143,6 @@ export default function FinancePopup({ open, close }) {
                     ))}
                 </Select>
               </FormControl>
-              <TextField
-                id="date"
-                onChange={handleSelectDate}
-                type="date"
-                label="Bezahlt am"
-                value={selectedDate}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
             </FormControl>
           </form>
         </DialogContent>
