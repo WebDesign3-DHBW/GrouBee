@@ -11,14 +11,34 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  makeStyles,
+  Typography,
 } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useEffect, useState } from "react";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+
+const useStyles = makeStyles((theme) => ({
+  center: {
+    textAlign: "center",
+  },
+  info: {
+    display: "flex",
+    marginTop: "20vh",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  infoIcon: {
+    fontSize: "1.5rem",
+    marginRight: theme.spacing(1),
+  },
+}));
 
 function Finance() {
+  const classes = useStyles();
   const [dataLoading, setDataLoading] = useState(true);
   const [currentUserData, setCurrentUserData] = useState();
   const [financeData, isLoading] = usePageData("Finance");
@@ -108,6 +128,16 @@ function Finance() {
                 <Divider />
               </div>
             ))}
+        {activeGroups.length === 0 && (
+          <Typography
+            variant="subtitle1"
+            color="textSecondary"
+            className={`${classes.info} ${classes.center}`}
+          >
+            <AiOutlineInfoCircle className={classes.infoIcon} />
+            Gruppe/-n auswählen
+          </Typography>
+        )}
       </Wrapper>
     </>
   );
