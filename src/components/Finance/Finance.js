@@ -59,37 +59,37 @@ function Finance() {
     setDataLoading(false);
   }, [financeData, activeGroups]);
 
-  if (dataLoading && isLoading) {
-    return (
+  function loadingSkeleton() {
+    const n = 6;
+    return [...Array(n)].map((e, i) => (
       <>
-        <ButtonAppBar title="Finanzen" />
-        <Bubbles />
-        <Wrapper>
-          <ListItem className="nplr" style={{ marginBottom: 4, marginTop: 4 }}>
-            <ListItemAvatar>
-              <Skeleton variant="circle">
-                <Avatar />
-              </Skeleton>
-            </ListItemAvatar>
-            <ListItemText>
-              <Skeleton animation="wave" height={20} width="60%" style={{ marginBottom: 5 }} />
-              <Skeleton animation="wave" height={15} width="40%" />
-            </ListItemText>
-            <ListItemSecondaryAction className="nr">
-              <Skeleton animation="wave" height={30} width="2rem" />
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-        </Wrapper>
+        <ListItem className="nplr" style={{ marginBottom: 4, marginTop: 4 }}>
+          <ListItemAvatar>
+            <Skeleton variant="circle">
+              <Avatar />
+            </Skeleton>
+          </ListItemAvatar>
+          <ListItemText>
+            <Skeleton animation="wave" height={20} width="60%" style={{ marginBottom: 5 }} />
+            <Skeleton animation="wave" height={15} width="40%" />
+          </ListItemText>
+          <ListItemSecondaryAction className="nr">
+            <Skeleton animation="wave" height={30} width="2rem" />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
       </>
-    );
-  } else {
-    return (
-      <>
-        <ButtonAppBar title="Finanzen" />
-        <Bubbles />
-        <Wrapper>
-          {Object(sortedData).length !== 0 &&
+    ));
+  }
+
+  return (
+    <>
+      <ButtonAppBar title="Finanzen" />
+      <Bubbles />
+      <Wrapper>
+        {dataLoading && isLoading
+          ? loadingSkeleton()
+          : Object(sortedData).length !== 0 &&
             sortedData !== null &&
             sortedData.map((data, i) => (
               <div key={i}>
@@ -108,10 +108,9 @@ function Finance() {
                 <Divider />
               </div>
             ))}
-        </Wrapper>
-      </>
-    );
-  }
+      </Wrapper>
+    </>
+  );
 }
 
 export default Finance;
