@@ -153,7 +153,7 @@
   }
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
-    background: #a9d4ff;
+    background: #fdcb6e;
   }
   .react-calendar__tile--active {
     background: #fdcb6e;

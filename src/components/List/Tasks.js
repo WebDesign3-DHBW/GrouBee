@@ -14,6 +14,14 @@ import { updateListmodul } from "../../firebase/updateListmodul";
 import { deleteListItem } from "../../firebase/deleteListItem";
 import { getUserData } from "../../firebase/getUserData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import {
+  MdEvent,
+  MdAccountBalanceWallet,
+  MdCheckCircle,
+  MdShoppingCart,
+  MdOpacity,
+  MdMovie,
+} from "react-icons/md";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -96,7 +104,7 @@ export default function Tasks({ tasks, update, category }) {
   );
 }
 
-function Task({ task, update }) {
+export function Task({ task, update, hideProfilePic, hideDate }) {
   const [profileImage, setProfileImage] = useState();
 
   const handleChecked = (e) => {
@@ -119,20 +127,30 @@ function Task({ task, update }) {
 
   return (
     <ListItem style={{ paddingLeft: "0" }}>
-      <ListItemAvatar>
-        <Avatar alt="Avatar" src={profileImage} />
-      </ListItemAvatar>
+      {!hideProfilePic && (
+        <ListItemAvatar>
+          <Avatar alt="Avatar" src={profileImage} />
+        </ListItemAvatar>
+      )}
       <ListItemText
         primary={task.title}
-        secondary={new Date(task.date).toLocaleDateString("de-DE", {
-          weekday: "short",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
+        secondary={
+          !hideDate ? (
+            new Date(task.date).toLocaleDateString("de-DE", {
+              weekday: "short",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          ) : (
+            <>
+              <MdShoppingCart /> {task.list.charAt(0).toUpperCase() + task.list.slice(1)}
+            </>
+          )
+        }
       />
 
-      <IconButton edge="end" aria-label="Delete" onClick={handleDelete}>
+      <IconButton edge="end" aria-label="Delete" onClick={handleDelete} size="small">
         <MdDelete />
       </IconButton>
 
@@ -150,5 +168,4 @@ const PrimaryCheckbox = withStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
-  checked: {},
 }))((props) => <Checkbox color="default" {...props} />);
