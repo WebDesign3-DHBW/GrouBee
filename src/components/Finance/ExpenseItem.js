@@ -90,14 +90,17 @@ function ExpenseItem(props) {
           </ListItemAvatar>
           <ListItemText
             primary={props.title}
-            secondary={`${profileName} ${
-              props.multipleSelected ? "@" + groupName + " | " : "|"
-            } ${new Date(props.currentDate).toLocaleDateString("de-DE", {
-              weekday: "short",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}`}
+            secondary={
+              groupName &&
+              `${profileName} ${props.multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
+                props.currentDate
+              ).toLocaleDateString("de-DE", {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}`
+            }
           />
           <ListItemSecondaryAction className="nr">
             <Typography
