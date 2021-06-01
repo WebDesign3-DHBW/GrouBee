@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Divider,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
@@ -24,6 +25,8 @@ function ExpenseItem(props) {
   const [profileName, setProfileName] = useState();
   const [groupName, setGroupName] = useState();
   const [settled, setSettled] = useState(false);
+  const [nextSettled, setNextSettled] = useState(false);
+  const [settledDate, setSettledDate] = useState();
   const classes = useStyles();
 
   useEffect(() => {
@@ -49,6 +52,30 @@ function ExpenseItem(props) {
       }
     }
     checkSettled();
+    function getNext() {
+      const sortedDataLength = Object(props.sortedData).length;
+      let nextKey = 1;
+      try {
+        while (sortedDataLength - props.ID !== nextKey) {
+          if (props.ID !== sortedDataLength) {
+            let nextGroupID = props.sortedData[props.ID + nextKey].groupID;
+            const nextDate = props.sortedData[props.ID + nextKey].currentDate;
+            if (props.groupID !== nextGroupID) {
+              nextKey = nextKey + 1;
+            }
+            if (props.groupID === nextGroupID) {
+              nextKey = sortedDataLength + 1;
+              props.settlementData.map((data, i) => {
+                setNextSettled(new Date(data.settleDate) > new Date(nextDate));
+                new Date(data.settleDate) > new Date(nextDate) && setSettledDate(data.settleDate);
+                return null;
+              });
+            }
+          }
+        }
+      } catch {}
+    }
+    getNext();
   }, [props]);
 
   return (
@@ -76,6 +103,20 @@ function ExpenseItem(props) {
           </Typography>
         </ListItemSecondaryAction>
       </ListItem>
+      {!settled && nextSettled && (
+        <>
+          <Divider />
+          <Typography variant="overline" color="primary">
+            {groupName} beglichen{" "}
+            {new Date(settledDate).toLocaleDateString("de-DE", {
+              weekday: "short",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </Typography>
+        </>
+      )}
     </>
   );
 }
