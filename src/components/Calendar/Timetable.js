@@ -22,6 +22,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { removeAppointment } from "../../firebase/removeAppointment";
 import { addAppointment } from "../../firebase/addAppointment";
+import { Task } from "../List/Tasks";
 
 const useStyles = makeStyles((theme) => ({
   dot: {
@@ -65,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: "center",
     margin: theme.spacing(1, 0),
+  },
+  listItem: {
+    width: "100%",
   },
 }));
 
@@ -113,11 +117,14 @@ function Timetable() {
           value={calendarDate}
           tileContent={(date) => {
             const formattedDate = toUTC(date.date).toISOString().split("T")[0];
-            if (
-              calendarData.some((appointment) => appointment.date === formattedDate) ||
-              todos.some((todo) => todo.date === formattedDate)
-            ) {
-              return <div className={classes.dot} style={{ backgroundColor: "salmon" }} />;
+            const calendarColor = calendarData.find(
+              (appointment) => appointment.date === formattedDate
+            )?.color;
+            const todoColor = todos.find((todo) => todo.date === formattedDate)?.color;
+            if (calendarColor) {
+              return <div className={classes.dot} style={{ backgroundColor: calendarColor }} />;
+            } else if (todoColor) {
+              return <div className={classes.dot} style={{ backgroundColor: todoColor }} />;
             } else {
               return <div className={classes.dot} style={{ visibility: "hidden" }} />;
             }
@@ -144,7 +151,7 @@ function Timetable() {
                   <div key={idx}>
                     <ListItem className={classes.listItem}>
                       <ListItemText>
-                        <span className={classes.time}>{data.time}</span> : {data.title}
+                        <span className={classes.time}>{data.time} Uhr</span> {data.title}
                       </ListItemText>
                       <ListItemSecondaryAction>
                         <IconButton
@@ -164,27 +171,46 @@ function Timetable() {
                 (entry) => entry.date === calendarDate.toISOString().split("T")[0]
               ).length === 0 && (
                 <Typography
-                  variant="subtitle1"
+                  variant="subtitle2"
                   color="textSecondary"
                   className={`${classes.info} ${classes.center}`}
                 >
                   <AiOutlineInfoCircle className={classes.infoIcon} />
-                  Du hast noch keinen Termin
+                  Keinen Termin an diesem Tag
                 </Typography>
               )}
             </List>
             <Typography variant="h2">Aufgaben</Typography>
-            <ul>
+            <List component="nav" className={classes.list} dense>
               {todos
                 .filter((entry) => entry.date === calendarDate.toISOString().split("T")[0])
-                .map((data, idx) => {
+                .map((task, idx) => {
                   return (
-                    <li key={idx}>
-                      Todos: {data.title}, done: {data.done}
-                    </li>
+                    <div key={idx}>
+                      <ListItem className={classes.listItem}>
+                        <Task
+                          task={task}
+                          update={() => setUpdate(!update)}
+                          hideProfilePic
+                          hideDate
+                          style={{ width: "500px" }}
+                        />
+                      </ListItem>
+                    </div>
                   );
                 })}
-            </ul>
+            </List>
+            {todos.filter((entry) => entry.date === calendarDate.toISOString().split("T")[0])
+              .length === 0 && (
+              <Typography
+                variant="subtitle2"
+                color="textSecondary"
+                className={`${classes.info} ${classes.center}`}
+              >
+                <AiOutlineInfoCircle className={classes.infoIcon} />
+                Keine Aufgaben an diesem Tag
+              </Typography>
+            )}
           </div>
         </div>
       </Wrapper>
