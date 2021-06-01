@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { getUserData } from "../../firebase/getUserData";
+import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 
 const useStyles = makeStyles((theme) => ({
   crossedOut: {
@@ -21,13 +22,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ExpenseItem(props) {
+  const classes = useStyles();
+  const [dataLoading, setDataLoading] = useState(true);
   const [profileImage, setProfileImage] = useState();
   const [profileName, setProfileName] = useState();
   const [groupName, setGroupName] = useState();
   const [settled, setSettled] = useState(false);
   const [nextSettled, setNextSettled] = useState(false);
   const [settledDate, setSettledDate] = useState();
-  const classes = useStyles();
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -74,49 +76,54 @@ function ExpenseItem(props) {
       } catch {}
     }
     getNext();
+    setDataLoading(false);
   }, [props]);
 
-  return (
-    <>
-      <ListItem className="nplr">
-        <ListItemAvatar>
-          <Avatar alt="Avatar" src={profileImage} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={props.title}
-          secondary={`${profileName} ${
-            props.multipleSelected ? "@" + groupName + " | " : "|"
-          } ${new Date(props.currentDate).toLocaleDateString("de-DE", {
-            weekday: "short",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}`}
-        />
-        <ListItemSecondaryAction className="nr">
-          <Typography
-            className={`${settled && classes.crossedOut} ${!settled && classes.textPrimary}`}
-          >
-            {props.expense} €
-          </Typography>
-        </ListItemSecondaryAction>
-      </ListItem>
-      {!settled && nextSettled && (
-        <>
-          <Divider />
-          <Typography variant="overline" color="primary">
-            {groupName} beglichen{" "}
-            {new Date(settledDate).toLocaleDateString("de-DE", {
+  if (dataLoading) {
+    return <ExpenseItemSkeleton />;
+  } else {
+    return (
+      <>
+        <ListItem className="nplr">
+          <ListItemAvatar>
+            <Avatar alt="Avatar" src={profileImage} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={props.title}
+            secondary={`${profileName} ${
+              props.multipleSelected ? "@" + groupName + " | " : "|"
+            } ${new Date(props.currentDate).toLocaleDateString("de-DE", {
               weekday: "short",
               year: "numeric",
               month: "long",
               day: "numeric",
-            })}
-          </Typography>
-        </>
-      )}
-    </>
-  );
+            })}`}
+          />
+          <ListItemSecondaryAction className="nr">
+            <Typography
+              className={`${settled && classes.crossedOut} ${!settled && classes.textPrimary}`}
+            >
+              {props.expense} €
+            </Typography>
+          </ListItemSecondaryAction>
+        </ListItem>
+        {!settled && nextSettled && (
+          <>
+            <Divider />
+            <Typography variant="overline" color="primary">
+              {groupName} beglichen{" "}
+              {new Date(settledDate).toLocaleDateString("de-DE", {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </Typography>
+          </>
+        )}
+      </>
+    );
+  }
 }
 
 export default ExpenseItem;

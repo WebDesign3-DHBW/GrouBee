@@ -4,22 +4,13 @@ import Wrapper from "../base/Wrapper";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
-import {
-  Avatar,
-  Divider,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Divider, makeStyles, Typography } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useEffect, useState } from "react";
-import Skeleton from "@material-ui/lab/Skeleton";
 import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -81,25 +72,7 @@ function Finance() {
 
   function loadingSkeleton() {
     const n = 6;
-    return [...Array(n)].map((e, i) => (
-      <>
-        <ListItem className="nplr" style={{ marginBottom: 4, marginTop: 4 }}>
-          <ListItemAvatar>
-            <Skeleton variant="circle">
-              <Avatar />
-            </Skeleton>
-          </ListItemAvatar>
-          <ListItemText>
-            <Skeleton animation="wave" height={20} width="60%" style={{ marginBottom: 5 }} />
-            <Skeleton animation="wave" height={15} width="40%" />
-          </ListItemText>
-          <ListItemSecondaryAction className="nr">
-            <Skeleton animation="wave" height={30} width="2rem" />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-      </>
-    ));
+    return [...Array(n)].map((e, i) => <ExpenseItemSkeleton />);
   }
 
   return (
