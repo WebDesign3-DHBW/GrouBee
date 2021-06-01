@@ -85,6 +85,8 @@ function Finance() {
                   groupID={data.groupID}
                   multipleSelected={multipleSelected}
                   settlementData={settlementData}
+                  sortedData={sortedData}
+                  ID={i}
                 />
                 <Divider />
               </div>
