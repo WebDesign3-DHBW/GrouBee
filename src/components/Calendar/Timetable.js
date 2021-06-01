@@ -112,17 +112,13 @@ function Timetable() {
           onChange={setFormattedDate}
           value={calendarDate}
           tileContent={(date) => {
-            // const formattedDate = new Date(date.date).toISOString().split("T")[0];
+            const formattedDate = toUTC(date.date).toISOString().split("T")[0];
             if (
-              calendarData.some(
-                (appointment) => appointment.date === toUTC(date.date).toISOString().split("T")[0]
-              )
+              calendarData.some((appointment) => appointment.date === formattedDate) ||
+              todos.some((todo) => todo.date === formattedDate)
             ) {
-              // console.log(`formattedDate`, formattedDate);
-
-              return <div className={classes.dot} style={{ backgroundColor: "green" }} />;
+              return <div className={classes.dot} style={{ backgroundColor: "salmon" }} />;
             } else {
-              // console.log("no matching in appointment", formattedDate);
               return <div className={classes.dot} style={{ visibility: "hidden" }} />;
             }
           }}
@@ -141,13 +137,7 @@ function Timetable() {
             <List component="nav" className={classes.list} dense>
               {calendarData
                 .filter((entry) => {
-                  console.log("calendarDate", calendarDate);
-                  console.log("new Date(entry.date)", new Date(entry.date));
-                  console.log(
-                    `new Date(entry.date) === calendarDate`,
-                    new Date(entry.date) === calendarDate
-                  );
-                  return new Date(entry.date) === calendarDate;
+                  return entry.date === calendarDate.toISOString().split("T")[0];
                 })
                 .sort((a, b) => a.time - b.time)
                 .map((data, idx, arr) => (
@@ -170,7 +160,9 @@ function Timetable() {
                     {data !== arr[arr.length - 1] && <Divider variant="middle" component="li" />}
                   </div>
                 ))}
-              {calendarData.filter((entry) => toUTC(entry.date) === calendarDate).length === 0 && (
+              {calendarData.filter(
+                (entry) => entry.date === calendarDate.toISOString().split("T")[0]
+              ).length === 0 && (
                 <Typography
                   variant="subtitle1"
                   color="textSecondary"
@@ -184,7 +176,7 @@ function Timetable() {
             <Typography variant="h2">Aufgaben</Typography>
             <ul>
               {todos
-                .filter((entry) => new Date(entry.date) === calendarDate)
+                .filter((entry) => entry.date === calendarDate.toISOString().split("T")[0])
                 .map((data, idx) => {
                   return (
                     <li key={idx}>
