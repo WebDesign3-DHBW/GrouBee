@@ -1,5 +1,5 @@
-//import { makeStyles } from "@material-ui/core/styles";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
+import { getSettlementData } from "../../firebase/getSettlementData";
 import Wrapper from "../base/Wrapper";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
@@ -9,14 +9,14 @@ import { Divider } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useEffect, useState } from "react";
 
-//const useStyles = makeStyles((theme) => ({}));
-
 function Finance() {
-  //const classes = useStyles();
   const [currentUserData, setCurrentUserData] = useState();
-  const [financeData, isLoading] = usePageData("Finance");
-  const [sortedData, setSortedData] = useState();
+  const [activeGroupIDs, setActiveGroupIDs] = useState();
   const [multipleSelected, setMultipleSelected] = useState(false);
+  const [financeData, isLoading] = usePageData("Finance");
+  const [dataLoading, setDataLoading] = usePageData(true);
+  const [sortedData, setSortedData] = useState();
+  const [settlementData, setSettlementData] = useState();
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -24,17 +24,6 @@ function Finance() {
       setCurrentUserData(userData);
     };
     loadUserData();
-    function multipleGroupsSelected() {
-      const firstGroupID = Object.values(financeData)[0].groupID;
-      let isTrue = false;
-      financeData.map((data) => {
-        if (firstGroupID !== data.groupID) {
-          isTrue = true;
-        }
-        return null;
-      });
-      return isTrue;
-    }
     try {
       setSortedData(
         financeData.sort(function (a, b) {
@@ -43,17 +32,39 @@ function Finance() {
           return dateB - dateA;
         })
       );
+      function getGroupIDs() {
+        let IDs = [];
+        financeData.map((data) => {
+          if (IDs.indexOf(data.groupID)) {
+            IDs.push(data.groupID);
+          }
+          return null;
+        });
+        return IDs;
+      }
+      function multipleGroupsSelected() {
+        if (1 < Object.keys(getGroupIDs()).length) {
+          return true;
+        }
+      }
       if (multipleGroupsSelected()) {
         setMultipleSelected(true);
       } else {
         setMultipleSelected(false);
       }
+      setActiveGroupIDs(getGroupIDs());
+      let sData = Object.keys(getGroupIDs()).length !== 0 && getSettlementData(getGroupIDs());
+      sData.then((data) => {
+        setSettlementData([...data]);
+      });
     } catch {}
   }, [financeData]);
 
-  if (isLoading) {
+  if (isLoading && !dataLoading) {
     return <p>Loading...</p>;
   }
+
+  console.log(Object(settlementData).length);
 
   return (
     <>
@@ -63,21 +74,29 @@ function Finance() {
         {/* <BalanceCard value="9,80" />
         <BalanceCard value="15,20" group="WG" />
         <BalanceCard value="-5,40" group="Friends" /> */}
-        {sortedData.map((data) => (
-          <>
-            <ExpenseItem
-              currentUserData={currentUserData}
-              title={data.title}
-              currentDate={data.currentDate}
-              expense={data.expense}
-              paidBy={data.paidBy}
-              groupID={data.groupID}
-              settled={false}
-              multipleSelected={multipleSelected}
-            />
-            <Divider />
-          </>
-        ))}
+        {Object(sortedData).length !== 0 &&
+          sortedData.map((data, i) => (
+            <div key={i}>
+              <ExpenseItem
+                currentUserData={currentUserData}
+                title={data.title}
+                currentDate={data.currentDate}
+                expense={data.expense}
+                paidBy={data.paidBy}
+                groupID={data.groupID}
+                settled={false}
+                multipleSelected={multipleSelected}
+                settlementData={settlementData}
+              />
+              <Divider />
+            </div>
+          ))}
+        {Object(settlementData).length !== 0 &&
+          settlementData.map((data, i) => (
+            <div>
+              {data.groupID} {data.settleDate}
+            </div>
+          ))}
       </Wrapper>
     </>
   );
