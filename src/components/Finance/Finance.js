@@ -72,7 +72,11 @@ function Finance() {
 
   function loadingSkeleton() {
     const n = 6;
-    return [...Array(n)].map((e, i) => <ExpenseItemSkeleton />);
+    return [...Array(n)].map((e, i) => (
+      <div key={i}>
+        <ExpenseItemSkeleton />
+      </div>
+    ));
   }
 
   return (
@@ -80,7 +84,7 @@ function Finance() {
       <ButtonAppBar title="Finanzen" />
       <Bubbles />
       <Wrapper>
-        {dataLoading && isLoading
+        {dataLoading && isLoading && activeGroups.length !== 0
           ? loadingSkeleton()
           : Object(sortedData).length !== 0 &&
             sortedData !== null &&
