@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 
 function Finance() {
   const [currentUserData, setCurrentUserData] = useState();
-  //const [activeGroupIDs, setActiveGroupIDs] = useState();
   const [multipleSelected, setMultipleSelected] = useState(false);
   const [financeData, isLoading] = usePageData("Finance");
   const [dataLoading, setDataLoading] = useState(true);
@@ -52,7 +51,6 @@ function Finance() {
       } else {
         setMultipleSelected(false);
       }
-      //setActiveGroupIDs(getGroupIDs());
       let sData = Object.keys(getGroupIDs()).length !== 0 && getSettlementData(getGroupIDs());
       sData.then((data) => {
         setSettlementData([...data]);
@@ -89,13 +87,6 @@ function Finance() {
                   ID={i}
                 />
                 <Divider />
-              </div>
-            ))}
-          {Object(settlementData).length !== 0 &&
-            settlementData !== null &&
-            settlementData.map((data, i) => (
-              <div key={i}>
-                {data.groupID} {data.settleDate}
               </div>
             ))}
         </Wrapper>
