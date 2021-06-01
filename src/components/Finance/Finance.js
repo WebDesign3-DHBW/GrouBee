@@ -12,7 +12,6 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from "@material-ui/core";
-// import BalanceCard from "./BalanceCard";
 import ExpenseItem from "./ExpenseItem";
 import { useEffect, useState } from "react";
 import Skeleton from "@material-ui/lab/Skeleton";
@@ -20,10 +19,10 @@ import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
 
 function Finance() {
+  const [dataLoading, setDataLoading] = useState(true);
   const [currentUserData, setCurrentUserData] = useState();
   const [financeData, isLoading] = usePageData("Finance");
   const [multipleSelected, setMultipleSelected] = useState(false);
-  const [dataLoading, setDataLoading] = useState(true);
   const [sortedData, setSortedData] = useState(null);
   const [settlementData, setSettlementData] = useState(null);
 
@@ -36,7 +35,13 @@ function Finance() {
       setCurrentUserData(userData);
     };
     loadUserData();
-    try {
+    function multipleGroupsSelected() {
+      1 < Object.keys(activeGroupIDs).length
+        ? setMultipleSelected(true)
+        : setMultipleSelected(false);
+    }
+    multipleGroupsSelected();
+    financeData &&
       setSortedData(
         financeData.sort(function (a, b) {
           var dateA = new Date(a.currentDate),
@@ -44,26 +49,17 @@ function Finance() {
           return dateB - dateA;
         })
       );
-      function multipleGroupsSelected() {
-        if (1 < Object.keys(activeGroupIDs).length) {
-          return true;
-        }
+    const handleSettlementData = async () => {
+      if (Object.keys(activeGroupIDs).length !== 0) {
+        const settlementData = await getSettlementData(activeGroupIDs);
+        setSettlementData(settlementData);
       }
-      if (multipleGroupsSelected()) {
-        setMultipleSelected(true);
-      } else {
-        setMultipleSelected(false);
-      }
-      let sData = Object.keys(activeGroupIDs).length !== 0 && getSettlementData(activeGroupIDs);
-      sData.then((data) => {
-        setSettlementData([...data]);
-      });
-    } catch {}
+    };
+    handleSettlementData();
     setDataLoading(false);
   }, [financeData, activeGroups]);
 
-  //if (dataLoading && isLoading) {
-  if (false) {
+  if (dataLoading && isLoading) {
     return (
       <>
         <ButtonAppBar title="Finanzen" />
@@ -93,9 +89,6 @@ function Finance() {
         <ButtonAppBar title="Finanzen" />
         <Bubbles />
         <Wrapper>
-          {/* <BalanceCard value="9,80" />
-        <BalanceCard value="15,20" group="WG" />
-        <BalanceCard value="-5,40" group="Friends" /> */}
           {Object(sortedData).length !== 0 &&
             sortedData !== null &&
             sortedData.map((data, i) => (
