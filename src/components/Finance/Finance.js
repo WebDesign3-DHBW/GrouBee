@@ -11,12 +11,12 @@ import { useEffect, useState } from "react";
 
 function Finance() {
   const [currentUserData, setCurrentUserData] = useState();
-  const [activeGroupIDs, setActiveGroupIDs] = useState();
+  //const [activeGroupIDs, setActiveGroupIDs] = useState();
   const [multipleSelected, setMultipleSelected] = useState(false);
   const [financeData, isLoading] = usePageData("Finance");
-  const [dataLoading, setDataLoading] = usePageData(true);
-  const [sortedData, setSortedData] = useState();
-  const [settlementData, setSettlementData] = useState();
+  const [dataLoading, setDataLoading] = useState(true);
+  const [sortedData, setSortedData] = useState(null);
+  const [settlementData, setSettlementData] = useState(null);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -52,54 +52,54 @@ function Finance() {
       } else {
         setMultipleSelected(false);
       }
-      setActiveGroupIDs(getGroupIDs());
+      //setActiveGroupIDs(getGroupIDs());
       let sData = Object.keys(getGroupIDs()).length !== 0 && getSettlementData(getGroupIDs());
       sData.then((data) => {
         setSettlementData([...data]);
       });
     } catch {}
+    setDataLoading(false);
   }, [financeData]);
 
-  if (isLoading && !dataLoading) {
+  if (dataLoading && isLoading) {
     return <p>Loading...</p>;
-  }
-
-  console.log(Object(settlementData).length);
-
-  return (
-    <>
-      <ButtonAppBar title="Finanzen" />
-      <Bubbles />
-      <Wrapper>
-        {/* <BalanceCard value="9,80" />
+  } else {
+    return (
+      <>
+        <ButtonAppBar title="Finanzen" />
+        <Bubbles />
+        <Wrapper>
+          {/* <BalanceCard value="9,80" />
         <BalanceCard value="15,20" group="WG" />
         <BalanceCard value="-5,40" group="Friends" /> */}
-        {Object(sortedData).length !== 0 &&
-          sortedData.map((data, i) => (
-            <div key={i}>
-              <ExpenseItem
-                currentUserData={currentUserData}
-                title={data.title}
-                currentDate={data.currentDate}
-                expense={data.expense}
-                paidBy={data.paidBy}
-                groupID={data.groupID}
-                settled={false}
-                multipleSelected={multipleSelected}
-                settlementData={settlementData}
-              />
-              <Divider />
-            </div>
-          ))}
-        {Object(settlementData).length !== 0 &&
-          settlementData.map((data, i) => (
-            <div>
-              {data.groupID} {data.settleDate}
-            </div>
-          ))}
-      </Wrapper>
-    </>
-  );
+          {Object(sortedData).length !== 0 &&
+            sortedData !== null &&
+            sortedData.map((data, i) => (
+              <div key={i}>
+                <ExpenseItem
+                  currentUserData={currentUserData}
+                  title={data.title}
+                  currentDate={data.currentDate}
+                  expense={data.expense}
+                  paidBy={data.paidBy}
+                  groupID={data.groupID}
+                  multipleSelected={multipleSelected}
+                  settlementData={settlementData}
+                />
+                <Divider />
+              </div>
+            ))}
+          {Object(settlementData).length !== 0 &&
+            settlementData !== null &&
+            settlementData.map((data, i) => (
+              <div key={i}>
+                {data.groupID} {data.settleDate}
+              </div>
+            ))}
+        </Wrapper>
+      </>
+    );
+  }
 }
 
 export default Finance;

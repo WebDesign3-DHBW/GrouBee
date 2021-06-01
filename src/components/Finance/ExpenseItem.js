@@ -23,6 +23,7 @@ function ExpenseItem(props) {
   const [profileImage, setProfileImage] = useState();
   const [profileName, setProfileName] = useState();
   const [groupName, setGroupName] = useState();
+  const [settled, setSettled] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -35,7 +36,20 @@ function ExpenseItem(props) {
       } catch {}
     };
     loadUserData();
-  }, [props.paidBy, props.currentUserData.groups, props.groupID]);
+    function checkSettled() {
+      if (Object(props.settlementData).length !== 0 && props.settlementData !== null) {
+        props.settlementData.map((data, i) => {
+          if (props.groupID === data.groupID) {
+            //console.log("settleDate: " + data.settleDate + " currentDate: " + props.currentDate);
+            setSettled(new Date(data.settleDate) > new Date(props.currentDate));
+            //console.log(settled);
+          }
+          return null;
+        });
+      }
+    }
+    checkSettled();
+  }, [props]);
 
   return (
     <>
@@ -56,9 +70,7 @@ function ExpenseItem(props) {
         />
         <ListItemSecondaryAction className="nr">
           <Typography
-            className={`${props.settled && classes.crossedOut} ${
-              !props.settled && classes.textPrimary
-            }`}
+            className={`${settled && classes.crossedOut} ${!settled && classes.textPrimary}`}
           >
             {props.expense} €
           </Typography>
