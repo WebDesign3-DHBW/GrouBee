@@ -107,7 +107,7 @@ export default function FinancePopup({ open, close }) {
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close}>
-        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
+        <DialogTitle id="ausgaben-hinzufügen" className={classes.dialogTitle}>
           Ausgaben hinzufügen
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
