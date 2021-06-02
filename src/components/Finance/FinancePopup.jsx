@@ -112,7 +112,7 @@ export default function FinancePopup({ open, close }) {
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
-            <TextField id="expense title" label="Ausgabe" onChange={handleTitel} value={title} />
+            <TextField id="expense title" label="Ausgabe" onChange={handleTitle} value={title} />
             <TextField
               id="expense"
               label="Betrag in €"
