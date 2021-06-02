@@ -16,6 +16,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { addFinance } from "../../firebase/addFinance";
 import { getAllUserData } from "../../firebase/getAllUserData";
 import Snackbar from "../Snackbar";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -43,7 +44,7 @@ export default function FinancePopup({ open, close }) {
   const [selectedUser, setSelectedUser] = useState("");
   const [allUserInGroup, setAllUserInGroup] = useState();
   const [title, setTitle] = useState("");
-  const [expense, setExpense] = useState("");
+  const [expense, setExpense] = useState("0.00");
   const [userData, isUserData] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +56,7 @@ export default function FinancePopup({ open, close }) {
     setTitle(e.target.value);
   };
   const handleExpense = (e) => {
-    setExpense(parseInt(e.target.value));
+    setExpense(parseFloat(e.target.value));
   };
   const handleSelectUser = (e) => {
     setSelectedUser(e.target.value);
@@ -79,6 +80,7 @@ export default function FinancePopup({ open, close }) {
     close();
     setSelectedGroup("");
     setTitle("");
+    setExpense("");
     setSnackbarContent({
       message: `Der Eintrag wurde erfolgreich hinzugefügt`,
       status: "success",
@@ -112,12 +114,14 @@ export default function FinancePopup({ open, close }) {
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
             <TextField id="expense title" label="Ausgabe" onChange={handleTitle} value={title} />
-            <TextField
+            <CurrencyTextField
               id="expense"
-              label="Betrag in €"
-              type="number"
+              label="Betrag"
               onChange={handleExpense}
               value={expense}
+              decimalCharacter="."
+              digitGroupSeparator=","
+              currencySymbol="€"
             />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
