@@ -13,7 +13,7 @@ import {
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { addCalendar } from "../../firebase/addCalendar";
+import { addCalendar } from "../../firebase/addAppointment";
 import Snackbar from "../Snackbar";
 import { str2bool } from "../../utils";
 import { addListEntry } from "../../firebase/addListEntry";
