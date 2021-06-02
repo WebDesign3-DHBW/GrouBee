@@ -159,7 +159,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
               <InputLabel htmlFor="selectGroup">Eintragstyp</InputLabel>
               <Select native value={isAppointment} onChange={handleAppointment}>
                 <option value={true}>Termin</option>
-                <option value={false}>ToDos</option>
+                <option value={false}>ToDo</option>
               </Select>
             </FormControl>
           </form>
