@@ -6,5 +6,27 @@ body {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  -moz-osx-font-smoothing: grayscale;
+  list-style-type: none !important;
+}
+
+.nplr {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.npl {
+  padding-left: 0 !important;
+}
+.npr {
+  padding-right: 0 !important;
+}
+
+.nlr {
+  left: 0 !important;
+  right: 0 !important;
+}
+.nl {
+  left: 0 !important;
+}
+.nr {
+  right: 0 !important;
 }

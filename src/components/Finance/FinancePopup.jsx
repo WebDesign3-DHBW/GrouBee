@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FinancePopup({ open, close }) {
+export default function FinancePopup({ open, close, update }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
@@ -86,6 +86,7 @@ export default function FinancePopup({ open, close }) {
       status: "success",
       open: true,
     });
+    update();
   };
 
   useEffect(() => {
