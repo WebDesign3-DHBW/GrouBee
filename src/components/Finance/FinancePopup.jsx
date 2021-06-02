@@ -130,7 +130,7 @@ export default function FinancePopup({ open, close }) {
                 {!isUserData &&
                   Object.entries(userData.groups).map((group, idx) => (
                     <option key={idx} value={group[0]}>
-                      {group[1]}
+                      {group[1].name}
                     </option>
                   ))}
               </Select>
