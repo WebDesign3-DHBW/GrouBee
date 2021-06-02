@@ -11,7 +11,7 @@ export default function Routes() {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         setAuthenticated(true);
       } else {
         setAuthenticated(false);

@@ -22,8 +22,20 @@ export const signUp = async (username, email, password) => {
           },
           { merge: true }
         );
-      return true;
     }
+
+    const user = firebase.auth().currentUser;
+    const isMailSuccessful = user
+      .sendEmailVerification()
+      .then(function () {
+        return true;
+      })
+      .catch(function (error) {
+        alert("Fehler bei der Registrierung. Dir konnte kein Bestätigungslink gesendet werden.");
+        return false;
+      });
+
+    return isMailSuccessful;
   } catch (e) {
     throw new Error(e.code);
   }

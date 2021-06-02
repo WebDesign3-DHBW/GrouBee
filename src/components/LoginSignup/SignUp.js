@@ -51,7 +51,7 @@ function SignUp({ location }) {
 
     try {
       const signUpSuccessful = await signUp(usernameValue, emailValue, passwordValue);
-      signUpSuccessful && navigate(`/`);
+      signUpSuccessful && navigate(`/signin`, { state: { signUpSuccessful } });
     } catch (e) {
       switch (e.message) {
         case "auth/email-already-in-use":
