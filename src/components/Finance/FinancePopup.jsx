@@ -88,7 +88,6 @@ export default function FinancePopup({ open, close }) {
 
   useEffect(() => {
     const getUserInGroup = async () => {
-      console.log("infinite loop warning");
       setIsLoading(true);
       const allUserData = await getAllUserData();
       const groupUserNames = allUserData
