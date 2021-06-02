@@ -6,6 +6,7 @@ import {
   DialogContentText,
   makeStyles,
 } from "@material-ui/core";
+import { deleteListItem } from "../../firebase/deleteListItem";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -17,14 +18,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmPopup({ open, close, setIsConfirmed }) {
+function ConfirmPopup({ open, close, clickedTask, update }) {
   const classes = useStyles();
+
   const handleConfirm = () => {
-    setIsConfirmed(true);
+    deleteListItem(clickedTask);
+    update();
+    close();
   };
   const handleCancel = () => {
     close();
-    setIsConfirmed(false);
   };
   return (
     <Dialog open={open} onClose={close} aria-labelledby="responsive-dialog-title">

@@ -17,7 +17,6 @@ import { updateMedia } from "../../firebase/updateMedia";
 import { removeMedia } from "../../firebase/removeMedia";
 import { Rating } from "@material-ui/lab";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   heading: {

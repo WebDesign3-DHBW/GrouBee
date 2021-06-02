@@ -23,7 +23,7 @@ function List() {
   const location = useLocation();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [clickedTask, setClickedTask] = useState();
 
   let listName = "";
   let cardTitle = "";
@@ -41,19 +41,27 @@ function List() {
   if (isLoading) {
     return <Skeleton variant="text" animation="wave" />;
   }
-  console.log(isConfirmed);
+
+  const handleConfirmPopup = (task) => {
+    setOpen(true);
+    setClickedTask(task);
+  };
+
   return (
     <div className={classes.wrapper}>
       <ButtonAppBar title={listName} />
       <Bubbles />
-      <ConfirmPopup open={open} close={() => setOpen(false)} setIsConfirmed={setIsConfirmed} />
+      <ConfirmPopup
+        open={open}
+        close={() => setOpen(false)}
+        clickedTask={clickedTask}
+        update={() => setUpdate(!update)}
+      />
       <Tasks
         tasks={tasks}
         update={() => setUpdate(!update)}
         category={listName.toLocaleLowerCase()}
-        openConfirmPopup={() => setOpen(true)}
-        isConfirmed={isConfirmed}
-        closeConfirmPopup={() => setOpen(false)}
+        handleConfirmPopup={handleConfirmPopup}
       />
       <FAB open={() => setOpenAddCard(true)} />
       <ListPopup

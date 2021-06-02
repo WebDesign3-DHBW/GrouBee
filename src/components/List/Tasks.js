@@ -11,11 +11,9 @@ import { Typography } from "@material-ui/core";
 import { MdDelete } from "react-icons/md";
 import IconButton from "@material-ui/core/IconButton";
 import { updateListmodul } from "../../firebase/updateListmodul";
-import { deleteListItem } from "../../firebase/deleteListItem";
 import { getUserData } from "../../firebase/getUserData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdCheckCircle, MdShoppingCart, MdOpacity } from "react-icons/md";
-import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -63,14 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tasks({
-  tasks,
-  update,
-  category,
-  openConfirmPopup,
-  isConfirmed,
-  closeConfirmPopup,
-}) {
+export default function Tasks({ tasks, update, category, handleConfirmPopup }) {
   const classes = useStyles();
 
   const sortByDateAndCateogry = tasks
@@ -87,13 +78,7 @@ export default function Tasks({
       .filter((task) => task.done === isDone)
       .map((task, idx) => (
         <List dense className={classes.root} key={idx}>
-          <Task
-            task={task}
-            update={update}
-            openConfirmPopup={openConfirmPopup}
-            isConfirmed={isConfirmed}
-            closeConfirmPopup={closeConfirmPopup}
-          />
+          <Task task={task} update={update} handleConfirmPopup={handleConfirmPopup} />
         </List>
       ));
 
@@ -130,17 +115,8 @@ export default function Tasks({
   );
 }
 
-export function Task({
-  task,
-  update,
-  hideProfilePic,
-  hideDate,
-  openConfirmPopup,
-  isConfirmed,
-  closeConfirmPopup,
-}) {
+export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDate }) {
   const classes = useStyles();
-  const [snackbarContent, setSnackbarContent] = useState();
 
   const [profileImage, setProfileImage] = useState();
 
@@ -149,8 +125,8 @@ export function Task({
     update();
   };
 
-  const handleDelete = (e) => {
-    openConfirmPopup();
+  const handleDelete = () => {
+    handleConfirmPopup(task.docId);
   };
 
   useEffect(() => {
@@ -170,13 +146,6 @@ export function Task({
       return <MdShoppingCart />;
     }
   };
-  useEffect(() => {
-    if (isConfirmed) {
-      deleteListItem(task.docId);
-      update();
-      closeConfirmPopup();
-    }
-  }, [isConfirmed]);
 
   return (
     <ListItem style={{ paddingLeft: "0" }}>
