@@ -31,11 +31,6 @@ body {
   right: 0 !important;
 }
 
-button {
-  font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
 abbr {
   text-decoration: none;
 }

@@ -73,7 +73,7 @@ function Timetable() {
 
   const [update, setUpdate] = useState(false);
   const [pageData, isLoading] = usePageData("Calendar", update);
-  const [calendarDate, setCalendarDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+  const [calendarDate, setCalendarDate] = useState(new Date(new Date()));
   const [openCalendarPopup, setOpenCalendarPopup] = useState(false);
 
   if (isLoading) {
