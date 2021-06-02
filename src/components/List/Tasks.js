@@ -48,6 +48,19 @@ const useStyles = makeStyles((theme) => ({
   title: {
     margin: theme.spacing(1, 0),
   },
+  listText: {
+    "& > span": {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
+  dot: {
+    height: 15,
+    width: 15,
+    borderRadius: "50%",
+    display: "inline-block",
+    marginRight: theme.spacing(1),
+  },
 }));
 
 export default function Tasks({ tasks, update, category }) {
@@ -105,6 +118,8 @@ export default function Tasks({ tasks, update, category }) {
 }
 
 export function Task({ task, update, hideProfilePic, hideDate }) {
+  const classes = useStyles();
+
   const [profileImage, setProfileImage] = useState();
 
   const handleChecked = (e) => {

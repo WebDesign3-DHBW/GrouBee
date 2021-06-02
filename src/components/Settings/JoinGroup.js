@@ -36,15 +36,16 @@ export default function JoinGroup({ close, updateBubbles }) {
     return groupID in currentUserGroups ? true : false;
   };
 
-  async function addGroupToDB(user, groupName, groupID) {
-    user.groups[groupID] = groupName;
+  async function addGroupToDB(user, groupName, groupID, groupColor) {
+    user.groups[groupID] = { name: groupName, color: "#" + groupColor };
     addGroupToUser(user.groups);
   }
 
   function generateGroupObject(inputValue) {
-    const groupID = inputValue.substring(inputValue.indexOf("/") + 1);
     const groupName = inputValue.substring(0, inputValue.indexOf("/"));
-    return [groupName, groupID];
+    const groupID = inputValue.substring(inputValue.indexOf("/") + 1, inputValue.length - 6);
+    const groupColor = inputValue.slice(-6);
+    return [groupName, groupID, groupColor];
   }
 
   const handleJoin = async () => {
@@ -57,7 +58,7 @@ export default function JoinGroup({ close, updateBubbles }) {
       return;
     }
 
-    const [groupName, groupID] = generateGroupObject(value);
+    const [groupName, groupID, groupColor] = generateGroupObject(value);
     let user = await getCurrentUserData();
 
     if (await checkIfGroupsExists(user, groupID)) {
@@ -66,8 +67,8 @@ export default function JoinGroup({ close, updateBubbles }) {
         status: "info",
         open: true,
       });
-    } else if (value.includes("/_") && value.length >= 12) {
-      await addGroupToDB(user, groupName, groupID);
+    } else if (value.includes("/_") && value.length > 17) {
+      await addGroupToDB(user, groupName, groupID, groupColor);
       setSnackbarContent({
         message: "Du bist der Gruppe erfolgreich beigetreten!",
         status: "success",

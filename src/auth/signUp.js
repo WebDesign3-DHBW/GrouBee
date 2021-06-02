@@ -17,7 +17,7 @@ export const signUp = async (username, email, password) => {
             profileImage:
               "https://images.unsplash.com/photo-1600752384899-7d3dcbb2428c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&q=10",
             groups: {
-              [user.uid]: "ICH",
+              [user.uid]: { name: "ICH", color: "#eeeeee" },
             },
           },
           { merge: true }
