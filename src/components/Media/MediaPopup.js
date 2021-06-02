@@ -39,14 +39,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MediaPopup({ open, close, triggerUpdate }) {
   const classes = useStyles();
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [title, setTitel] = useState("");
   const [isMovie, setIsMovie] = useState(true);
   const [userData, isLoading] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
 
   const handleDropDown = (e) => {
-    setSelectedGroup(e.target.value);
+    const groupID = e.target.value.substring(0, e.target.value.indexOf("/"));
+    const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
+    setSelectedGroup({ groupID, color });
   };
   const handleTitel = (e) => {
     setTitel(e.target.value);
@@ -57,7 +59,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
 
   const handleSave = async (e) => {
     const mediaType = isMovie ? "Dein Film" : "Deine Serie";
-    if (!title || !selectedGroup) {
+    if (!title || !selectedGroup.groupID) {
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
         status: "error",
@@ -67,7 +69,8 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     }
     await addMedia({
       title,
-      groupID: selectedGroup,
+      groupID: selectedGroup.groupID,
+      color: selectedGroup.color,
       isMovie,
     });
     triggerUpdate();
@@ -93,12 +96,16 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
             <TextField id="movie title" label="Titel" onChange={handleTitel} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-              <Select native value={selectedGroup} onChange={handleDropDown}>
+              <Select
+                native
+                value={`${selectedGroup.groupID}/${selectedGroup.color}`}
+                onChange={handleDropDown}
+              >
                 <option aria-label="None" value="" />
                 {!isLoading &&
                   Object.entries(userData.groups).map((group, idx) => (
-                    <option key={idx} value={group[0]}>
-                      {group[1]}
+                    <option key={idx} value={`${group[0]}/${group[1].color}`}>
+                      {group[1].name}
                     </option>
                   ))}
               </Select>

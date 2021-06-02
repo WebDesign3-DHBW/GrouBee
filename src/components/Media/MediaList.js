@@ -42,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "start",
     flexDirection: "column",
   },
+  listText: {
+    "& > span": {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
   infoIcon: {
     fontSize: "1rem",
     marginRight: theme.spacing(1),
@@ -54,6 +60,13 @@ const useStyles = makeStyles((theme) => ({
   },
   rating: {
     fontSize: 15,
+  },
+  dot: {
+    height: 15,
+    width: 15,
+    borderRadius: "50%",
+    display: "inline-block",
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -152,7 +165,10 @@ const MediaItem = ({ data, category, update }) => {
       <AccordionDetails className={classes.accordionDetails}>
         <List component="nav" className={classes.list}>
           <ListItem className={classes.listItem}>
-            <ListItemText primary={data.title.substring(0, 25).concat(ellipsis)} />
+            <ListItemText className={classes.listText}>
+              <span className={classes.dot} style={{ backgroundColor: data.color }} />
+              {data.title.substring(0, 25).concat(ellipsis)}
+            </ListItemText>
 
             <ListItemSecondaryAction>
               {category === "begonnen" && (

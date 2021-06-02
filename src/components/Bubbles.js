@@ -2,7 +2,6 @@ import { makeStyles } from "@material-ui/core";
 import { activeGroupsState } from "../utils/recoil";
 import { useRecoilState } from "recoil";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { colors } from "../theme/bubbleColors";
 import { motion } from "framer-motion";
 
 import Bubble from "./Bubble";
@@ -61,9 +60,9 @@ function Bubbles({ updateMe, updateBubbles }) {
       >
         {Object.entries(userData.groups)
           // Sort by group name
-          .sort((a, b) => a[1].localeCompare(b[1]))
+          .sort((a, b) => a[1].name.localeCompare(b[1].name))
           // Place "ICH" at the beginning
-          .sort((a, b) => (b[1] === "ICH") - (a[1] === "ICH"))
+          .sort((a, b) => (b[1].name === "ICH") - (a[1].name === "ICH"))
           .map((group, idx) => {
             return (
               <Bubble
@@ -72,7 +71,6 @@ function Bubbles({ updateMe, updateBubbles }) {
                 allGroups={userData.groups}
                 toggleElement={toggleElement}
                 activeGroups={activeGroups}
-                color={colors[idx]}
                 update={updateBubbles}
               />
             );
