@@ -21,6 +21,8 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { removeAppointment } from "../../firebase/removeAppointment";
 import { Task } from "../List/Tasks";
+import FAB from "../FAB";
+import CalendarPopup from "../Calendar/CalendarPopup";
 
 const useStyles = makeStyles((theme) => ({
   dot: {
@@ -72,6 +74,7 @@ function Timetable() {
   const [update, setUpdate] = useState(false);
   const [pageData, isLoading] = usePageData("Calendar", update);
   const [calendarDate, setCalendarDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+  const [openCalendarPopup, setOpenCalendarPopup] = useState(false);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -99,6 +102,8 @@ function Timetable() {
     <>
       <ButtonAppBar title="Kalender" />
       <Bubbles />
+      <FAB open={() => setOpenCalendarPopup(true)} />
+      <CalendarPopup open={openCalendarPopup} close={() => setOpenCalendarPopup(false)} />
       <Wrapper>
         <Calendar
           onChange={setFormattedDate}
