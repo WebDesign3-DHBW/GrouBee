@@ -6,7 +6,7 @@ import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import FinancePopup from "./FinancePopup";
-import { useEffect, seState } from "react";
+import { useEffect, useState } from "react";
 import { Divider, makeStyles, Typography } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useRecoilValue } from "recoil";
@@ -34,7 +34,8 @@ function Finance() {
   const classes = useStyles();
   const [dataLoading, setDataLoading] = useState(true);
   const [currentUserData, setCurrentUserData] = useState();
-  const [financeData, isLoading] = usePageData("Finance");
+  const [update, setUpdate] = useState(false);
+  const [financeData, isLoading] = usePageData("Finance", update);
   const [openFinancePopup, setOpenFinancePopup] = useState(false);
   const [multipleSelected, setMultipleSelected] = useState(false);
   const [sortedData, setSortedData] = useState(null);
@@ -85,7 +86,11 @@ function Finance() {
       <ButtonAppBar title="Finanzen" />
       <Bubbles />
       <FAB open={() => setOpenFinancePopup(true)} />
-      <FinancePopup open={openFinancePopup} close={() => setOpenFinancePopup(false)} />
+      <FinancePopup
+        open={openFinancePopup}
+        close={() => setOpenFinancePopup(false)}
+        update={() => setUpdate(!update)}
+      />
       <Wrapper>
         {dataLoading && isLoading && activeGroups.length !== 0
           ? loadingSkeleton()
