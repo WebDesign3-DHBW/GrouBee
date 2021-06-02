@@ -97,7 +97,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     }
     close();
     setSelectedGroup("");
-    setTitel("");
+    setTitle("");
     setSelectedDate("");
     setSelectedTime("");
     setSnackbarContent({
