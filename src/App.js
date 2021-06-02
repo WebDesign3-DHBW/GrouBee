@@ -5,6 +5,7 @@ import useMediaQueryUI from "@material-ui/core/useMediaQuery";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { themeGlobal } from "./theme/theme";
 import Routes from "./routes/Routes";
+import Desktop from "./components/Desktop/Desktop";
 
 function App() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -49,8 +50,8 @@ function App() {
   return (
     <>
       {isDesktopOrLaptop && (
-        <ThemeProvider theme={themeGlobal}>
-          <h1>LOL wer entwickelt denn für Desktop 🤪</h1>
+        <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
+          <Desktop />
         </ThemeProvider>
       )}
       {isMobileDevice && (
