@@ -11,6 +11,7 @@ import FAB from "../FAB";
 import MediaPopup from "./MediaPopup";
 import { TabPanel, a11yProps } from "../Settings/GroupPopup";
 import Snackbar from "../Snackbar";
+import ConfirmPopup from "../List/ConfirmPopup";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -23,9 +24,12 @@ function Media() {
   const [update, setUpdate] = useState(true);
   const [mediaData, isLoading] = usePageData("Media", update);
   const [open, setOpen] = useState(false);
+  const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [snackbarContent, setSnackbarContent] = useState();
+  const [clickedMedia, setClickedMedia] = useState();
+
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -44,10 +48,22 @@ function Media() {
     return mediaData.filter((media) => media.isMovie === isMovie);
   };
 
+  const handleConfirmPopup = (media) => {
+    setOpenConfirmPopup(true);
+    setClickedMedia(media);
+  };
+
   return (
     <div className={classes.wrapper}>
       <ButtonAppBar title="Filme & Serien" />
       <Bubbles />
+      <ConfirmPopup
+        open={openConfirmPopup}
+        close={() => setOpenConfirmPopup(false)}
+        clickedItem={clickedMedia}
+        update={() => setUpdate(!update)}
+        collection="Media"
+      />
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       <FAB open={() => setOpen(true)} />
@@ -81,6 +97,7 @@ function Media() {
             data={getMediaData("Film")}
             update={() => setUpdate(!update)}
             setSnackbarContent={setSnackbarContent}
+            handleConfirmPopup={handleConfirmPopup}
           />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
@@ -89,6 +106,7 @@ function Media() {
             data={getMediaData("Serie")}
             update={() => setUpdate(!update)}
             setSnackbarContent={setSnackbarContent}
+            handleConfirmPopup={handleConfirmPopup}
           />
         </TabPanel>
       </SwipeableViews>

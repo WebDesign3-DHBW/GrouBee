@@ -14,7 +14,6 @@ import { MdCheck, MdClose, MdDelete, MdExpandMore, MdPlayArrow, MdStar } from "r
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import RatingPopup from "./RatingPopup";
 import { updateMedia } from "../../firebase/updateMedia";
-import { removeMedia } from "../../firebase/removeMedia";
 import { Rating } from "@material-ui/lab";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
@@ -70,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MediaList({ media, data, update, setSnackbarContent }) {
+function MediaList({ media, data, update, setSnackbarContent, handleConfirmPopup }) {
   const classes = useStyles();
 
   //contains the index for every open accordion
@@ -97,6 +96,7 @@ function MediaList({ media, data, update, setSnackbarContent }) {
           category={category}
           update={update}
           media={media}
+          handleConfirmPopup={handleConfirmPopup}
         />
       ));
   };
@@ -152,7 +152,7 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const MediaItem = ({ data, category, update, setSnackbarContent, media }) => {
+const MediaItem = ({ data, category, update, setSnackbarContent, media, handleConfirmPopup }) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -160,12 +160,8 @@ const MediaItem = ({ data, category, update, setSnackbarContent, media }) => {
   const handleUpdate = async (status) => {
     const mediaText = media === "Filme" ? "den Film" : "die Serie";
     if (status === "delete") {
-      await removeMedia(data.docId);
-      setSnackbarContent({
-        message: `Du hast ${mediaText} erfolgreich gelöscht`,
-        status: "success",
-        open: true,
-      });
+      handleConfirmPopup(data.docId)
+      
     } else {
       await updateMedia(data.docId, { status });
       setSnackbarContent({

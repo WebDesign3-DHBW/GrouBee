@@ -54,8 +54,9 @@ function List() {
       <ConfirmPopup
         open={open}
         close={() => setOpen(false)}
-        clickedTask={clickedTask}
+        clickedItem={clickedTask}
         update={() => setUpdate(!update)}
+        collection="ToDo"
       />
       <Tasks
         tasks={tasks}

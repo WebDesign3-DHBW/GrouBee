@@ -6,7 +6,7 @@ import {
   DialogContentText,
   makeStyles,
 } from "@material-ui/core";
-import { deleteListItem } from "../../firebase/deleteListItem";
+import { deleteItem } from "../../firebase/deleteItem";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -18,11 +18,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmPopup({ open, close, clickedTask, update }) {
+function ConfirmPopup({ open, close, clickedItem, update, collection }) {
   const classes = useStyles();
 
   const handleConfirm = () => {
-    deleteListItem(clickedTask);
+
+    deleteItem(clickedItem, collection)
+
     update();
     close();
   };
