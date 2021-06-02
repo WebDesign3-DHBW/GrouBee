@@ -14,6 +14,7 @@ import { updateListmodul } from "../../firebase/updateListmodul";
 import { deleteListItem } from "../../firebase/deleteListItem";
 import { getUserData } from "../../firebase/getUserData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { MdCheckCircle, MdShoppingCart, MdOpacity } from "react-icons/md";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -26,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
   info: {
     display: "flex",
     marginTop: theme.spacing(2),
-    justifyContent: "center",
     alignItems: "center",
   },
   infoIcon: {
@@ -52,6 +52,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50%",
     display: "inline-block",
     marginRight: theme.spacing(1),
+  },
+  icon: {
+    marginRight: theme.spacing(1),
+  },
+  alignIcon: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 
@@ -109,7 +116,7 @@ export default function Tasks({ tasks, update, category }) {
   );
 }
 
-function Task({ task, update }) {
+export function Task({ task, update, hideProfilePic, hideDate }) {
   const classes = useStyles();
 
   const [profileImage, setProfileImage] = useState();
@@ -132,29 +139,47 @@ function Task({ task, update }) {
     loadUserData();
   }, [task.assignedTo]);
 
+  const renderCategoryIcon = () => {
+    if (task.list === "putzen") {
+      return <MdOpacity />;
+    } else if (task.list === "todo") {
+      return <MdCheckCircle />;
+    } else {
+      return <MdShoppingCart />;
+    }
+  };
+
   return (
     <ListItem style={{ paddingLeft: "0" }}>
-      <ListItemAvatar>
-        <Avatar alt="Avatar" src={profileImage} />
-      </ListItemAvatar>
+      {!hideProfilePic && (
+        <ListItemAvatar>
+          <Avatar alt="Avatar" src={profileImage} />
+        </ListItemAvatar>
+      )}
       <ListItemText
-        secondary={new Date(task.date).toLocaleDateString("de-DE", {
-          weekday: "short",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-        className={classes.listText}
-      >
-        <span className={classes.dot} style={{ backgroundColor: task.color }} />
-        {task.title}
-      </ListItemText>
-
-      <IconButton edge="end" aria-label="Delete" onClick={handleDelete}>
-        <MdDelete />
-      </IconButton>
+        primary={task.title}
+        secondary={
+          !hideDate ? (
+            new Date(task.date).toLocaleDateString("de-DE", {
+              weekday: "short",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          ) : (
+            <span className={classes.alignIcon}>
+              <span className={classes.icon}>{renderCategoryIcon()}</span>
+              <span>{task.list.charAt(0).toUpperCase() + task.list.slice(1)}</span>
+            </span>
+          )
+        }
+      />
 
       <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="Delete" onClick={handleDelete} size="small">
+          <MdDelete />
+        </IconButton>
+
         <PrimaryCheckbox edge="end" checked={task.done} onChange={handleChecked} />
       </ListItemSecondaryAction>
     </ListItem>
@@ -164,9 +189,5 @@ function Task({ task, update }) {
 const PrimaryCheckbox = withStyles((theme) => ({
   root: {
     color: theme.palette.primary.main,
-    "&$checked": {
-      color: theme.palette.primary.main,
-    },
   },
-  checked: {},
 }))((props) => <Checkbox color="default" {...props} />);

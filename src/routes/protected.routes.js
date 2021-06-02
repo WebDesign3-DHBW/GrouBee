@@ -1,5 +1,5 @@
 import { Router } from "@reach/router";
-import Calendar from "../components/Calendar/Calendar";
+import Timetable from "../components/Calendar/Timetable";
 import Finance from "../components/Finance/Finance";
 import Home from "../components/Home/Home";
 import Media from "../components/Media/Media";
@@ -14,7 +14,7 @@ const ProtectedRoutes = () => (
     <List path="todo" />
     <Media path="media" />
     <Finance path="finance" />
-    <Calendar path="calendar" />
+    <Timetable path="calendar" />
     <Settings path="settings" />
     <List path="clean" />
     <List path="shopping" />
