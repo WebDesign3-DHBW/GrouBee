@@ -1,6 +1,7 @@
 import ButtonAppBar from "../AppBar";
 import Wrapper from "../base/Wrapper";
 import { Typography } from "@material-ui/core";
+import { Link } from "@material-ui/core";
 
 function Impressum() {
   return (
@@ -30,9 +31,13 @@ function Impressum() {
           <br />
           Telefax 0711 / 320 660-66
           <br />
-          poststelle(at)dhbw.de
+          <Link href="mailto:poststelle@dhbw.de" color="primary">
+            poststelle@dhbw.de
+          </Link>
           <br />
-          <a href="www.dhbw.de">www.dhbw.de</a>
+          <Link href="https://www.dhbw.de" color="primary">
+            www.dhbw.de
+          </Link>
         </Typography>
         <br />
         <Typography variant="h2" component="h2">

@@ -1,16 +1,13 @@
 import ButtonAppBar from "../AppBar";
 import Wrapper from "../base/Wrapper";
 import { Typography } from "@material-ui/core";
+import { Link } from "@material-ui/core";
 
 function Datenschutz() {
   return (
     <>
       <ButtonAppBar title="Datenschutz" />
       <Wrapper>
-        {/* <IconButton>
-          <MdArrowBack />
-        </IconButton> */}
-
         <Typography variant="h2" component="h1">
           Datenschutzerklärung
         </Typography>
@@ -32,9 +29,13 @@ function Datenschutz() {
           70174 Stuttgart <br />
           Telefon 0711 / 320 660-0 <br />
           Telefax 0711 / 320 660-66 <br />
-          <a href="mailto:poststelle@dhbw.de">poststelle(at)dhbw.de</a>
+          <Link href="mailto:poststelle@dhbw.de" color="primary">
+            poststelle@dhbw.de
+          </Link>
           <br />
-          <a href="www.dhbw.de">www.dhbw.de</a>
+          <Link href="https://www.dhbw.de" color="primary">
+            www.dhbw.de
+          </Link>
           <br />
           <br />
           Unseren Datenschutzbeauftragten erreichen Sie unter unserer Postadresse mit dem Zusatz
@@ -59,7 +60,7 @@ function Datenschutz() {
           (1) Sie haben gegenüber uns folgende Rechte hinsichtlich der Sie betreffenden
           personenbezogenen Daten:
         </Typography>
-        <ul>
+        <ul style={{ fontSize: "1rem" }}>
           <li>Recht auf Auskunft (Art. 15 DS-GVO)</li>
           <li>Recht auf Berichtigung oder Löschung (Art. 16 und 17 DS-GVO)</li>
           <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DS-GVO)</li>
@@ -97,7 +98,7 @@ function Datenschutz() {
           erforderlich sind, um Ihnen unsere Website anzuzeigen und die Stabilität und Sicherheit zu
           gewährleisten (Rechtsgrundlage ist Art. 6 Abs. 1 S. 1 lit. f DS-GVO):
         </Typography>
-        <ul>
+        <ul style={{ fontSize: "1rem" }}>
           <li>IP-Adresse</li>
           <li>Datum und Uhrzeit der Anfrage</li>
           <li>Inhalt der Anforderung (konkrete Seite)</li>
@@ -126,7 +127,7 @@ function Datenschutz() {
           Seitenwechsel identifiziert werden kann. In den Cookies werden dabei folgende Daten
           gespeichert und übermittelt:
         </Typography>
-        <ul>
+        <ul style={{ fontSize: "1rem" }}>
           <li>Information zur angemeldeten Person (im Falle eines Login)</li>
           <li>selbst gewählte Einstellungen (z.B. Schriftgröße)</li>
         </ul>
