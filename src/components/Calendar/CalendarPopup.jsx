@@ -16,6 +16,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { addCalendar } from "../../firebase/addCalendar";
 import Snackbar from "../Snackbar";
 import { str2bool } from "../../utils";
+import { addListEntry } from "../../firebase/addListEntry";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -76,14 +77,24 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
       });
       return;
     }
-    await addCalendar({
-      date: selectedDate,
-      time: selectedTime,
-      groupID: selectedGroup.groupID,
-      color: selectedGroup.color,
-      title: title,
-      isAppointment: isAppointment,
-    });
+
+    if (isAppointment) {
+      await addCalendar({
+        date: selectedDate,
+        time: selectedTime,
+        groupID: selectedGroup.groupID,
+        color: selectedGroup.color,
+        title: title,
+      });
+    } else {
+      await addListEntry({
+        title: title,
+        date: selectedDate,
+        groupID: selectedGroup.groupID,
+        assignedTo: userData.userId,
+        list: "todo",
+      });
+    }
     close();
     setSelectedGroup("");
     setTitel("");
