@@ -51,8 +51,8 @@ export default function FinancePopup({ open, close }) {
   const handleDropDown = (e) => {
     setSelectedGroup(e.target.value);
   };
-  const handleTitel = (e) => {
-    setTitel(e.target.value);
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
   };
   const handleExpense = (e) => {
     setExpense(parseInt(e.target.value));
