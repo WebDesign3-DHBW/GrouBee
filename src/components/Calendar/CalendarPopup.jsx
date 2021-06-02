@@ -13,9 +13,10 @@ import {
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { addMedia } from "../../firebase/addMedia";
+import { addCalendar } from "../../firebase/addAppointment";
 import Snackbar from "../Snackbar";
 import { str2bool } from "../../utils";
+import { addListEntry } from "../../firebase/addListEntry";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -40,26 +41,35 @@ const useStyles = makeStyles((theme) => ({
 export default function MediaPopup({ open, close, triggerUpdate }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
-  const [title, setTitel] = useState("");
-  const [isMovie, setIsMovie] = useState(true);
+  const [title, setTitle] = useState("");
+  const [isAppointment, setIsAppointment] = useState(true);
   const [userData, isLoading] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
 
   const handleDropDown = (e) => {
     const groupID = e.target.value.substring(0, e.target.value.indexOf("/"));
     const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
     setSelectedGroup({ groupID, color });
   };
-  const handleTitel = (e) => {
-    setTitel(e.target.value);
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
   };
-  const handleMedia = (e) => {
-    setIsMovie(str2bool(e.target.value));
+  const handleAppointment = (e) => {
+    setIsAppointment(str2bool(e.target.value));
+  };
+
+  const handleSelectDate = (e) => {
+    setSelectedDate(e.target.value);
+  };
+  const handleSelectTime = (e) => {
+    setSelectedTime(e.target.value);
   };
 
   const handleSave = async (e) => {
-    const mediaType = isMovie ? "Dein Film" : "Deine Serie";
-    if (!title || !selectedGroup.groupID) {
+    const mediaType = isAppointment ? "Dein Termin" : "Dein ToDo";
+    if (!title || !selectedGroup || !selectedTime || !selectedDate) {
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
         status: "error",
@@ -67,16 +77,29 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
       });
       return;
     }
-    await addMedia({
-      title,
-      groupID: selectedGroup.groupID,
-      color: selectedGroup.color,
-      isMovie,
-    });
-    triggerUpdate();
+
+    if (isAppointment) {
+      await addCalendar({
+        date: selectedDate,
+        time: selectedTime,
+        groupID: selectedGroup.groupID,
+        color: selectedGroup.color,
+        title: title,
+      });
+    } else {
+      await addListEntry({
+        title: title,
+        date: selectedDate,
+        groupID: selectedGroup.groupID,
+        assignedTo: userData.userId,
+        list: "todo",
+      });
+    }
     close();
     setSelectedGroup("");
-    setTitel("");
+    setTitle("");
+    setSelectedDate("");
+    setSelectedTime("");
     setSnackbarContent({
       message: `${mediaType} wurde erfolgreich hinzugefügt`,
       status: "success",
@@ -88,12 +111,12 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Dialog open={open} onClose={close}>
-        <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
-          Film / Serie hinzufügen
+        <DialogTitle id="termine-todos-hinzufügen" className={classes.dialogTitle}>
+          Termin/ToDos hinzufügen
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
-            <TextField id="movie title" label="Titel" onChange={handleTitel} value={title} />
+            <TextField id="title" label="Titel" onChange={handleTitle} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select
@@ -110,11 +133,33 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
                   ))}
               </Select>
             </FormControl>
+            <TextField
+              id="date"
+              onChange={handleSelectDate}
+              label="Tag"
+              type="date"
+              value={selectedDate}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id="time"
+              onChange={handleSelectTime}
+              label="Zeit"
+              type="time"
+              value={selectedTime}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
             <FormControl>
-              <InputLabel htmlFor="selectGroup">Medien Typ</InputLabel>
-              <Select native value={isMovie} onChange={handleMedia}>
-                <option value={true}>Film</option>
-                <option value={false}>Serie</option>
+              <InputLabel htmlFor="selectGroup">Eintragstyp</InputLabel>
+              <Select native value={isAppointment} onChange={handleAppointment}>
+                <option value={true}>Termin</option>
+                <option value={false}>ToDo</option>
               </Select>
             </FormControl>
           </form>
@@ -134,6 +179,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
 
 const DialogContent = withStyles((theme) => ({
   root: {
+    margin: 0,
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);

@@ -1,9 +1,13 @@
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
+import FAB from "../FAB";
+import CalendarPopup from "../Calendar/CalendarPopup";
+import { useState } from "react";
 
 function Calendar() {
   const [pageData, isLoading] = usePageData("Calendar");
+  const [openCalendarPopup, setOpenCalendarPopup] = useState(false);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -16,6 +20,8 @@ function Calendar() {
     <>
       <ButtonAppBar title="Calendar" />
       <Bubbles />
+      <FAB open={() => setOpenCalendarPopup(true)} />
+      <CalendarPopup open={openCalendarPopup} close={() => setOpenCalendarPopup(false)} />
 
       <h1>Calendar</h1>
       <ul>
