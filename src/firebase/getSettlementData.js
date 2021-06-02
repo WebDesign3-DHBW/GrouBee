@@ -1,10 +1,10 @@
 import firebase from "firebase/app";
 
-export const getSettlementData = async (ID) => {
+export const getSettlementData = async (IDs) => {
   const snapshot = await firebase
     .firestore()
     .collection("Settlement")
-    .where("groupID", "in", ID)
+    .where("groupID", "in", IDs)
     .get();
   return snapshot.docs.map((doc) => doc.data());
 };

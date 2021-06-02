@@ -43,7 +43,7 @@ function ExpenseItem(props) {
     };
     loadUserData();
     function checkSettled() {
-      if (Object(props.settlementData).length !== 0 && props.settlementData !== null) {
+      if (props.settlementData?.length !== 0 && props.settlementData !== null) {
         props.settlementData.map((data, i) => {
           if (props.groupID === data.groupID) {
             setSettled(new Date(data.settleDate) > new Date(props.currentDate));
@@ -54,7 +54,7 @@ function ExpenseItem(props) {
     }
     checkSettled();
     function getNext() {
-      const sortedDataLength = Object(props.sortedData).length;
+      const sortedDataLength = props.sortedData.length;
       let nextKey = 1;
       try {
         while (sortedDataLength - props.ID !== nextKey) {

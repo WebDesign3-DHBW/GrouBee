@@ -50,9 +50,7 @@ function Finance() {
     };
     loadUserData();
     function multipleGroupsSelected() {
-      1 < Object.keys(activeGroupIDs).length
-        ? setMultipleSelected(true)
-        : setMultipleSelected(false);
+      activeGroupIDs.length > 1 ? setMultipleSelected(true) : setMultipleSelected(false);
     }
     multipleGroupsSelected();
     financeData &&
@@ -64,7 +62,7 @@ function Finance() {
         })
       );
     const handleSettlementData = async () => {
-      if (Object.keys(activeGroupIDs).length !== 0) {
+      if (activeGroupIDs.length !== 0) {
         const settlementData = await getSettlementData(activeGroupIDs);
         setSettlementData(settlementData);
       }
@@ -91,7 +89,7 @@ function Finance() {
       <Wrapper>
         {dataLoading && isLoading && activeGroups.length !== 0
           ? loadingSkeleton()
-          : Object(sortedData).length !== 0 &&
+          : sortedData?.length !== 0 &&
             sortedData !== null &&
             sortedData.map((data, i) => (
               <div key={i}>
