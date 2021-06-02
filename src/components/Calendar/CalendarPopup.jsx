@@ -53,8 +53,8 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
     setSelectedGroup({ groupID, color });
   };
-  const handleTitel = (e) => {
-    setTitel(e.target.value);
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
   };
   const handleAppointment = (e) => {
     setIsAppointment(str2bool(e.target.value));
