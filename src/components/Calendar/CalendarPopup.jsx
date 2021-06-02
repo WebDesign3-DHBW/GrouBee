@@ -116,7 +116,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
-            <TextField id="title" label="Titel" onChange={handleTitel} value={title} />
+            <TextField id="title" label="Titel" onChange={handleTitle} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select
