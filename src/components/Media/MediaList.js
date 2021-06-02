@@ -17,6 +17,7 @@ import { updateMedia } from "../../firebase/updateMedia";
 import { removeMedia } from "../../firebase/removeMedia";
 import { Rating } from "@material-ui/lab";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -75,6 +76,8 @@ function MediaList({ media, data, update }) {
 
   //contains the index for every open accordion
   const [expanded, setExpanded] = useState([0]);
+
+  const [snackbarContent, setSnackbarContent] = useState();
 
   const handleChange = (panel) => {
     // Check if accordion is already in Array
@@ -177,6 +180,7 @@ const MediaItem = ({ data, category, update }) => {
                   aria-label="complete"
                   onClick={() => handleUpdate("abgeschlossen")}
                 >
+                  <Snackbar message="Dein Film wurde erfolgreich abgeschlossen." open={open} />
                   <MdCheck />
                 </IconButton>
               )}
