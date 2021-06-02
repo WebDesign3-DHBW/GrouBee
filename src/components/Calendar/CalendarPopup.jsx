@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MediaPopup({ open, close, triggerUpdate }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
-  const [title, setTitel] = useState("");
+  const [title, setTitle] = useState("");
   const [isAppointment, setIsAppointment] = useState(true);
   const [userData, isLoading] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
@@ -53,8 +53,8 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
     setSelectedGroup({ groupID, color });
   };
-  const handleTitel = (e) => {
-    setTitel(e.target.value);
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
   };
   const handleAppointment = (e) => {
     setIsAppointment(str2bool(e.target.value));
@@ -97,7 +97,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     }
     close();
     setSelectedGroup("");
-    setTitel("");
+    setTitle("");
     setSelectedDate("");
     setSelectedTime("");
     setSnackbarContent({
@@ -116,7 +116,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
-            <TextField id="title" label="Titel" onChange={handleTitel} value={title} />
+            <TextField id="title" label="Titel" onChange={handleTitle} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select
@@ -159,7 +159,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
               <InputLabel htmlFor="selectGroup">Eintragstyp</InputLabel>
               <Select native value={isAppointment} onChange={handleAppointment}>
                 <option value={true}>Termin</option>
-                <option value={false}>ToDos</option>
+                <option value={false}>ToDo</option>
               </Select>
             </FormControl>
           </form>
