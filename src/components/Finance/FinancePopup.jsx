@@ -78,7 +78,7 @@ export default function FinancePopup({ open, close }) {
     });
     close();
     setSelectedGroup("");
-    setTitel("");
+    setTitle("");
     setSnackbarContent({
       message: `Der Eintrag wurde erfolgreich hinzugefügt`,
       status: "success",
