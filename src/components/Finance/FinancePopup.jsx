@@ -42,7 +42,7 @@ export default function FinancePopup({ open, close }) {
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [allUserInGroup, setAllUserInGroup] = useState();
-  const [title, setTitel] = useState("");
+  const [title, setTitle] = useState("");
   const [expense, setExpense] = useState("");
   const [userData, isUserData] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
