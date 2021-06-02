@@ -8,6 +8,7 @@ import { useLocation } from "@reach/router";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Tasks from "./Tasks";
 import { makeStyles } from "@material-ui/core";
+import ConfirmPopup from "./ConfirmPopup";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -21,6 +22,8 @@ function List() {
   const [openAddCard, setOpenAddCard] = useState(false);
   const location = useLocation();
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   let listName = "";
   let cardTitle = "";
@@ -38,26 +41,29 @@ function List() {
   if (isLoading) {
     return <Skeleton variant="text" animation="wave" />;
   }
+  console.log(isConfirmed);
   return (
-    <>
-      <div className={classes.wrapper}>
-        <ButtonAppBar title={listName} />
-        <Bubbles />
-        <Tasks
-          tasks={tasks}
-          update={() => setUpdate(!update)}
-          category={listName.toLocaleLowerCase()}
-        />
-        <FAB open={() => setOpenAddCard(true)} />
-        <ListPopup
-          open={openAddCard}
-          close={() => setOpenAddCard(false)}
-          cardTitle={cardTitle}
-          list={listName.toLocaleLowerCase()}
-          triggerUpdate={() => setUpdate(!update)}
-        />
-      </div>
-    </>
+    <div className={classes.wrapper}>
+      <ButtonAppBar title={listName} />
+      <Bubbles />
+      <ConfirmPopup open={open} close={() => setOpen(false)} setIsConfirmed={setIsConfirmed} />
+      <Tasks
+        tasks={tasks}
+        update={() => setUpdate(!update)}
+        category={listName.toLocaleLowerCase()}
+        openConfirmPopup={() => setOpen(true)}
+        isConfirmed={isConfirmed}
+        closeConfirmPopup={() => setOpen(false)}
+      />
+      <FAB open={() => setOpenAddCard(true)} />
+      <ListPopup
+        open={openAddCard}
+        close={() => setOpenAddCard(false)}
+        cardTitle={cardTitle}
+        list={listName.toLocaleLowerCase()}
+        triggerUpdate={() => setUpdate(!update)}
+      />
+    </div>
   );
 }
 

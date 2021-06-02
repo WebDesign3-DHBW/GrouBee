@@ -15,6 +15,7 @@ import { deleteListItem } from "../../firebase/deleteListItem";
 import { getUserData } from "../../firebase/getUserData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdCheckCircle, MdShoppingCart, MdOpacity } from "react-icons/md";
+import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -62,7 +63,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tasks({ tasks, update, category }) {
+export default function Tasks({
+  tasks,
+  update,
+  category,
+  openConfirmPopup,
+  isConfirmed,
+  closeConfirmPopup,
+}) {
   const classes = useStyles();
 
   const sortByDateAndCateogry = tasks
@@ -79,7 +87,13 @@ export default function Tasks({ tasks, update, category }) {
       .filter((task) => task.done === isDone)
       .map((task, idx) => (
         <List dense className={classes.root} key={idx}>
-          <Task task={task} update={update} />
+          <Task
+            task={task}
+            update={update}
+            openConfirmPopup={openConfirmPopup}
+            isConfirmed={isConfirmed}
+            closeConfirmPopup={closeConfirmPopup}
+          />
         </List>
       ));
 
@@ -116,8 +130,17 @@ export default function Tasks({ tasks, update, category }) {
   );
 }
 
-export function Task({ task, update, hideProfilePic, hideDate }) {
+export function Task({
+  task,
+  update,
+  hideProfilePic,
+  hideDate,
+  openConfirmPopup,
+  isConfirmed,
+  closeConfirmPopup,
+}) {
   const classes = useStyles();
+  const [snackbarContent, setSnackbarContent] = useState();
 
   const [profileImage, setProfileImage] = useState();
 
@@ -127,8 +150,7 @@ export function Task({ task, update, hideProfilePic, hideDate }) {
   };
 
   const handleDelete = (e) => {
-    deleteListItem(task.docId);
-    update();
+    openConfirmPopup();
   };
 
   useEffect(() => {
@@ -148,6 +170,13 @@ export function Task({ task, update, hideProfilePic, hideDate }) {
       return <MdShoppingCart />;
     }
   };
+  useEffect(() => {
+    if (isConfirmed) {
+      deleteListItem(task.docId);
+      update();
+      closeConfirmPopup();
+    }
+  }, [isConfirmed]);
 
   return (
     <ListItem style={{ paddingLeft: "0" }}>

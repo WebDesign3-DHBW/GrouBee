@@ -71,13 +71,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MediaList({ media, data, update }) {
+function MediaList({ media, data, update, setSnackbarContent }) {
   const classes = useStyles();
 
   //contains the index for every open accordion
   const [expanded, setExpanded] = useState([0]);
-
-  const [snackbarContent, setSnackbarContent] = useState();
 
   const handleChange = (panel) => {
     // Check if accordion is already in Array
@@ -93,7 +91,15 @@ function MediaList({ media, data, update }) {
   const renderMediaForCategory = (category) => {
     return data
       .filter((mediaItem) => mediaItem.status === category)
-      .map((mediaItem) => <MediaItem data={mediaItem} category={category} update={update} />);
+      .map((mediaItem) => (
+        <MediaItem
+          data={mediaItem}
+          setSnackbarContent={setSnackbarContent}
+          category={category}
+          update={update}
+          media={media}
+        />
+      ));
   };
 
   return (
@@ -147,18 +153,29 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const MediaItem = ({ data, category, update }) => {
+const MediaItem = ({ data, category, update, setSnackbarContent, media }) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
   const handleUpdate = async (status) => {
+    const mediaText = media === "Filme" ? "den Film" : "die Serie";
     if (status === "delete") {
       await removeMedia(data.docId);
+      setSnackbarContent({
+        message: `Du hast ${mediaText} erfolgreich gelöscht`,
+        status: "success",
+        open: true,
+      });
     } else {
       await updateMedia(data.docId, { status });
+      setSnackbarContent({
+        message: `Du hast ${mediaText} ${status}`,
+        status: "success",
+        open: true,
+      });
+      update();
     }
-    update();
   };
 
   const ellipsis = data.title.length > 25 ? "…" : "";
@@ -180,7 +197,6 @@ const MediaItem = ({ data, category, update }) => {
                   aria-label="complete"
                   onClick={() => handleUpdate("abgeschlossen")}
                 >
-                  <Snackbar message="Dein Film wurde erfolgreich abgeschlossen." open={open} />
                   <MdCheck />
                 </IconButton>
               )}
