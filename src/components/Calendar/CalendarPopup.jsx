@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MediaPopup({ open, close, triggerUpdate }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
-  const [title, setTitel] = useState("");
+  const [title, setTitle] = useState("");
   const [isAppointment, setIsAppointment] = useState(true);
   const [userData, isLoading] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
