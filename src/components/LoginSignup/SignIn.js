@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import { navigate } from "@reach/router";
-import { signIn } from "../../auth/signIn";
+import { resendLink, signIn } from "../../auth/signIn";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button } from "@material-ui/core/";
+import { TextField, Button, Snackbar, Slide, SnackbarContent, Box } from "@material-ui/core/";
+import MuiAlert from "@material-ui/lab/Alert";
 import { Container } from "./Container";
+import { signOut } from "../../auth/signOut";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -21,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     color: theme.palette.text.primary,
   },
+  btnAlert: {
+    marginTop: theme.spacing(2),
+    color: theme.palette.error.main,
+  },
   link: {
     textDecoration: "none",
   },
@@ -30,11 +36,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn() {
+function SignIn({ location }) {
   const classes = useStyles();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [open, setOpen] = useState(true);
+  const [showResendButton, setResendButton] = useState(false);
+  const [openReset, setOpenReset] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
 
   const onSignInClicked = async (e) => {
     e.preventDefault();
@@ -53,6 +63,16 @@ function SignIn() {
             "Der Account existiert leider nicht. Bitte überprüfe deine Eingabe oder registriere dich."
           );
           break;
+        case "email/notverified":
+          try {
+            await signOut();
+            navigate("/signin");
+          } catch {}
+          setErrorMessage(
+            "Deine E-Mail-Adresse ist noch nicht verifiziert. Bitte klicke auf den zugesandten Link, um deinen Account nutzen zu können."
+          );
+          setResendButton(true);
+          break;
         default:
           setErrorMessage(
             "Leider ist ein Fehler aufgetreten. Bitte überprüfe deine Eingabe oder probiere es später noch einmal."
@@ -63,8 +83,67 @@ function SignIn() {
     }
   };
 
+  const onResendLinkClicked = async () => {
+    resendLink(emailValue, passwordValue);
+    setOpenReset(false);
+    setOpenSuccess(true);
+  };
+
+  const action = (
+    <>
+      <Box m={0.5}>
+        <Button color="inherit" size="small" disableRipple onClick={() => setOpenReset(false)}>
+          Abbrechen
+        </Button>
+      </Box>
+      <Box m={0.5}>
+        <Button color="secondary" size="small" disableRipple onClick={onResendLinkClicked}>
+          Bestätigen
+        </Button>
+      </Box>
+    </>
+  );
+
   return (
     <>
+      {location?.state?.signUpSuccessful && (
+        <Snackbar
+          open={open}
+          autoHideDuration={7000}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={Slide}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            severity="success"
+            onClose={() => setOpen(false)}
+          >
+            E-Mail-Adresse bestätigen. Dir wurde ein Bestätigungslink gesendet. Rufe diesen auf, um
+            dein Account zu verwenden.
+          </MuiAlert>
+        </Snackbar>
+      )}
+      {openSuccess && (
+        <Snackbar
+          open={openSuccess}
+          autoHideDuration={12000}
+          onClose={() => setOpenSuccess(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={Slide}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            severity="success"
+            onClose={() => setOpenSuccess(false)}
+          >
+            Dir wurde ein Link an deine E-Mail-Adresse gesendet. Öffne diesen, um deinen Account zu
+            verifizieren.
+          </MuiAlert>
+        </Snackbar>
+      )}
       <Container>
         <div>
           {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
@@ -83,6 +162,30 @@ function SignIn() {
               className={classes.textField}
               onChange={(e) => setPasswordValue(e.target.value)}
             />
+            {showResendButton && (
+              <>
+                <Button
+                  variant="outlined"
+                  fullWidth={true}
+                  className={classes.btnAlert}
+                  onClick={() => setOpenReset(true)}
+                >
+                  LINK ERNEUT SENDEN
+                </Button>
+                <Snackbar
+                  open={openReset}
+                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                  TransitionComponent={Slide}
+                >
+                  <SnackbarContent
+                    message={
+                      "Dir wird ein neuer Bestätigungslink an deine E-Mail-Adresse gesendet."
+                    }
+                    action={action}
+                  />
+                </Snackbar>
+              </>
+            )}
             <Button
               variant="contained"
               color="primary"
