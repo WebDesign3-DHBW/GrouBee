@@ -32,13 +32,12 @@ function ExpenseItem(props) {
   const [settledDate, setSettledDate] = useState();
 
   useEffect(() => {
-    setGroupName(props.currentUserData.groups[props.groupID]);
     const loadUserData = async () => {
       const userData = await getUserData(props.paidBy);
       try {
         setProfileImage(userData.profileImage);
         setProfileName(userData.userName);
-        setGroupName(props.currentUserData.groups[props.groupID]);
+        setGroupName(props.currentUserData.groups[props.groupID].name);
       } catch {}
     };
     loadUserData();
@@ -93,9 +92,9 @@ function ExpenseItem(props) {
             primary={props.title}
             secondary={
               groupName &&
-              `${profileName} ${
-                props.multipleSelected ? "@" + groupName.name + " | " : "|"
-              } ${new Date(props.currentDate).toLocaleDateString("de-DE", {
+              `${profileName} ${props.multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
+                props.currentDate
+              ).toLocaleDateString("de-DE", {
                 weekday: "short",
                 year: "numeric",
                 month: "long",
