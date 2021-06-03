@@ -106,7 +106,7 @@ function SignIn({ location }) {
 
   return (
     <>
-      {location.state.signUpSuccessful && (
+      {location?.state?.signUpSuccessful && (
         <Snackbar
           open={open}
           autoHideDuration={7000}
