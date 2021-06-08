@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { makeStyles } from "@material-ui/core";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
-import { AppBar, Tab, Tabs } from "@material-ui/core";
+import { AppBar, makeStyles, Tab, Tabs } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import SwipeableViews from "react-swipeable-views";
 import MediaList from "./MediaList";
@@ -12,10 +11,15 @@ import MediaPopup from "./MediaPopup";
 import { TabPanel, a11yProps } from "../Settings/GroupPopup";
 import Snackbar from "../Snackbar";
 import ConfirmPopup from "../List/ConfirmPopup";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import InfoPanel from "./InfoPanel";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     marginBottom: theme.spacing(12),
+  },
+  info: {
+    fontSize: "1.4rem",
   },
 }));
 
@@ -85,6 +89,7 @@ function Media() {
         >
           <Tab label="Filme" {...a11yProps(0)} />
           <Tab label="Serien" {...a11yProps(1)} />
+          <Tab icon={<AiOutlineInfoCircle />} className={classes.info} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -109,6 +114,9 @@ function Media() {
             setSnackbarContent={setSnackbarContent}
             handleConfirmPopup={handleConfirmPopup}
           />
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction} className={classes.info}>
+          <InfoPanel></InfoPanel>
         </TabPanel>
       </SwipeableViews>
     </div>
