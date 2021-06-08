@@ -1,12 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { AiFillHeart } from "react-icons/ai";
 import HeroImage from "../../media/hero-image.jpeg";
@@ -16,6 +14,8 @@ import Todo from "../../media/todo.png";
 import Shopping from "../../media/shopping.png";
 import Cleaning from "../../media/cleaning.png";
 import Movie from "../../media/movie.png";
+import { Link } from "@reach/router";
+import DesktopNavbar from "./DesktopNavbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,8 +54,12 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(6),
     paddingBottom: theme.spacing(2),
   },
-  link: {
+  links: {
     paddingLeft: theme.spacing(2),
+  },
+  link: {
+    textDecoration: "none",
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -81,13 +85,7 @@ export default function Album() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h4" component="h2" color="inherit" noWrap>
-            GrouBee
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <DesktopNavbar />
       <main>
         <div className={classes.heroContent}>
           <div className={classes.blur}>
@@ -163,8 +161,14 @@ export default function Album() {
         <Typography variant="body2" color="textSecondary" align="center">
           DHBW Mosbach, Onlinemedien
         </Typography>
-        <Typography variant="body2" color="textSecondary" className={classes.link}>
-          Impressum | Datenschutz
+        <Typography variant="body2" color="textSecondary" className={classes.links}>
+          <Link to="/impressum" className={classes.link}>
+            Impressum
+          </Link>{" "}
+          |{" "}
+          <Link to="/datenschutz" className={classes.link}>
+            Datenschutz
+          </Link>
         </Typography>
       </footer>
     </div>
