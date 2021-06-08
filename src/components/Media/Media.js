@@ -48,20 +48,22 @@ function Media() {
         <ButtonAppBar title="Filme & Serien" />
         <Bubbles />
 
-        <FAB open={() => setOpen(true)} />
-        <MediaPopup
-          open={open}
-          close={() => setOpen(false)}
-          triggerUpdate={() => setUpdate(!update)}
-        />
-        <AppBar position="static" color="transparent" elevation="0">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            aria-label="full width tabs"
+      <FAB open={() => setOpen(true)} />
+      <MediaPopup
+        open={open}
+        mediaType={value}
+        close={() => setOpen(false)}
+        triggerUpdate={() => setUpdate(!update)}
+      />
+      <AppBar position="static" color="transparent" elevation="0">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
+          aria-label="full width tabs"
+
           >
             <Tab label="Filme" {...a11yProps(0)} />
             <Tab label="Serien" {...a11yProps(1)} />
