@@ -51,7 +51,7 @@ function ConfirmPopup({
         <Button autoFocus onClick={handleCancel}>
           Abbrechen
         </Button>
-        <Button autoFocus onClick={handleConfirm} color="primary">
+        <Button onClick={handleConfirm} color="primary">
           Löschen
         </Button>
       </DialogActions>
