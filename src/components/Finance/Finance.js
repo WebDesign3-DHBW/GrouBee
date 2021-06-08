@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import { getSettlementData } from "../../firebase/getSettlementData";
 import Wrapper from "../base/Wrapper";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
@@ -14,7 +12,7 @@ import { activeGroupsState } from "../../utils/recoil";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 import DebtOverview from "./DebtOverview";
-import { getAllUserData } from "../../firebase/getAllUserData";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -35,29 +33,20 @@ const useStyles = makeStyles((theme) => ({
 function Finance() {
   const classes = useStyles();
   const [dataLoading, setDataLoading] = useState(true);
-  const [currentUserData, setCurrentUserData] = useState();
   const [update, setUpdate] = useState(false);
-  const [financeData, isLoading] = usePageData("Finance", update);
+  const [pageData, isLoading] = usePageData("Finance", update);
   const [openFinancePopup, setOpenFinancePopup] = useState(false);
   const [multipleSelected, setMultipleSelected] = useState(false);
-  const [sortedData, setSortedData] = useState(null);
-  const [currentUserId, setUserID] = useState();
-  const [settlementData, setSettlementData] = useState([]);
+  const [sortedData, setSortedData] = useState([]);
+  const [currentUserData, userIsLoading] = useCurrentUser();
 
   const activeGroups = useRecoilValue(activeGroupsState);
 
   useEffect(() => {
-    const activeGroupIDs = activeGroups.map((groupArr) => groupArr[0]);
-    const loadUserData = async () => {
-      const userData = await getCurrentUserData();
-      setCurrentUserData(userData);
-      setUserID(userData.userId);
-    };
-    loadUserData();
-    function multipleGroupsSelected() {
-      activeGroupIDs.length > 1 ? setMultipleSelected(true) : setMultipleSelected(false);
-    }
-    multipleGroupsSelected();
+    const financeData = pageData ? pageData[0] : [];
+
+    activeGroups.length > 1 ? setMultipleSelected(true) : setMultipleSelected(false);
+
     financeData &&
       setSortedData(
         financeData.sort(function (a, b) {
@@ -66,15 +55,13 @@ function Finance() {
           return dateB - dateA;
         })
       );
-    const handleSettlementData = async () => {
-      if (activeGroupIDs.length !== 0) {
-        const settlementData = await getSettlementData(activeGroupIDs);
-        setSettlementData(settlementData);
-      }
-    };
-    handleSettlementData();
+
     setDataLoading(false);
-  }, [financeData, activeGroups]);
+  }, [pageData, activeGroups.length]);
+
+  if (isLoading || userIsLoading) {
+    return <p> loading ... </p>;
+  }
 
   function loadingSkeleton() {
     const n = 6;
@@ -84,6 +71,9 @@ function Finance() {
       </div>
     ));
   }
+
+  const financeData = pageData[0];
+  const settlementData = pageData[1];
 
   return (
     <>
@@ -96,14 +86,22 @@ function Finance() {
         update={() => setUpdate(!update)}
       />
       <Wrapper>
-        {activeGroups.map((group) => (
-          <DebtOverview
-            financeData={financeData}
-            settlementData={settlementData}
-            group={group}
-            currentUserID={currentUserId}
-          />
-        ))}
+        {activeGroups.map((group) => {
+          console.log(`group`, group);
+          console.log(`financeData`, financeData);
+          const groupID = group[0];
+          const groupFinanceData = financeData.filter((doc) => doc.groupID === groupID);
+          const groupSettlementData = settlementData.filter((doc) => doc.groupID === groupID);
+          console.log("groupFinanceData", groupFinanceData);
+          return (
+            <DebtOverview
+              financeData={groupFinanceData}
+              settlementData={groupSettlementData}
+              group={group}
+              currentUserID={currentUserData.userId}
+            />
+          );
+        })}
         {dataLoading && isLoading && activeGroups.length !== 0
           ? loadingSkeleton()
           : sortedData?.length !== 0 &&
