@@ -6,6 +6,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { themeGlobal } from "./theme/theme";
 import Routes from "./routes/Routes";
 import Desktop from "./components/Desktop/Desktop";
+import { Router } from "@reach/router";
+import { DesktopImpressum, DesktopDatenschutz } from "./components/Desktop/DesktopLegal";
 
 function App() {
   const isDesktopOrLaptop = useMediaQuery({
@@ -51,7 +53,11 @@ function App() {
     <>
       {isDesktopOrLaptop && (
         <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
-          <Desktop />
+          <Router>
+            <Desktop path="/" default />
+            <DesktopImpressum path="/impressum" />
+            <DesktopDatenschutz path="/datenschutz" />
+          </Router>
         </ThemeProvider>
       )}
       {isMobileDevice && (
