@@ -206,7 +206,11 @@ const MediaItem = ({ data, category, update }) => {
               </IconButton>
             </ListItemSecondaryAction>
             {category === "abgeschlossen" && (
-              <Rating value={data.rating} className={classes.rating} />
+              <Rating
+                value={data.rating}
+                className={classes.rating}
+                onClick={() => setOpen(true)}
+              />
             )}
           </ListItem>
         </List>
