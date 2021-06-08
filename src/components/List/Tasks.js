@@ -155,7 +155,6 @@ export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDat
         </ListItemAvatar>
       )}
       <ListItemText
-        primary={task.title}
         secondary={
           !hideDate ? (
             new Date(task.date).toLocaleDateString("de-DE", {
@@ -171,7 +170,11 @@ export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDat
             </span>
           )
         }
-      />
+        className={classes.listText}
+      >
+        <span className={classes.dot} style={{ backgroundColor: task.color }} />
+        {task.title}
+      </ListItemText>
 
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="Delete" onClick={handleDelete} size="small">
