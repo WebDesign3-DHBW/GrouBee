@@ -2,13 +2,21 @@ import { useState } from "react";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
-import { AppBar, Tab, Tabs } from "@material-ui/core";
+import { AppBar, makeStyles, Tab, Tabs } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import SwipeableViews from "react-swipeable-views";
 import MediaList from "./MediaList";
 import FAB from "../FAB";
 import MediaPopup from "./MediaPopup";
 import { TabPanel, a11yProps } from "../Settings/GroupPopup";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import InfoPanel from "./InfoPanel";
+
+const useStyles = makeStyles((theme) => ({
+  info: {
+    fontSize: "1.4rem",
+  },
+}));
 
 function Media() {
   const [update, setUpdate] = useState(true);
@@ -16,6 +24,7 @@ function Media() {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const [value, setValue] = useState(0);
+  const classes = useStyles();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -56,6 +65,7 @@ function Media() {
         >
           <Tab label="Filme" {...a11yProps(0)} />
           <Tab label="Serien" {...a11yProps(1)} />
+          <Tab icon={<AiOutlineInfoCircle />} className={classes.info} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -72,6 +82,9 @@ function Media() {
             data={getMediaData("Serie")}
             update={() => setUpdate(!update)}
           />
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction} className={classes.info}>
+          <InfoPanel></InfoPanel>
         </TabPanel>
       </SwipeableViews>
     </>
