@@ -77,9 +77,6 @@ function DebtOverview({ financeData, group, currentUserID }) {
         return sumValue + entry.expense;
       }, 0);
 
-    console.log("pbd", sumPaidByMe);
-    console.log("npbm", sumNotPaidByMe);
-
     let debt = sumNotPaidByMe / groupsize - sumPaidByMe / groupsize;
 
     console.log(groupsize);
@@ -104,7 +101,6 @@ function DebtOverview({ financeData, group, currentUserID }) {
   return (
     <Card className={classes.box}>
       <h2 className={classes.debt}>{calculateDebt()}</h2>
-      {/* wenn debt negativ ist, muss das - angezeigt werden, sonst nicht */}
       <Typography className={classes.group}>offen an {group[1].name}</Typography>
       <Button
         variant="contained"

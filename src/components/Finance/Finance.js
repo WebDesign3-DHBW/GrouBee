@@ -87,12 +87,9 @@ function Finance() {
       />
       <Wrapper>
         {activeGroups.map((group) => {
-          console.log(`group`, group);
-          console.log(`financeData`, financeData);
           const groupID = group[0];
           const groupFinanceData = financeData.filter((doc) => doc.groupID === groupID);
           const groupSettlementData = settlementData.filter((doc) => doc.groupID === groupID);
-          console.log("groupFinanceData", groupFinanceData);
           return (
             <DebtOverview
               financeData={groupFinanceData}
