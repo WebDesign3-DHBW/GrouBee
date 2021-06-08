@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: theme.typography.h1.fontSize,
   },
+  list: { display: "flex", flexDirection: "column", flexGrow: 1 },
   time: {
     fontWeight: "bold",
     color: theme.palette.primary.main,
@@ -159,7 +160,7 @@ function Timetable() {
               : getCurrentDay(calendarDate)}
           </Box>
           <Divider orientation="vertical" flexItem className={classes.vertDivider} />
-          <div>
+          <div className={classes.list}>
             <Typography variant="h2">Termine</Typography>
             <List component="nav" dense>
               {calendarData
