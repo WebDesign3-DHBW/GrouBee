@@ -109,7 +109,7 @@ export default function Album() {
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
-            <Grid item xs={16} sm={6} md={6}>
+            <Grid item xs={12} sm={6} md={6}>
               <Typography variant="h4" color="primary" paragraph>
                 Du hast die App noch nicht?
               </Typography>
