@@ -102,10 +102,7 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
       });
       triggerUpdate();
       close();
-      setSelectedGroup("");
       setTitle("");
-      setSelectedDate("");
-      setSelectedUser("");
     } else {
       setSnackbarContent({
         message: "Fülle bitte alle Felder aus!",

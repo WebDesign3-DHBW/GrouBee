@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -37,11 +37,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaPopup({ open, close, triggerUpdate }) {
+export default function MediaPopup({ open, close, triggerUpdate, mediaType }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [title, setTitel] = useState("");
-  const [isMovie, setIsMovie] = useState(true);
+  const [isMovie, setIsMovie] = useState(mediaType);
   const [userData, isLoading] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
 
@@ -56,6 +56,14 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
   const handleMedia = (e) => {
     setIsMovie(str2bool(e.target.value));
   };
+
+  useEffect(() => {
+    if (mediaType === 0) {
+      setIsMovie(true);
+    } else {
+      setIsMovie(false);
+    }
+  }, [mediaType]);
 
   const handleSave = async (e) => {
     const mediaType = isMovie ? "Dein Film" : "Deine Serie";
@@ -75,7 +83,6 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
     });
     triggerUpdate();
     close();
-    setSelectedGroup("");
     setTitel("");
     setSnackbarContent({
       message: `${mediaType} wurde erfolgreich hinzugefügt`,

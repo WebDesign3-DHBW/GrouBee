@@ -42,6 +42,7 @@ function Media() {
       <FAB open={() => setOpen(true)} />
       <MediaPopup
         open={open}
+        mediaType={value}
         close={() => setOpen(false)}
         triggerUpdate={() => setUpdate(!update)}
       />
