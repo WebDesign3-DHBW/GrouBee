@@ -25,16 +25,21 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: "center",
+    minWidth: 311,
     "& h2": {
       fontSize: theme.typography.h2.fontSize,
       fontWeight: theme.typography.h2.fontWeight,
     },
   },
   form: {
-    height: 200,
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
+  },
+  textField: {
+    display: "flex",
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -114,7 +119,13 @@ export default function FinancePopup({ open, close, update }) {
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
-            <TextField id="expense title" label="Ausgabe" onChange={handleTitle} value={title} />
+            <TextField
+              id="expense title"
+              label="Ausgabe"
+              onChange={handleTitle}
+              value={title}
+              className={classes.textField}
+            />
             <CurrencyTextField
               id="expense"
               label="Betrag"
@@ -123,10 +134,16 @@ export default function FinancePopup({ open, close, update }) {
               decimalCharacter="."
               digitGroupSeparator=","
               currencySymbol="€"
+              className={classes.textField}
             />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-              <Select native value={selectedGroup} onChange={handleDropDown}>
+              <Select
+                native
+                value={selectedGroup}
+                onChange={handleDropDown}
+                className={classes.textField}
+              >
                 <option aria-label="None" value="" />
                 {!isUserData &&
                   Object.entries(userData.groups).map((group, idx) => (
@@ -136,8 +153,13 @@ export default function FinancePopup({ open, close, update }) {
                   ))}
               </Select>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="zuständiger">Bezahlt von</InputLabel>
-                <Select native value={selectedUser} onChange={handleSelectUser}>
+                <InputLabel htmlFor="zuständig">Bezahlt von</InputLabel>
+                <Select
+                  native
+                  value={selectedUser}
+                  onChange={handleSelectUser}
+                  className={classes.textField}
+                >
                   <option aria-label="None" value="" />
                   {!isLoading &&
                     allUserInGroup.map((user, idx) => (
