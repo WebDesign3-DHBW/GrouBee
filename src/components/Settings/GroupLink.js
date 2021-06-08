@@ -51,6 +51,7 @@ function GroupLink({ groupID, open, close }) {
       status: "success",
       open: true,
     });
+    close();
   }
 
   return (

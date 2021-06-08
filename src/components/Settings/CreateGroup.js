@@ -7,7 +7,6 @@ import { makeStyles, Typography } from "@material-ui/core";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
 import { materialColor } from "../../theme/bubbleColors";
-import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -34,11 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CreateGroup({ close, updateBubbles }) {
+function CreateGroup({ close, updateBubbles, setSnackbarContent }) {
   const classes = useStyles();
   const [value, setValue] = useState();
   const [generatedID, setGeneratedID] = useState();
-  const [snackbarContent, setSnackbarContent] = useState();
 
   function generateGroupID() {
     return "_" + Math.random().toString(36).substr(2, 9);
@@ -71,6 +69,7 @@ function CreateGroup({ close, updateBubbles }) {
       status: "success",
       open: true,
     });
+    close();
   }
 
   const handleCreate = () => {
@@ -105,8 +104,6 @@ function CreateGroup({ close, updateBubbles }) {
           onChange={handleChange}
         />
       )}
-
-      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       {generatedID && (
         <Typography variant="h2" className={classes.generatedID}>
