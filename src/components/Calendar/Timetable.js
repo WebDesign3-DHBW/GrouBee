@@ -19,11 +19,11 @@ import {
 } from "@material-ui/core";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
-import { removeAppointment } from "../../firebase/removeAppointment";
 import { Task } from "../List/Tasks";
 import FAB from "../FAB";
 import CalendarPopup from "../Calendar/CalendarPopup";
 import ConfirmPopup from "../List/ConfirmPopup";
+import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -82,6 +82,7 @@ function Timetable() {
   const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
   const [clickedItem, setClickedItem] = useState();
   const [clickedItemType, setClickedItemType] = useState();
+  const [snackbarContent, setSnackbarContent] = useState();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -95,11 +96,6 @@ function Timetable() {
   const setFormattedDate = (date) => {
     const utcDate = toUTC(date);
     return setCalendarDate(new Date(utcDate));
-  };
-
-  const handleDelete = (id) => {
-    removeAppointment(id);
-    setUpdate(!update);
   };
 
   const handleConfirmPopup = (docId, docType) => {
@@ -116,7 +112,11 @@ function Timetable() {
       <ButtonAppBar title="Kalender" />
       <Bubbles />
       <FAB open={() => setOpenCalendarPopup(true)} />
-      <CalendarPopup open={openCalendarPopup} close={() => setOpenCalendarPopup(false)} />
+      <CalendarPopup
+        open={openCalendarPopup}
+        close={() => setOpenCalendarPopup(false)}
+        update={() => setUpdate(!update)}
+      />
       <ConfirmPopup
         open={openConfirmPopup}
         close={() => setOpenConfirmPopup(false)}
@@ -124,7 +124,9 @@ function Timetable() {
         update={() => setUpdate(!update)}
         collection={clickedItemType}
         mediaType={clickedItemType === "ToDo" ? "die Aufgabe" : "den Termin"}
+        setSnackbarContent={setSnackbarContent}
       />
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Wrapper>
         <Calendar
           onChange={setFormattedDate}

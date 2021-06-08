@@ -63,6 +63,7 @@ function Media() {
         update={() => setUpdate(!update)}
         collection="Media"
         mediaType={value === 0 ? "den Film" : "die Serie"}
+        setSnackbarContent={setSnackbarContent}
       />
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 

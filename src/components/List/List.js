@@ -8,6 +8,7 @@ import { useLocation } from "@reach/router";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Tasks from "./Tasks";
 import { makeStyles } from "@material-ui/core";
+import Snackbar from "../Snackbar";
 import ConfirmPopup from "./ConfirmPopup";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +21,7 @@ function List() {
   const [update, setUpdate] = useState(false);
   const [tasks, isLoading] = usePageData("ToDo", update);
   const [openAddCard, setOpenAddCard] = useState(false);
+  const [snackbarContent, setSnackbarContent] = useState();
   const location = useLocation();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -62,7 +64,9 @@ function List() {
         update={() => setUpdate(!update)}
         collection="ToDo"
         mediaType={listType}
+        setSnackbarContent={setSnackbarContent}
       />
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Tasks
         tasks={tasks}
         update={() => setUpdate(!update)}

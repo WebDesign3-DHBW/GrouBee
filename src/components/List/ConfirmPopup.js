@@ -18,12 +18,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmPopup({ open, close, clickedItem, update, collection, mediaType }) {
+function ConfirmPopup({
+  open,
+  close,
+  clickedItem,
+  update,
+  collection,
+  mediaType,
+  setSnackbarContent,
+}) {
   const classes = useStyles();
 
   const handleConfirm = () => {
     deleteItem(clickedItem, collection);
-
+    setSnackbarContent({
+      message: `Du hast ${mediaType} gelöscht`,
+      status: "success",
+      open: true,
+    });
     update();
     close();
   };
