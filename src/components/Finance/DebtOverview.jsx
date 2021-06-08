@@ -1,6 +1,7 @@
 import { Button, Card, makeStyles, Typography } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addSettlement } from "../../firebase/addSettlement";
+import { getAllUserData } from "../../firebase/getAllUserData";
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -23,26 +24,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DebtOverview({ financeData, settlementData, group, currentUserID }) {
-  const classes = useStyles();
-  const [allUserInGroup, setAllUserInGroup] = useState();
-  const [latestSettleDate, setLatestSettleDate] = useState();
+function DebtOverview({ financeData, group, currentUserID }) {
+  //add settlementData
 
-  function getLatestSettleDate() {
-    settlementData.map((data) =>
-      // if(data.groupID === group[0]) {
-      //   if(new Date(data.settleDate) > new Date(latestSettleDate)) {
-      //     setLatestSettleDate(data.settleDate)
-      //   }
-      // }
-      setLatestSettleDate(new Date().toISOString().split("T")[0])
-    );
-  }
+  const classes = useStyles();
+  const [allUserInGroup, setAllUserInGroup] = useState([]);
+  //const [latestSettleDate, setLatestSettleDate] = useState();
+
+  useEffect(() => {
+    const getUserInGroup = async () => {
+      const allUserData = await getAllUserData();
+      const groupUserNames = allUserData
+        .filter((user) => Object.keys(user.groups).some((id) => id === group.groupID))
+        .map((user) => ({
+          name: user.userName,
+          id: user.userId,
+        }));
+      setAllUserInGroup(groupUserNames);
+    };
+    getUserInGroup();
+  }, [group.groupID]);
+
+  // Für die Abrechnen Story
+
+  // function getLatestSettleDate() {
+  //   settlementData.map((data) =>
+  //     if(data.groupID === group[0]) {
+  //       if(new Date(data.settleDate) > new Date(latestSettleDate)) {
+  //          setLatestSettleDate(data.settleDate)
+  //        }
+  //      }
+  //     setLatestSettleDate(new Date().toISOString().split("T")[0])
+  //   );
+  // }
 
   function calculateDebt() {
     // getLatestSettleDate();
 
-    var groupsize = allUserInGroup !== 0 ? allUserInGroup.length : 1;
+    var groupsize = allUserInGroup.length !== 0 ? allUserInGroup.length : 1;
 
     const filteredFinanceData = financeData;
 
@@ -62,6 +81,8 @@ function DebtOverview({ financeData, settlementData, group, currentUserID }) {
     console.log("npbm", sumNotPaidByMe);
 
     let debt = sumNotPaidByMe / groupsize - sumPaidByMe / groupsize;
+
+    console.log(groupsize);
 
     if (debt > 0) {
       debt = "-" + debt;
