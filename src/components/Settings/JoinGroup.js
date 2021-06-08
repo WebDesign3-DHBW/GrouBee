@@ -74,6 +74,7 @@ export default function JoinGroup({ close, updateBubbles }) {
         status: "success",
         open: true,
       });
+      close();
       updateBubbles();
     } else {
       setSnackbarContent({
@@ -110,7 +111,7 @@ export default function JoinGroup({ close, updateBubbles }) {
           Schließen
         </Button>
 
-        <Button onClick={handleJoin} className={classes.button} color="primary" onClick={close}>
+        <Button onClick={handleJoin} className={classes.button} color="primary">
           Beitreten
         </Button>
       </DialogActions>

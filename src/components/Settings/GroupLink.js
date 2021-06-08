@@ -51,6 +51,7 @@ function GroupLink({ groupID, open, close }) {
       status: "success",
       open: true,
     });
+    close();
   }
 
   return (
@@ -73,12 +74,7 @@ function GroupLink({ groupID, open, close }) {
           <Button onClick={close} className={classes.button}>
             Schließen
           </Button>
-          <Button
-            onClick={copyToClipboard}
-            color="primary"
-            className={classes.button}
-            onClick={close}
-          >
+          <Button onClick={copyToClipboard} color="primary" className={classes.button}>
             Kopieren
           </Button>
         </DialogActions>

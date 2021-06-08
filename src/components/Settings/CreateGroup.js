@@ -71,6 +71,7 @@ function CreateGroup({ close, updateBubbles }) {
       status: "success",
       open: true,
     });
+    close();
   }
 
   const handleCreate = () => {
@@ -105,9 +106,7 @@ function CreateGroup({ close, updateBubbles }) {
           onChange={handleChange}
         />
       )}
-
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
-
       {generatedID && (
         <Typography variant="h2" className={classes.generatedID}>
           {generatedID}
@@ -119,12 +118,7 @@ function CreateGroup({ close, updateBubbles }) {
           Schließen
         </Button>
         {generatedID ? (
-          <Button
-            color="primary"
-            onClick={copyToClipboard}
-            className={classes.button}
-            onClick={close}
-          >
+          <Button color="primary" onClick={copyToClipboard} className={classes.button}>
             Kopieren
           </Button>
         ) : (
