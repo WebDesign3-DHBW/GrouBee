@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { makeStyles } from "@material-ui/core";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
@@ -10,12 +11,19 @@ import FAB from "../FAB";
 import MediaPopup from "./MediaPopup";
 import { TabPanel, a11yProps } from "../Settings/GroupPopup";
 
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    marginBottom: theme.spacing(12),
+  },
+}));
+
 function Media() {
   const [update, setUpdate] = useState(true);
   const [mediaData, isLoading] = usePageData("Media", update);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const [value, setValue] = useState(0);
+  const classes = useStyles();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -36,44 +44,50 @@ function Media() {
 
   return (
     <>
-      <ButtonAppBar title="Filme & Serien" />
-      <Bubbles />
+      <div className={classes.wrapper}>
+        <ButtonAppBar title="Filme & Serien" />
+        <Bubbles />
 
-      <FAB open={() => setOpen(true)} />
-      <MediaPopup
-        open={open}
-        close={() => setOpen(false)}
-        triggerUpdate={() => setUpdate(!update)}
-      />
-      <AppBar position="static" color="transparent" elevation="0">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          aria-label="full width tabs"
+        <FAB open={() => setOpen(true)} />
+        <MediaPopup
+          open={open}
+          close={() => setOpen(false)}
+          triggerUpdate={() => setUpdate(!update)}
+        />
+        <AppBar position="static" color="transparent" elevation="0">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            aria-label="full width tabs"
+          >
+            <Tab label="Filme" {...a11yProps(0)} />
+            <Tab label="Serien" {...a11yProps(1)} />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          index={value}
+          onChangeIndex={handleChangeIndex}
         >
-          <Tab label="Filme" {...a11yProps(0)} />
-          <Tab label="Serien" {...a11yProps(1)} />
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <MediaList media="Filme" data={getMediaData("Film")} update={() => setUpdate(!update)} />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <MediaList
-            media="Serien"
-            data={getMediaData("Serie")}
-            update={() => setUpdate(!update)}
-          />
-        </TabPanel>
-      </SwipeableViews>
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <MediaList
+              media="Filme"
+              data={getMediaData("Film")}
+              update={() => setUpdate(!update)}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <MediaList
+              media="Serien"
+              data={getMediaData("Serie")}
+              update={() => setUpdate(!update)}
+            />
+          </TabPanel>
+        </SwipeableViews>
+      </div>
     </>
   );
 }
