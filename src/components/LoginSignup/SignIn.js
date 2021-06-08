@@ -54,7 +54,7 @@ function SignIn({ location }) {
   useEffect(() => {
     if (location.state.signUpSuccessful) {
       setSuccessMessage(
-        "E-Mail-Adresse bestätigen. Dir wurde ein Bestätigungslink gesendet. Rufe diesen auf, um deinen Account zu verwenden."
+        "Bitte bestätige deine E-Mail-Adresse. Dir wurde ein Bestätigungslink gesendet. Rufe diesen auf, um deinen Account zu verwenden."
       );
       setOpenSuccess(true);
     }
