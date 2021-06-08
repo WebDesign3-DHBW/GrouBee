@@ -72,14 +72,14 @@ export default function GroupPopup({ open, close, updateBubbles }) {
             padding="0px"
             className={classes.tabs}
           >
-            <Tab label="Gruppe erstellen" {...a11yProps(0)} width="100%" style={{ padding: 0 }} />
             <Tab label="Gruppe beitreten" {...a11yProps(1)} width="100%" />
+            <Tab label="Gruppe erstellen" {...a11yProps(0)} width="100%" style={{ padding: 0 }} />
           </Tabs>
         </AppBar>
-        <TabPanel value={value} index={0} dir={theme.direction}>
+        <TabPanel value={value} index={1} dir={theme.direction}>
           <CreateGroup close={close} updateBubbles={updateBubbles} />
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        <TabPanel value={value} index={0} dir={theme.direction}>
           <JoinGroup close={close} updateBubbles={updateBubbles} />
         </TabPanel>
       </div>
