@@ -27,15 +27,19 @@ function List() {
 
   let listName = "";
   let cardTitle = "";
+  let listType = "";
   if (location.pathname === "/clean") {
     listName = "Putzen";
     cardTitle = "Haushaltsaufgabe";
+    listType = "die Haushaltsaufgabe";
   } else if (location.pathname === "/todo") {
     listName = "ToDo";
     cardTitle = "Aufgabe";
+    listType = "die Aufgabe";
   } else if (location.pathname === "/shopping") {
     listName = "Einkaufen";
     cardTitle = "Artikel";
+    listType = "den Artikel";
   }
 
   if (isLoading) {
@@ -57,6 +61,7 @@ function List() {
         clickedItem={clickedTask}
         update={() => setUpdate(!update)}
         collection="ToDo"
+        mediaType={listType}
       />
       <Tasks
         tasks={tasks}

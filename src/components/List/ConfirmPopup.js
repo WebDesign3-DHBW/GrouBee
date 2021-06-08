@@ -18,12 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmPopup({ open, close, clickedItem, update, collection }) {
+function ConfirmPopup({ open, close, clickedItem, update, collection, mediaType }) {
   const classes = useStyles();
 
   const handleConfirm = () => {
-
-    deleteItem(clickedItem, collection)
+    deleteItem(clickedItem, collection);
 
     update();
     close();
@@ -34,7 +33,7 @@ function ConfirmPopup({ open, close, clickedItem, update, collection }) {
   return (
     <Dialog open={open} onClose={close} aria-labelledby="responsive-dialog-title">
       <DialogContent>
-        <DialogContentText>Willst du das Todo wirklich löschen?</DialogContentText>
+        <DialogContentText>Willst du {mediaType} wirklich löschen?</DialogContentText>
       </DialogContent>
       <DialogActions className={classes.buttons}>
         <Button autoFocus onClick={handleCancel}>

@@ -30,7 +30,6 @@ function Media() {
   const [snackbarContent, setSnackbarContent] = useState();
   const [clickedMedia, setClickedMedia] = useState();
 
-
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
@@ -63,6 +62,7 @@ function Media() {
         clickedItem={clickedMedia}
         update={() => setUpdate(!update)}
         collection="Media"
+        mediaType={value === 0 ? "den Film" : "die Serie"}
       />
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 

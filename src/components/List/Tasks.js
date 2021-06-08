@@ -126,7 +126,7 @@ export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDat
   };
 
   const handleDelete = () => {
-    handleConfirmPopup(task.docId);
+    handleConfirmPopup(task.docId, "ToDo");
   };
 
   useEffect(() => {
