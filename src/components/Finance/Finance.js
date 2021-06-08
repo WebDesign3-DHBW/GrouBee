@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
 import { getSettlementData } from "../../firebase/getSettlementData";
 import Wrapper from "../base/Wrapper";
@@ -6,13 +7,14 @@ import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import FinancePopup from "./FinancePopup";
-import { useEffect, useState } from "react";
 import { Divider, makeStyles, Typography } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
+import DebtOverview from "./DebtOverview";
+import { getAllUserData } from "../../firebase/getAllUserData";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -39,7 +41,8 @@ function Finance() {
   const [openFinancePopup, setOpenFinancePopup] = useState(false);
   const [multipleSelected, setMultipleSelected] = useState(false);
   const [sortedData, setSortedData] = useState(null);
-  const [settlementData, setSettlementData] = useState(null);
+  const [currentUserId, setUserID] = useState();
+  const [settlementData, setSettlementData] = useState([]);
 
   const activeGroups = useRecoilValue(activeGroupsState);
 
@@ -48,6 +51,7 @@ function Finance() {
     const loadUserData = async () => {
       const userData = await getCurrentUserData();
       setCurrentUserData(userData);
+      setUserID(userData.userId);
     };
     loadUserData();
     function multipleGroupsSelected() {
@@ -92,6 +96,14 @@ function Finance() {
         update={() => setUpdate(!update)}
       />
       <Wrapper>
+        {activeGroups.map((group) => (
+          <DebtOverview
+            financeData={financeData}
+            settlementData={settlementData}
+            group={group}
+            currentUserID={currentUserId}
+          />
+        ))}
         {dataLoading && isLoading && activeGroups.length !== 0
           ? loadingSkeleton()
           : sortedData?.length !== 0 &&
