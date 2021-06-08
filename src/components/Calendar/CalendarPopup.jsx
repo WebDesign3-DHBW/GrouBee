@@ -25,20 +25,25 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: "center",
+    minWidth: 311,
     "& h2": {
       fontSize: theme.typography.h2.fontSize,
       fontWeight: theme.typography.h2.fontWeight,
     },
   },
   form: {
-    height: 200,
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  textField: {
+    display: "flex",
+    marginBottom: theme.spacing(2),
+  },
 }));
 
-export default function MediaPopup({ open, close, triggerUpdate }) {
+export default function MediaPopup({ open, close }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [title, setTitle] = useState("");
@@ -117,7 +122,7 @@ export default function MediaPopup({ open, close, triggerUpdate }) {
         <DialogContent dividers className={classes.content}>
           <form className={classes.form} noValidate autoComplete="off">
             <TextField id="title" label="Titel" onChange={handleTitle} value={title} />
-            <FormControl>
+            <FormControl className={classes.textField}>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select
                 native
