@@ -7,9 +7,6 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: theme.palette.common.black,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
 }));
 
 function DesktopNavbar() {
