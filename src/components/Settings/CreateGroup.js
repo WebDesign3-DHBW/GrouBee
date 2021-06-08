@@ -119,7 +119,12 @@ function CreateGroup({ close, updateBubbles }) {
           Schließen
         </Button>
         {generatedID ? (
-          <Button color="primary" onClick={copyToClipboard} className={classes.button}>
+          <Button
+            color="primary"
+            onClick={copyToClipboard}
+            className={classes.button}
+            onClick={close}
+          >
             Kopieren
           </Button>
         ) : (

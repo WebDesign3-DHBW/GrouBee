@@ -110,7 +110,7 @@ export default function JoinGroup({ close, updateBubbles }) {
           Schließen
         </Button>
 
-        <Button onClick={handleJoin} className={classes.button} color="primary">
+        <Button onClick={handleJoin} className={classes.button} color="primary" onClick={close}>
           Beitreten
         </Button>
       </DialogActions>
