@@ -43,8 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbarContent }) {
   const classes = useStyles();
-
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(clickedItem?.title ?? "");
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [userData, isUserData] = useCurrentUser();
 
@@ -60,7 +59,7 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
 
   const handleConfirm = () => {
     updateItem(
-      clickedItem,
+      clickedItem.docID,
       { title, groupID: selectedGroup.groupID, color: selectedGroup.color },
       collection
     );
@@ -90,11 +89,7 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
           />
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-            <Select
-              native
-              value={`${selectedGroup.groupID}/${selectedGroup.color}`}
-              onChange={handleDropDown}
-            >
+            <Select native value={selectedGroup.groupID} onChange={handleDropDown}>
               <option aria-label="group-selection" value="" />
               {!isUserData &&
                 Object.entries(userData.groups).map((group, idx) => (

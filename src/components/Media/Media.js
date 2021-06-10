@@ -84,14 +84,16 @@ function Media() {
         mediaType={value === 0 ? "den Film" : "die Serie"}
         setSnackbarContent={setSnackbarContent}
       />
-      <UpdatePopup
-        open={openUpdatePopup}
-        close={() => setOpenUpdatePopup(false)}
-        clickedItem={clickedItem}
-        update={update}
-        collection={"Media"}
-        setSnackbarContent={setSnackbarContent}
-      />
+      {openUpdatePopup && (
+        <UpdatePopup
+          open={openUpdatePopup}
+          close={() => setOpenUpdatePopup(false)}
+          clickedItem={clickedItem}
+          update={() => setUpdate(!update)}
+          collection={"Media"}
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       <FAB open={() => setOpen(true)} />

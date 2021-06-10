@@ -3,6 +3,7 @@ import MuiAccordion from "@material-ui/core/Accordion";
 import {
   AccordionDetails,
   AccordionSummary,
+  CardActionArea,
   IconButton,
   List,
   ListItem,
@@ -187,7 +188,8 @@ const MediaItem = ({
     }
   };
 
-  const handleUpdate = async (status) => {
+  const handleUpdate = async (e, status) => {
+    e.stopPropagation();
     const mediaText = media === "Filme" ? "den Film" : "die Serie";
     if (status === "delete") {
       handleConfirmPopup(data.docId);
@@ -203,64 +205,77 @@ const MediaItem = ({
     }
   };
 
+  const handleClick = (e) => {
+    e.stopPropagation();
+    handleUpdatePopup(data.docId, data.title, data.groupID);
+  };
+
+  const handleRating = (e) => {
+    e.stopPropagation();
+    setOpen(true);
+  };
+
   const ellipsis = data.title.length > 25 ? "…" : "";
 
   return (
     <>
-      <AccordionDetails
-        className={classes.accordionDetails}
-        onClick={() => handleUpdatePopup(data.docId, data.title, data.groupID)}
-      >
+      <AccordionDetails className={classes.accordionDetails}>
         <List component="nav" className={classes.list}>
-          <ListItem className={classes.listItem}>
-            <ListItemText className={classes.listText}>
-              <span className={classes.dot} style={{ backgroundColor: data.color }} />
-              {data.title.substring(0, 25).concat(ellipsis)}
-            </ListItemText>
+          <CardActionArea style={{ paddingLeft: "10px" }} onClick={handleClick}>
+            <ListItem className={classes.listItem}>
+              <ListItemText className={classes.listText}>
+                <span className={classes.dot} style={{ backgroundColor: data.color }} />
+                {data.title.substring(0, 25).concat(ellipsis)}
+              </ListItemText>
 
-            <ListItemSecondaryAction>
-              {category === "begonnen" && (
-                <IconButton
-                  edge="end"
-                  aria-label="complete"
-                  onClick={() => handleUpdate("abgeschlossen")}
-                >
-                  <MdCheck />
-                </IconButton>
-              )}
-              {category === "neu" && (
-                <IconButton edge="end" aria-label="start" onClick={() => handleUpdate("begonnen")}>
-                  <MdPlayArrow />
-                </IconButton>
-              )}
-              {category === "abgeschlossen" && (
-                <IconButton edge="end" aria-label="rate" onClick={() => setOpen(true)}>
-                  <MdStar />
-                </IconButton>
-              )}
-              {(category === "begonnen" || category === "neu") && (
-                <>
+              <ListItemSecondaryAction>
+                {category === "begonnen" && (
                   <IconButton
                     edge="end"
-                    aria-label="cancel"
-                    onClick={() => handleUpdate("abgebrochen")}
+                    aria-label="complete"
+                    onClick={() => handleUpdate("abgeschlossen")}
                   >
-                    <MdClose />
+                    <MdCheck />
                   </IconButton>
-                </>
+                )}
+                {category === "neu" && (
+                  <IconButton
+                    edge="end"
+                    aria-label="start"
+                    onClick={(e) => handleUpdate(e, "begonnen")}
+                  >
+                    <MdPlayArrow />
+                  </IconButton>
+                )}
+                {category === "abgeschlossen" && (
+                  <IconButton edge="end" aria-label="rate" onClick={handleRating}>
+                    <MdStar />
+                  </IconButton>
+                )}
+                {(category === "begonnen" || category === "neu") && (
+                  <>
+                    <IconButton
+                      edge="end"
+                      aria-label="cancel"
+                      onClick={(e) => handleUpdate(e, "abgebrochen")}
+                    >
+                      <MdClose />
+                    </IconButton>
+                  </>
+                )}
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={(e) => handleUpdate(e, "delete")}
+                >
+                  <MdDelete />
+                </IconButton>
+              </ListItemSecondaryAction>
+              {category === "abgeschlossen" && (
+                <Rating value={data.rating} className={classes.rating} onClick={handleRating} />
               )}
-              <IconButton edge="end" aria-label="delete" onClick={() => handleUpdate("delete")}>
-                <MdDelete />
-              </IconButton>
-            </ListItemSecondaryAction>
-            {category === "abgeschlossen" && (
-              <Rating
-                value={data.rating}
-                className={classes.rating}
-                onClick={() => setOpen(true)}
-              />
-            )}
-          </ListItem>
+            </ListItem>
+          </CardActionArea>
         </List>
       </AccordionDetails>
       <RatingPopup open={open} close={() => setOpen(false)} data={data} update={update} />
