@@ -107,6 +107,7 @@ function SignIn({ location }) {
           setErrorMessage(
             "Leider ist ein Fehler aufgetreten. Bitte überprüfe deine Eingabe oder probiere es später noch einmal."
           );
+          signInSuccessful.error && console.log("Fehlercode: " + signInSuccessful.error);
       }
     } catch (e) {
       throw new Error("Signing in failed. Please try again later.");

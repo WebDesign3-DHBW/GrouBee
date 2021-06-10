@@ -91,6 +91,21 @@ function ExpenseItem(props) {
     return (
       <>
         <CardActionArea style={{ padding: "0px 5px" }} onClick={handleClick}>
+          {settled && props.ID === 0 && (
+            <>
+              <Divider />
+              <Typography variant="overline" color="primary">
+                {groupName} beglichen{" "}
+                {new Date(settledDate).toLocaleDateString("de-DE", {
+                  weekday: "short",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Typography>
+              <Divider />
+            </>
+          )}
           <ListItem className="nplr">
             <ListItemAvatar>
               <Avatar alt="Avatar" src={profileImage} />
