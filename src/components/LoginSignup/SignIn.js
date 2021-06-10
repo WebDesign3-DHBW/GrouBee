@@ -216,6 +216,7 @@ function SignIn({ location }) {
               fullWidth
               className={classes.textField}
               onChange={(e) => setEmailValue(e.target.value)}
+              disabled={openConfirm}
             />
             <TextField
               inputProps={{
@@ -226,6 +227,7 @@ function SignIn({ location }) {
               fullWidth
               className={classes.textField}
               onChange={(e) => setPasswordValue(e.target.value)}
+              disabled={openConfirm}
             />
             {showResendButton && (
               <>
