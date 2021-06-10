@@ -15,6 +15,8 @@ import DebtOverview from "./DebtOverview";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { motion } from "framer-motion";
+import UpdatePopup from "../base/UpdatePopup";
+import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -44,6 +46,9 @@ function Finance() {
   const [multipleSelected, setMultipleSelected] = useState(false);
   const [sortedData, setSortedData] = useState([]);
   const [currentUserData, userIsLoading] = useCurrentUser();
+  const [clickedItem, setClickedItem] = useState();
+  const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
+  const [snackbarContent, setSnackbarContent] = useState();
 
   const activeGroups = useRecoilValue(activeGroupsState);
 
@@ -63,6 +68,11 @@ function Finance() {
 
     setDataLoading(false);
   }, [pageData, activeGroups.length]);
+
+  const handleUpdatePopup = (docID, title, groupID, color) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID, color });
+  };
 
   if (isLoading || userIsLoading) {
     return (
@@ -98,6 +108,17 @@ function Finance() {
         close={() => setOpenFinancePopup(false)}
         update={() => setUpdate(!update)}
       />
+      {openUpdatePopup && (
+        <UpdatePopup
+          open={openUpdatePopup}
+          close={() => setOpenUpdatePopup(false)}
+          clickedItem={clickedItem}
+          update={() => setUpdate(!update)}
+          collection={"Finance"}
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Wrapper>
         {activeGroups.map((group) => {
           const groupID = group[0];
@@ -125,10 +146,12 @@ function Finance() {
                   expense={data.expense}
                   paidBy={data.paidBy}
                   groupID={data.groupID}
+                  docID={data.docId}
                   multipleSelected={multipleSelected}
                   settlementData={settlementData}
                   sortedData={sortedData}
                   ID={i}
+                  handleUpdatePopup={handleUpdatePopup}
                 />
                 <Divider />
               </div>

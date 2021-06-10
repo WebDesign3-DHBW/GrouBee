@@ -3,11 +3,11 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
+  DialogTitle,
   FormControl,
   InputLabel,
   makeStyles,
-  Select,
+  NativeSelect,
   TextField,
 } from "@material-ui/core";
 import { useState } from "react";
@@ -27,9 +27,13 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 20,
     paddingTop: 20,
   },
-
   dialogTitle: {
     textAlign: "center",
+    minWidth: 311,
+    "& h2": {
+      fontSize: theme.typography.h2.fontSize,
+      fontWeight: theme.typography.h2.fontWeight,
+    },
   },
   textField: {
     display: "flex",
@@ -44,7 +48,10 @@ const useStyles = makeStyles((theme) => ({
 function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbarContent }) {
   const classes = useStyles();
   const [title, setTitle] = useState(clickedItem?.title ?? "");
-  const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
+  const [selectedGroup, setSelectedGroup] = useState({
+    groupID: clickedItem?.groupID,
+    color: clickedItem?.color,
+  });
   const [userData, isUserData] = useCurrentUser();
 
   const handleTitle = (e) => {
@@ -76,8 +83,10 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
   };
   return (
     <Dialog open={open} onClose={close} aria-labelledby="responsive-dialog-title">
-      <DialogContent>
-        <DialogContentText>Eintrag ändern</DialogContentText>
+      <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>
+        Eintrag ändern
+      </DialogTitle>
+      <DialogContent dividers>
         <form className={classes.root} noValidate autoComplete="off">
           <TextField
             id="update item"
@@ -88,16 +97,21 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
             className={classes.textField}
           />
           <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
-            <Select native value={selectedGroup.groupID} onChange={handleDropDown}>
-              <option aria-label="group-selection" value="" />
+            <InputLabel htmlFor="selectGroup" shrink={true}>
+              Gruppe
+            </InputLabel>
+            <NativeSelect
+              native
+              value={`${selectedGroup.groupID}/${selectedGroup.color}`}
+              onChange={handleDropDown}
+            >
               {!isUserData &&
                 Object.entries(userData.groups).map((group, idx) => (
                   <option key={idx} value={`${group[0]}/${group[1].color}`}>
                     {group[1].name}
                   </option>
                 ))}
-            </Select>
+            </NativeSelect>
           </FormControl>
         </form>
       </DialogContent>

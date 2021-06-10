@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tasks({ tasks, update, category, handleConfirmPopup }) {
+export default function Tasks({ tasks, update, category, handleConfirmPopup, handleUpdatePopup }) {
   const classes = useStyles();
 
   const sortByDateAndCateogry = tasks
@@ -78,7 +78,12 @@ export default function Tasks({ tasks, update, category, handleConfirmPopup }) {
       .filter((task) => task.done === isDone)
       .map((task, idx) => (
         <List dense className={classes.root} key={idx}>
-          <Task task={task} update={update} handleConfirmPopup={handleConfirmPopup} />
+          <Task
+            task={task}
+            update={update}
+            handleConfirmPopup={handleConfirmPopup}
+            handleUpdatePopup={handleUpdatePopup}
+          />
         </List>
       ));
 
@@ -115,17 +120,26 @@ export default function Tasks({ tasks, update, category, handleConfirmPopup }) {
   );
 }
 
-export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDate }) {
+export function Task({
+  task,
+  update,
+  handleConfirmPopup,
+  hideProfilePic,
+  hideDate,
+  handleUpdatePopup,
+}) {
   const classes = useStyles();
 
   const [profileImage, setProfileImage] = useState();
 
   const handleChecked = (e) => {
+    e.stopPropagation();
     updateListmodul(task.docId, !task.done);
     update();
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e) => {
+    e.stopPropagation();
     handleConfirmPopup(task.docId, "ToDo");
   };
 
@@ -147,8 +161,13 @@ export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDat
     }
   };
 
+  const handleClick = (e) => {
+    e.stopPropagation();
+    handleUpdatePopup(task.docId, task.title, task.groupID, task.color, "ToDo");
+  };
+
   return (
-    <CardActionArea style={{ paddingLeft: "10px" }}>
+    <CardActionArea style={{ paddingLeft: "10px" }} onClick={handleClick}>
       <ListItem style={{ paddingLeft: "0" }}>
         {!hideProfilePic && (
           <ListItemAvatar>
@@ -182,7 +201,7 @@ export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDat
             <MdDelete />
           </IconButton>
 
-          <PrimaryCheckbox edge="end" checked={task.done} onChange={handleChecked} />
+          <PrimaryCheckbox edge="end" checked={task.done} onClick={handleChecked} />
         </ListItemSecondaryAction>
       </ListItem>
     </CardActionArea>

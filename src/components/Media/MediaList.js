@@ -207,7 +207,7 @@ const MediaItem = ({
 
   const handleClick = (e) => {
     e.stopPropagation();
-    handleUpdatePopup(data.docId, data.title, data.groupID);
+    handleUpdatePopup(data.docId, data.title, data.groupID, data.color);
   };
 
   const handleRating = (e) => {

@@ -87,6 +87,7 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
   };
 
   const handleTitle = (e) => {
+    e.preventDefault();
     setTitle(e.target.value);
   };
 
@@ -127,7 +128,7 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
         <DialogContent dividers>
           <form className={classes.root} noValidate autoComplete="off">
             <TextField
-              id="movie title"
+              id="task title"
               label="Titel"
               onChange={handleTitle}
               value={title}

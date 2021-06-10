@@ -66,9 +66,9 @@ function Media() {
     }
   };
 
-  const handleUpdatePopup = (docID, title, groupID) => {
+  const handleUpdatePopup = (docID, title, groupID, color) => {
     setOpenUpdatePopup(true);
-    setClickedItem({ docID, title, groupID });
+    setClickedItem({ docID, title, groupID, color });
   };
 
   return (

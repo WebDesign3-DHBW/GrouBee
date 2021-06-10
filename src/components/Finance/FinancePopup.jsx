@@ -55,8 +55,11 @@ export default function FinancePopup({ open, close, update }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDropDown = (e) => {
-    setSelectedGroup(e.target.value);
+    const groupID = e.target.value.substring(0, e.target.value.indexOf("/"));
+    const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
+    setSelectedGroup({ groupID, color });
   };
+
   const handleTitle = (e) => {
     setTitle(e.target.value);
   };
@@ -79,7 +82,8 @@ export default function FinancePopup({ open, close, update }) {
     await addFinance({
       title,
       expense,
-      groupID: selectedGroup,
+      groupID: selectedGroup.groupID,
+      color: selectedGroup.color,
       paidBy: selectedUser,
     });
     close();
@@ -99,7 +103,7 @@ export default function FinancePopup({ open, close, update }) {
       setIsLoading(true);
       const allUserData = await getAllUserData();
       const groupUserNames = allUserData
-        .filter((user) => Object.keys(user.groups).some((id) => id === selectedGroup))
+        .filter((user) => Object.keys(user.groups).some((id) => id === selectedGroup.groupID))
         .map((user) => ({
           name: user.userName,
           id: user.userId,
@@ -141,14 +145,14 @@ export default function FinancePopup({ open, close, update }) {
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select
                 native
-                value={selectedGroup}
+                value={`${selectedGroup.groupID}/${selectedGroup.color}`}
                 onChange={handleDropDown}
                 className={classes.textField}
               >
                 <option aria-label="None" value="" />
                 {!isUserData &&
                   Object.entries(userData.groups).map((group, idx) => (
-                    <option key={idx} value={group[0]}>
+                    <option key={idx} value={`${group[0]}/${group[1].color}`}>
                       {group[1].name}
                     </option>
                   ))}
@@ -174,9 +178,7 @@ export default function FinancePopup({ open, close, update }) {
           </form>
         </DialogContent>
         <DialogActions className={classes.buttons}>
-          <Button autoFocus onClick={close}>
-            Abbrechen
-          </Button>
+          <Button onClick={close}>Abbrechen</Button>
           <Button autoFocus onClick={handleSave} color="primary">
             Speichern
           </Button>

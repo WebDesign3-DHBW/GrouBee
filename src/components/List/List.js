@@ -10,6 +10,7 @@ import Tasks from "./Tasks";
 import { makeStyles } from "@material-ui/core";
 import Snackbar from "../Snackbar";
 import ConfirmPopup from "./ConfirmPopup";
+import UpdatePopup from "../base/UpdatePopup";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -26,6 +27,8 @@ function List() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [clickedTask, setClickedTask] = useState();
+  const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
+  const [clickedItem, setClickedItem] = useState();
 
   let listName = "";
   let cardTitle = "";
@@ -53,6 +56,11 @@ function List() {
     setClickedTask(task);
   };
 
+  const handleUpdatePopup = (docID, title, groupID, color) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID, color });
+  };
+
   return (
     <div className={classes.wrapper}>
       <ButtonAppBar title={listName} />
@@ -66,12 +74,23 @@ function List() {
         mediaType={listType}
         setSnackbarContent={setSnackbarContent}
       />
+      {openUpdatePopup && (
+        <UpdatePopup
+          open={openUpdatePopup}
+          close={() => setOpenUpdatePopup(false)}
+          clickedItem={clickedItem}
+          update={() => setUpdate(!update)}
+          collection={"ToDo"}
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Tasks
         tasks={tasks}
         update={() => setUpdate(!update)}
         category={listName.toLocaleLowerCase()}
         handleConfirmPopup={handleConfirmPopup}
+        handleUpdatePopup={handleUpdatePopup}
       />
       <FAB open={() => setOpenAddCard(true)} />
       <ListPopup
