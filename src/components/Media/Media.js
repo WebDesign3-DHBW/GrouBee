@@ -11,6 +11,7 @@ import MediaPopup from "./MediaPopup";
 import { TabPanel, a11yProps } from "../Settings/GroupPopup";
 import Snackbar from "../Snackbar";
 import ConfirmPopup from "../List/ConfirmPopup";
+import UpdatePopup from "../base/UpdatePopup";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import InfoPanel from "./InfoPanel";
 
@@ -29,11 +30,13 @@ function Media() {
   const [mediaData, isLoading] = usePageData("Media", update);
   const [open, setOpen] = useState(false);
   const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
+  const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [snackbarContent, setSnackbarContent] = useState();
   const [clickedMedia, setClickedMedia] = useState();
   const [expanded, setExpanded] = useState([0]);
+  const [clickedItem, setClickedItem] = useState();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -63,6 +66,11 @@ function Media() {
     }
   };
 
+  const handleUpdatePopup = (docID, title, groupID) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID });
+  };
+
   return (
     <div className={classes.wrapper}>
       <ButtonAppBar title="Filme & Serien" />
@@ -74,6 +82,14 @@ function Media() {
         update={() => setUpdate(!update)}
         collection="Media"
         mediaType={value === 0 ? "den Film" : "die Serie"}
+        setSnackbarContent={setSnackbarContent}
+      />
+      <UpdatePopup
+        open={openUpdatePopup}
+        close={() => setOpenUpdatePopup(false)}
+        clickedItem={clickedItem}
+        update={update}
+        collection={"Media"}
         setSnackbarContent={setSnackbarContent}
       />
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
@@ -115,6 +131,7 @@ function Media() {
             expandAccordion={expandAccordion}
             setExpanded={setExpanded}
             expanded={expanded}
+            handleUpdatePopup={handleUpdatePopup}
           />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
@@ -127,6 +144,7 @@ function Media() {
             expandAccordion={expandAccordion}
             setExpanded={setExpanded}
             expanded={expanded}
+            handleUpdatePopup={handleUpdatePopup}
           />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction} className={classes.info}>

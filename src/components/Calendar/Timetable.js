@@ -17,6 +17,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   CircularProgress,
+  CardActionArea,
 } from "@material-ui/core";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
@@ -175,20 +176,22 @@ function Timetable() {
                 .sort((a, b) => a.time.localeCompare(b.time))
                 .map((data, idx, arr) => (
                   <div key={idx}>
-                    <ListItem>
-                      <ListItemText>
-                        <span className={classes.time}>{data.time} Uhr</span> {data.title}
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          onClick={() => handleConfirmPopup(data.docId, "Calendar")}
-                          size="small"
-                        >
-                          <MdDelete />
-                        </IconButton>
-                      </ListItemSecondaryAction>
+                    <ListItem disableGutters={true}>
+                      <CardActionArea style={{ paddingLeft: "5px" }}>
+                        <ListItemText>
+                          <span className={classes.time}>{data.time} Uhr</span> {data.title}
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => handleConfirmPopup(data.docId, "Calendar")}
+                            size="small"
+                          >
+                            <MdDelete />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </CardActionArea>
                     </ListItem>
                     {data !== arr[arr.length - 1] && <Divider variant="middle" component="li" />}
                   </div>

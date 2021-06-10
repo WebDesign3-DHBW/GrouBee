@@ -78,6 +78,7 @@ function MediaList({
   expanded,
   expandAccordion,
   setExpanded,
+  handleUpdatePopup,
 }) {
   const classes = useStyles();
 
@@ -104,6 +105,7 @@ function MediaList({
           media={media}
           handleConfirmPopup={handleConfirmPopup}
           expandAccordion={expandAccordion}
+          handleUpdatePopup={handleUpdatePopup}
         />
       ));
   };
@@ -167,6 +169,7 @@ const MediaItem = ({
   media,
   handleConfirmPopup,
   expandAccordion,
+  handleUpdatePopup,
 }) => {
   const classes = useStyles();
 
@@ -204,7 +207,10 @@ const MediaItem = ({
 
   return (
     <>
-      <AccordionDetails className={classes.accordionDetails}>
+      <AccordionDetails
+        className={classes.accordionDetails}
+        onClick={() => handleUpdatePopup(data.docId, data.title, data.groupID)}
+      >
         <List component="nav" className={classes.list}>
           <ListItem className={classes.listItem}>
             <ListItemText className={classes.listText}>
