@@ -2,11 +2,21 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "@reach/router";
 import { signIn, resendLink, resetPassword } from "../../auth/signIn";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Slide, SnackbarContent, Box } from "@material-ui/core/";
+import {
+  TextField,
+  Button,
+  Slide,
+  SnackbarContent,
+  Box,
+  InputAdornment,
+  IconButton,
+} from "@material-ui/core/";
 import { Snackbar as MuiSnackbar } from "@material-ui/core/";
 import Snackbar from "../Snackbar";
 import { Container } from "./Container";
 import { signOut } from "../../auth/signOut";
+import { BsEyeFill } from "react-icons/bs";
+import { BsEyeSlashFill } from "react-icons/bs";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -43,6 +53,7 @@ function SignIn({ location }) {
   const classes = useStyles();
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showResendButton, setResendButton] = useState(false);
   const [showResetButton, setResetButton] = useState(false);
@@ -223,15 +234,25 @@ function SignIn({ location }) {
               disabled={openConfirm}
             />
             <TextField
-              inputProps={{
-                autoComplete: "password",
-              }}
-              type="password"
+              type={showPassword ? "text" : "password"}
               label="Passwort"
               fullWidth
               className={classes.textField}
               onChange={(e) => setPasswordValue(e.target.value)}
               disabled={openConfirm}
+              InputProps={{
+                autoComplete: "password",
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword((showPassword) => !showPassword)}
+                    >
+                      {showPassword ? <BsEyeFill /> : <BsEyeSlashFill />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             {showResendButton && (
               <>
