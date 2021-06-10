@@ -6,4 +6,6 @@ export const addSettlement = async (entry) => {
     groupID,
     settleDate,
   });
+
+  console.log("document successfully written");
 };
