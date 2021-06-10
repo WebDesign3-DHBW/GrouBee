@@ -6,7 +6,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import { makeStyles } from "@material-ui/core";
 import { addGroupToUser } from "../../firebase/addGroupToUser";
 import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -26,10 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function JoinGroup({ close, updateBubbles }) {
+export default function JoinGroup({ close, updateBubbles, setSnackbarContent }) {
   const classes = useStyles();
   const [value, setValue] = useState();
-  const [snackbarContent, setSnackbarContent] = useState();
 
   const checkIfGroupsExists = async (user, groupID) => {
     const currentUserGroups = user.groups;
@@ -74,6 +72,7 @@ export default function JoinGroup({ close, updateBubbles }) {
         status: "success",
         open: true,
       });
+      close();
       updateBubbles();
     } else {
       setSnackbarContent({
@@ -102,8 +101,6 @@ export default function JoinGroup({ close, updateBubbles }) {
         onChange={handleChange}
         fullWidth
       />
-
-      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       <DialogActions className={classes.buttons}>
         <Button onClick={close} className={classes.button}>

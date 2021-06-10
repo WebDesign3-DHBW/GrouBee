@@ -35,8 +35,7 @@ function InfoPanel() {
         <MdClose className={classes.icon} />
         <Typography className={classes.text}>
           Hat dir ein Film nicht gefallen? <br />
-          Mit Klick auf dieses Icon werden Filme und Serien in die "abgebrochen" Kategorie
-          verschieben.
+          Mit Klick auf dieses Icon werden Filme in die "abgebrochen" Kategorie verschieben.
         </Typography>
       </div>
       <div className={classes.line}>

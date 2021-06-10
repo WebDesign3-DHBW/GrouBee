@@ -118,9 +118,6 @@ function Media() {
         <TabPanel value={value} index={2} dir={theme.direction} className={classes.info}>
           <InfoPanel></InfoPanel>
         </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction} className={classes.info}>
-          <InfoPanel></InfoPanel>
-        </TabPanel>
       </SwipeableViews>
     </div>
   );
