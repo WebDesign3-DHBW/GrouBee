@@ -29,6 +29,7 @@ function Media() {
   const [value, setValue] = useState(0);
   const [snackbarContent, setSnackbarContent] = useState();
   const [clickedMedia, setClickedMedia] = useState();
+  const [expanded, setExpanded] = useState([0]);
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -52,6 +53,12 @@ function Media() {
     setClickedMedia(media);
   };
 
+  const expandAccordion = (index) => {
+    if (!expanded.some((el) => el === index)) {
+      setExpanded((prevArray) => [...prevArray, index]);
+    }
+  };
+
   return (
     <div className={classes.wrapper}>
       <ButtonAppBar title="Filme & Serien" />
@@ -73,6 +80,7 @@ function Media() {
         mediaType={value}
         close={() => setOpen(false)}
         triggerUpdate={() => setUpdate(!update)}
+        expandAccordion={expandAccordion}
       />
       <AppBar position="static" color="transparent" elevation="0">
         <Tabs
@@ -99,6 +107,9 @@ function Media() {
             update={() => setUpdate(!update)}
             setSnackbarContent={setSnackbarContent}
             handleConfirmPopup={handleConfirmPopup}
+            expandAccordion={expandAccordion}
+            setExpanded={setExpanded}
+            expanded={expanded}
           />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
@@ -108,6 +119,9 @@ function Media() {
             update={() => setUpdate(!update)}
             setSnackbarContent={setSnackbarContent}
             handleConfirmPopup={handleConfirmPopup}
+            expandAccordion={expandAccordion}
+            setExpanded={setExpanded}
+            expanded={expanded}
           />
         </TabPanel>
       </SwipeableViews>
