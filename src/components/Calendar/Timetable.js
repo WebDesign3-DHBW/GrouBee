@@ -16,6 +16,7 @@ import {
   List,
   ListItemSecondaryAction,
   IconButton,
+  CircularProgress,
 } from "@material-ui/core";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
@@ -86,7 +87,11 @@ function Timetable() {
   const [snackbarContent, setSnackbarContent] = useState();
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div style={{ textAlign: "center", marginTop: "45vh" }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   function toUTC(d) {
