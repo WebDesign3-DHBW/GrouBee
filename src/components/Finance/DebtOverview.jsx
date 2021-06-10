@@ -79,7 +79,6 @@ function DebtOverview({ financeData, group, currentUserID }) {
 
     let debt = sumNotPaidByMe / groupsize - sumPaidByMe / groupsize;
 
-    console.log(groupsize);
 
     if (debt > 0) {
       debt = "-" + debt;
