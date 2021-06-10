@@ -36,5 +36,21 @@ export const resendLink = async (email, password) => {
     .then((authUser) => {
       authUser.user.sendEmailVerification();
       signOut();
+    })
+    .catch(function (e) {
+      alert("Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.");
+      return false;
     });
+  return true;
+};
+
+export const resetPassword = async (email) => {
+  await firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .catch(function (e) {
+      alert("Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.");
+      return false;
+    });
+  return true;
 };
