@@ -27,21 +27,23 @@ function InfoPanel() {
       <div className={classes.line}>
         <MdCheck className={classes.icon} />
         <Typography className={classes.text}>
-          Mit Klick auf dieses Icon kannst du Filme, die du bis zum Ende gesehen hast, in die
-          "abgeschlossen" Kategorie verschieben.
+          Mit Klick auf dieses Icon kannst du Filme und Serien, die du bis zum Ende gesehen hast, in
+          die "abgeschlossen" Kategorie verschieben.
         </Typography>
       </div>
       <div className={classes.line}>
         <MdClose className={classes.icon} />
         <Typography className={classes.text}>
           Hat dir ein Film nicht gefallen? <br />
-          Mit Klick auf dieses Icon werden Filme in die "abgebrochen" Kategorie verschieben.
+          Mit Klick auf dieses Icon werden Filme und Serien in die "abgebrochen" Kategorie
+          verschieben.
         </Typography>
       </div>
       <div className={classes.line}>
         <MdDelete className={classes.icon} />
         <Typography className={classes.text}>
-          Filme, die du nicht mehr in den Listen haben möchtest, kannst du hiermit löschen.
+          Filme und Serien, die du nicht mehr in den Listen haben möchtest, kannst du hiermit
+          löschen.
         </Typography>
       </div>
       <div className={classes.line}>
@@ -53,7 +55,9 @@ function InfoPanel() {
       </div>
       <div className={classes.line}>
         <MdStar className={classes.icon} />
-        <Typography className={classes.text}>Bewerte Filme, die du gesehen hast.</Typography>
+        <Typography className={classes.text}>
+          Bewerte Filme und Serien, die du gesehen hast.
+        </Typography>
       </div>
     </div>
   );
