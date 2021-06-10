@@ -82,6 +82,9 @@ function SignUp({ location }) {
         {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
         <form noValidate autoComplete="off">
           <TextField
+            inputProps={{
+              autoComplete: "given-name",
+            }}
             type="text"
             label="Nutzername"
             fullWidth
@@ -89,6 +92,9 @@ function SignUp({ location }) {
             onChange={(e) => setUsernameValue(e.target.value)}
           />
           <TextField
+            inputProps={{
+              autoComplete: "email",
+            }}
             type="email"
             label="E-Mail"
             fullWidth
@@ -96,6 +102,9 @@ function SignUp({ location }) {
             onChange={(e) => setEmailValue(e.target.value)}
           />
           <TextField
+            inputProps={{
+              autoComplete: "new-password",
+            }}
             type="password"
             label="Passwort"
             fullWidth
@@ -103,6 +112,9 @@ function SignUp({ location }) {
             onChange={(e) => setPasswordValue(e.target.value)}
           />
           <TextField
+            inputProps={{
+              autoComplete: "new-password",
+            }}
             type="password"
             label="Passwort wiederholen"
             fullWidth

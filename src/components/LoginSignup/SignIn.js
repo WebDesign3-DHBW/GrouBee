@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { navigate } from "@reach/router";
 import { signIn, resendLink, resetPassword } from "../../auth/signIn";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Snackbar, Slide, SnackbarContent, Box } from "@material-ui/core/";
-import MuiAlert from "@material-ui/lab/Alert";
+import { TextField, Button, Slide, SnackbarContent, Box } from "@material-ui/core/";
+import { Snackbar as MuiSnackbar } from "@material-ui/core/";
+import Snackbar from "../Snackbar";
 import { Container } from "./Container";
 import { signOut } from "../../auth/signOut";
 
@@ -44,19 +45,20 @@ function SignIn({ location }) {
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showResendButton, setResendButton] = useState(false);
-  const [openSuccess, setOpenSuccess] = useState(false);
   const [showResetButton, setResetButton] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [confirmMessage, setConfirmMessage] = useState("");
   const [confirmCase, setConfirmCase] = useState("");
+  const [snackbarContent, setSnackbarContent] = useState();
 
   useEffect(() => {
     if (location.state.signUpSuccessful) {
-      setSuccessMessage(
-        "Bitte bestätige deine E-Mail-Adresse. Dir wurde ein Bestätigungslink gesendet. Rufe diesen auf, um deinen Account zu verwenden."
-      );
-      setOpenSuccess(true);
+      setSnackbarContent({
+        message:
+          "Bitte bestätige deine E-Mail-Adresse. Dir wurde ein Bestätigungslink gesendet. Rufe diesen auf, um deinen Account zu verwenden.",
+        status: "success",
+        open: true,
+      });
     }
   }, [location.state]);
 
@@ -102,7 +104,9 @@ function SignIn({ location }) {
 
   const onResendLinkButtonClicked = () => {
     setConfirmMessage("Dir wird ein neuer Bestätigungslink an deine E-Mail-Adresse gesendet.");
-    setOpenSuccess(false);
+    setSnackbarContent({
+      open: false,
+    });
     setConfirmCase("onResendLinkClicked");
     setOpenConfirm(true);
   };
@@ -111,10 +115,12 @@ function SignIn({ location }) {
     setOpenConfirm(false);
     const resendSuccessful = resendLink(emailValue, passwordValue);
     if (resendSuccessful) {
-      setSuccessMessage(
-        "Dir wurde ein Link an deine E-Mail-Adresse gesendet. Öffne diesen, um deinen Account zu verifizieren."
-      );
-      setOpenSuccess(true);
+      setSnackbarContent({
+        message:
+          "Dir wurde ein Link an deine E-Mail-Adresse gesendet. Öffne diesen, um deinen Account zu verifizieren.",
+        status: "success",
+        open: true,
+      });
     }
   };
 
@@ -122,7 +128,9 @@ function SignIn({ location }) {
     setConfirmMessage(
       "Dir wird ein Link für das Zurücksetzen des Passworts an deine unten angegebene E-Mail-Adresse gesendet."
     );
-    setOpenSuccess(false);
+    setSnackbarContent({
+      open: false,
+    });
     setConfirmCase("onResetPasswordClicked");
     setOpenConfirm(true);
   };
@@ -131,16 +139,18 @@ function SignIn({ location }) {
     setOpenConfirm(false);
     const resetSuccessful = await resetPassword(emailValue);
     if (resetSuccessful) {
-      setSuccessMessage(
-        "Dir wurde ein Link an deine E-Mail-Adresse gesendet. Öffne diesen, um ein neues Passwort festzulegen."
-      );
-      setOpenSuccess(true);
+      setSnackbarContent({
+        message:
+          "Dir wurde ein Link an deine E-Mail-Adresse gesendet. Öffne diesen, um ein neues Passwort festzulegen.",
+        status: "success",
+        open: true,
+      });
     }
   };
 
   const SnackbarConfirm = () => {
     return (
-      <Snackbar
+      <MuiSnackbar
         open={true}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         TransitionComponent={Slide}
@@ -172,7 +182,7 @@ function SignIn({ location }) {
             </>
           }
         />
-      </Snackbar>
+      </MuiSnackbar>
     );
   };
 
@@ -189,36 +199,18 @@ function SignIn({ location }) {
     }
   }
 
-  const SnackbarSuccess = () => {
-    return (
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={12000}
-        onClose={() => setOpenSuccess(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        TransitionComponent={Slide}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          severity="success"
-          onClose={() => setOpenSuccess(false)}
-        >
-          {successMessage}
-        </MuiAlert>
-      </Snackbar>
-    );
-  };
-
   return (
     <>
-      {openSuccess && <SnackbarSuccess />}
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       {openConfirm && <SnackbarConfirm />}
       <Container>
         <div>
           {errorMessage && <div className={classes.errorMessage}> {errorMessage} </div>}
           <form noValidate autoComplete="off">
             <TextField
+              inputProps={{
+                autoComplete: "email",
+              }}
               type="email"
               label="E-Mail"
               fullWidth
@@ -226,6 +218,9 @@ function SignIn({ location }) {
               onChange={(e) => setEmailValue(e.target.value)}
             />
             <TextField
+              inputProps={{
+                autoComplete: "password",
+              }}
               type="password"
               label="Passwort"
               fullWidth
