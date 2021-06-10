@@ -17,13 +17,16 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     width: "2px",
   },
+  wrapper: {
+    marginBottom: theme.spacing(3),
+  },
 }));
 
 function InfoPanel() {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.wrapper}>
       <div className={classes.line}>
         <MdCheck className={classes.icon} />
         <Typography className={classes.text}>
