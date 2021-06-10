@@ -97,7 +97,7 @@ function ExpenseItem(props) {
               ).toLocaleDateString("de-DE", {
                 weekday: "short",
                 year: "numeric",
-                month: "long",
+                month: "numeric",
                 day: "numeric",
               })}`
             }
@@ -106,7 +106,10 @@ function ExpenseItem(props) {
             <Typography
               className={`${settled && classes.crossedOut} ${!settled && classes.textPrimary}`}
             >
-              {props.expense} €
+              {String(props.expense)
+                .replace(".", ",")
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+              €
             </Typography>
           </ListItemSecondaryAction>
         </ListItem>

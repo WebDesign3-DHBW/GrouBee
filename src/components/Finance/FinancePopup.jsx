@@ -61,7 +61,7 @@ export default function FinancePopup({ open, close, update }) {
     setTitle(e.target.value);
   };
   const handleExpense = (e) => {
-    setExpense(parseFloat(e.target.value));
+    setExpense(parseFloat(e.target.value.replace(".", "").replace(",", ".")));
   };
   const handleSelectUser = (e) => {
     setSelectedUser(e.target.value);
@@ -131,9 +131,10 @@ export default function FinancePopup({ open, close, update }) {
               label="Betrag"
               onChange={handleExpense}
               value={expense}
-              decimalCharacter="."
-              digitGroupSeparator=","
+              decimalCharacter=","
+              digitGroupSeparator="."
               currencySymbol="€"
+              minimumValue={0}
               className={classes.textField}
             />
             <FormControl>
