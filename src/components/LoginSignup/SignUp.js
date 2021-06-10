@@ -4,8 +4,10 @@ import { navigate } from "@reach/router";
 import { signUp } from "../../auth/signUp";
 import { validate as isEmail } from "isemail";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button } from "@material-ui/core/";
+import { TextField, Button, InputAdornment, IconButton } from "@material-ui/core/";
 import { Container } from "./Container";
+import { BsEyeFill } from "react-icons/bs";
+import { BsEyeSlashFill } from "react-icons/bs";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -38,6 +40,7 @@ function SignUp({ location }) {
   const [passwordValue, setPasswordValue] = useState("");
   const [usernameValue, setUsernameValue] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSignUpClicked = async (e) => {
@@ -102,24 +105,44 @@ function SignUp({ location }) {
             onChange={(e) => setEmailValue(e.target.value)}
           />
           <TextField
-            inputProps={{
-              autoComplete: "new-password",
-            }}
-            type="password"
+            type={showPassword ? "text" : "password"}
             label="Passwort"
             fullWidth
             className={classes.textField}
             onChange={(e) => setPasswordValue(e.target.value)}
+            InputProps={{
+              autoComplete: "new-password",
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  >
+                    {showPassword ? <BsEyeFill /> : <BsEyeSlashFill />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
-            inputProps={{
-              autoComplete: "new-password",
-            }}
-            type="password"
+            type={showPassword ? "text" : "password"}
             label="Passwort wiederholen"
             fullWidth
             className={classes.textField}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            InputProps={{
+              autoComplete: "new-password",
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword((showPassword) => !showPassword)}
+                  >
+                    {showPassword ? <BsEyeFill /> : <BsEyeSlashFill />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <Button
             variant="contained"
