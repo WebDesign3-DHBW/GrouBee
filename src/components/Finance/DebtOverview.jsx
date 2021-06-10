@@ -1,6 +1,6 @@
 import { Button, Card, makeStyles, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { addSettlement } from "../../firebase/addSettlement";
+//import { addSettlement } from "../../firebase/addSettlement";
 import { getAllUserData } from "../../firebase/getAllUserData";
 
 const useStyles = makeStyles((theme) => ({
@@ -91,12 +91,12 @@ function DebtOverview({ financeData, group, currentUserID }) {
     return debt;
   }
 
-  function handleSettle() {
-    const settleDate = new Date().toISOString().split("T")[0];
-    const groupID = group[0];
-    const entry = { groupID, settleDate };
-    addSettlement(entry);
-  }
+  // function handleSettle() {
+  //   const settleDate = new Date().toISOString().split("T")[0];
+  //   const groupID = group[0];
+  //   const entry = { groupID, settleDate };
+  //   addSettlement(entry);
+  // }
 
   return (
     <Card className={classes.box}>
@@ -106,7 +106,7 @@ function DebtOverview({ financeData, group, currentUserID }) {
         variant="contained"
         color="primary"
         className={classes.calculate}
-        onClick={handleSettle}
+        //onClick={handleSettle}
       >
         Abrechnen
       </Button>

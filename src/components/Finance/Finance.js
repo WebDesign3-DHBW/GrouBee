@@ -13,6 +13,8 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 import DebtOverview from "./DebtOverview";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -27,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   infoIcon: {
     fontSize: "1.5rem",
     marginRight: theme.spacing(1),
+  },
+  skeleton: {
+    margin: "12px",
   },
 }));
 
@@ -60,7 +65,15 @@ function Finance() {
   }, [pageData, activeGroups.length]);
 
   if (isLoading || userIsLoading) {
-    return <p> loading ... </p>;
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: [0, 1] }} transition={{ delay: 1 }}>
+        <div style={{ display: "flex" }}>
+          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+        </div>
+      </motion.div>
+    );
   }
 
   function loadingSkeleton() {
