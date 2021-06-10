@@ -11,7 +11,6 @@ import { Typography } from "@material-ui/core";
 import { MdDelete } from "react-icons/md";
 import IconButton from "@material-ui/core/IconButton";
 import { updateListmodul } from "../../firebase/updateListmodul";
-import { deleteListItem } from "../../firebase/deleteListItem";
 import { getUserData } from "../../firebase/getUserData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdCheckCircle, MdShoppingCart, MdOpacity } from "react-icons/md";
@@ -62,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tasks({ tasks, update, category }) {
+export default function Tasks({ tasks, update, category, handleConfirmPopup }) {
   const classes = useStyles();
 
   const sortByDateAndCateogry = tasks
@@ -79,7 +78,7 @@ export default function Tasks({ tasks, update, category }) {
       .filter((task) => task.done === isDone)
       .map((task, idx) => (
         <List dense className={classes.root} key={idx}>
-          <Task task={task} update={update} />
+          <Task task={task} update={update} handleConfirmPopup={handleConfirmPopup} />
         </List>
       ));
 
@@ -116,7 +115,7 @@ export default function Tasks({ tasks, update, category }) {
   );
 }
 
-export function Task({ task, update, hideProfilePic, hideDate }) {
+export function Task({ task, update, handleConfirmPopup, hideProfilePic, hideDate }) {
   const classes = useStyles();
 
   const [profileImage, setProfileImage] = useState();
@@ -126,9 +125,8 @@ export function Task({ task, update, hideProfilePic, hideDate }) {
     update();
   };
 
-  const handleDelete = (e) => {
-    deleteListItem(task.docId);
-    update();
+  const handleDelete = () => {
+    handleConfirmPopup(task.docId, "ToDo");
   };
 
   useEffect(() => {

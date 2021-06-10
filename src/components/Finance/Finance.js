@@ -1,18 +1,20 @@
-import { getCurrentUserData } from "../../firebase/getCurrentUserData";
-import { getSettlementData } from "../../firebase/getSettlementData";
+import { useEffect, useState } from "react";
 import Wrapper from "../base/Wrapper";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import FinancePopup from "./FinancePopup";
-import { useEffect, useState } from "react";
 import { Divider, makeStyles, Typography } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
+import DebtOverview from "./DebtOverview";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -28,32 +30,28 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.5rem",
     marginRight: theme.spacing(1),
   },
+  skeleton: {
+    margin: "12px",
+  },
 }));
 
 function Finance() {
   const classes = useStyles();
   const [dataLoading, setDataLoading] = useState(true);
-  const [currentUserData, setCurrentUserData] = useState();
   const [update, setUpdate] = useState(false);
-  const [financeData, isLoading] = usePageData("Finance", update);
+  const [pageData, isLoading] = usePageData("Finance", update);
   const [openFinancePopup, setOpenFinancePopup] = useState(false);
   const [multipleSelected, setMultipleSelected] = useState(false);
-  const [sortedData, setSortedData] = useState(null);
-  const [settlementData, setSettlementData] = useState(null);
+  const [sortedData, setSortedData] = useState([]);
+  const [currentUserData, userIsLoading] = useCurrentUser();
 
   const activeGroups = useRecoilValue(activeGroupsState);
 
   useEffect(() => {
-    const activeGroupIDs = activeGroups.map((groupArr) => groupArr[0]);
-    const loadUserData = async () => {
-      const userData = await getCurrentUserData();
-      setCurrentUserData(userData);
-    };
-    loadUserData();
-    function multipleGroupsSelected() {
-      activeGroupIDs.length > 1 ? setMultipleSelected(true) : setMultipleSelected(false);
-    }
-    multipleGroupsSelected();
+    const financeData = pageData ? pageData[0] : [];
+
+    activeGroups.length > 1 ? setMultipleSelected(true) : setMultipleSelected(false);
+
     financeData &&
       setSortedData(
         financeData.sort(function (a, b) {
@@ -62,15 +60,21 @@ function Finance() {
           return dateB - dateA;
         })
       );
-    const handleSettlementData = async () => {
-      if (activeGroupIDs.length !== 0) {
-        const settlementData = await getSettlementData(activeGroupIDs);
-        setSettlementData(settlementData);
-      }
-    };
-    handleSettlementData();
+
     setDataLoading(false);
-  }, [financeData, activeGroups]);
+  }, [pageData, activeGroups.length]);
+
+  if (isLoading || userIsLoading) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: [0, 1] }} transition={{ delay: 1 }}>
+        <div style={{ display: "flex" }}>
+          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
+        </div>
+      </motion.div>
+    );
+  }
 
   function loadingSkeleton() {
     const n = 6;
@@ -80,6 +84,9 @@ function Finance() {
       </div>
     ));
   }
+
+  const financeData = pageData[0];
+  const settlementData = pageData[1];
 
   return (
     <>
@@ -92,6 +99,19 @@ function Finance() {
         update={() => setUpdate(!update)}
       />
       <Wrapper>
+        {activeGroups.map((group) => {
+          const groupID = group[0];
+          const groupFinanceData = financeData.filter((doc) => doc.groupID === groupID);
+          const groupSettlementData = settlementData.filter((doc) => doc.groupID === groupID);
+          return (
+            <DebtOverview
+              financeData={groupFinanceData}
+              settlementData={groupSettlementData}
+              group={group}
+              currentUserID={currentUserData.userId}
+            />
+          );
+        })}
         {dataLoading && isLoading && activeGroups.length !== 0
           ? loadingSkeleton()
           : sortedData?.length !== 0 &&

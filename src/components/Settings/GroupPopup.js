@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GroupPopup({ open, close, updateBubbles }) {
+export default function GroupPopup({ open, close, updateBubbles, setSnackbarContent }) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
@@ -77,10 +77,18 @@ export default function GroupPopup({ open, close, updateBubbles }) {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <CreateGroup close={close} updateBubbles={updateBubbles} />
+          <CreateGroup
+            close={close}
+            updateBubbles={updateBubbles}
+            setSnackbarContent={setSnackbarContent}
+          />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <JoinGroup close={close} updateBubbles={updateBubbles} />
+          <JoinGroup
+            close={close}
+            updateBubbles={updateBubbles}
+            setSnackbarContent={setSnackbarContent}
+          />
         </TabPanel>
       </div>
     </Dialog>

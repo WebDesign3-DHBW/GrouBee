@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaPopup({ open, close }) {
+export default function MediaPopup({ open, close, update }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
   const [title, setTitle] = useState("");
@@ -96,6 +96,7 @@ export default function MediaPopup({ open, close }) {
         title: title,
         date: selectedDate,
         groupID: selectedGroup.groupID,
+        color: selectedGroup.color,
         assignedTo: userData.userId,
         list: "todo",
       });
@@ -110,6 +111,7 @@ export default function MediaPopup({ open, close }) {
       status: "success",
       open: true,
     });
+    update();
   };
 
   return (
