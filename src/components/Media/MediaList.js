@@ -14,7 +14,6 @@ import { MdCheck, MdClose, MdDelete, MdExpandMore, MdPlayArrow, MdStar } from "r
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import RatingPopup from "./RatingPopup";
 import { updateMedia } from "../../firebase/updateMedia";
-import { removeMedia } from "../../firebase/removeMedia";
 import { Rating } from "@material-ui/lab";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
@@ -70,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MediaList({ media, data, update }) {
+function MediaList({ media, data, update, setSnackbarContent, handleConfirmPopup }) {
   const classes = useStyles();
 
   //contains the index for every open accordion
@@ -90,7 +89,16 @@ function MediaList({ media, data, update }) {
   const renderMediaForCategory = (category) => {
     return data
       .filter((mediaItem) => mediaItem.status === category)
-      .map((mediaItem) => <MediaItem data={mediaItem} category={category} update={update} />);
+      .map((mediaItem) => (
+        <MediaItem
+          data={mediaItem}
+          setSnackbarContent={setSnackbarContent}
+          category={category}
+          update={update}
+          media={media}
+          handleConfirmPopup={handleConfirmPopup}
+        />
+      ));
   };
 
   return (
@@ -144,18 +152,25 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const MediaItem = ({ data, category, update }) => {
+const MediaItem = ({ data, category, update, setSnackbarContent, media, handleConfirmPopup }) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
   const handleUpdate = async (status) => {
+    const mediaText = media === "Filme" ? "den Film" : "die Serie";
     if (status === "delete") {
-      await removeMedia(data.docId);
+      handleConfirmPopup(data.docId)
+      
     } else {
       await updateMedia(data.docId, { status });
+      setSnackbarContent({
+        message: `Du hast ${mediaText} ${status}`,
+        status: "success",
+        open: true,
+      });
+      update();
     }
-    update();
   };
 
   const ellipsis = data.title.length > 25 ? "…" : "";

@@ -29,14 +29,19 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: "center",
+    minWidth: 311,
+    "& h2": {
+      fontSize: theme.typography.h2.fontSize,
+      fontWeight: theme.typography.h2.fontWeight,
+    },
   },
   textField: {
     display: "flex",
-    paddingBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   formControl: {
     display: "flex",
-    paddingBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -115,7 +120,7 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
   return (
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
-      <Dialog open={open} onClose={close} className={classes.dialog}>
+      <Dialog open={open} onClose={close}>
         <DialogTitle id="filme-serien-hinzufügen" className={classes.dialogTitle}>
           {cardTitle} hinzufügen
         </DialogTitle>

@@ -17,6 +17,11 @@ function usePageData(pageName, update) {
           const todos = await getActiveGroupData(activeGroupIDs, "ToDo");
 
           setResult([calendar, todos]);
+        } else if (pageName === "Finance") {
+          const finance = await getActiveGroupData(activeGroupIDs, pageName);
+          const settlement = await getActiveGroupData(activeGroupIDs, "Settlement");
+
+          setResult([finance, settlement]);
         } else if (pageName) {
           const pageData = await getActiveGroupData(activeGroupIDs, pageName);
           setResult(pageData);

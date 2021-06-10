@@ -8,6 +8,7 @@ import ProfilePopup from "./ProfilePopup";
 import GroupLink from "./GroupLink";
 import Wrapper from "../base/Wrapper";
 import { navigate } from "@reach/router";
+import Snackbar from "../Snackbar";
 const useStyles = makeStyles((theme) => ({
   button: {
     padding: theme.spacing(1, 0),
@@ -29,6 +30,7 @@ function Settings() {
   const [openEditProfile, setOpenEditProfile] = useState(false);
   const [tiggerUpdate, setTriggerUpdate] = useState(false);
   const [openGroupLink, setOpenGroupLink] = useState(false);
+  const [snackbarContent, setSnackbarContent] = useState();
   const classes = useStyles();
 
   return (
@@ -40,7 +42,9 @@ function Settings() {
         open={openGroupPopup}
         close={() => setOpenGroupPopup(false)}
         updateBubbles={() => setTriggerUpdate(!tiggerUpdate)}
+        setSnackbarContent={setSnackbarContent}
       />
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Wrapper>
         <List component="nav" aria-label="settings options">
           <Divider />
