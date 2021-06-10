@@ -164,7 +164,11 @@ function SignIn({ location }) {
                   color="inherit"
                   size="small"
                   disableRipple
-                  onClick={() => setOpenConfirm(false)}
+                  onClick={() => {
+                    setOpenConfirm(false);
+                    setResendButton(false);
+                    setResetButton(false);
+                  }}
                 >
                   Abbrechen
                 </Button>
