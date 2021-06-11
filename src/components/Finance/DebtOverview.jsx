@@ -64,7 +64,6 @@ function DebtOverview({ financeData, settlementData, group, currentUserID, updat
     const filteredFinanceData = financeData.filter((entry) => {
       return new Date(entry.currentDate) > new Date(settlementDate);
     });
-    console.log(filteredFinanceData);
 
     const sumPaidByMe = filteredFinanceData
       .filter((entry) => entry.paidBy === currentUserID)
