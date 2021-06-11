@@ -5,7 +5,7 @@ import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import FinancePopup from "./FinancePopup";
-import { Divider, makeStyles, Typography } from "@material-ui/core";
+import { CircularProgress, Divider, makeStyles, Typography } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
@@ -13,8 +13,6 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 import DebtOverview from "./DebtOverview";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import Skeleton from "@material-ui/lab/Skeleton";
-import { motion } from "framer-motion";
 import UpdatePopup from "../base/UpdatePopup";
 import Snackbar from "../Snackbar";
 
@@ -76,13 +74,9 @@ function Finance() {
 
   if (isLoading || userIsLoading) {
     return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: [0, 1] }} transition={{ delay: 1 }}>
-        <div style={{ display: "flex" }}>
-          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
-          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
-          <Skeleton variant="circle" width={64} height={64} className={classes.skeleton} />
-        </div>
-      </motion.div>
+      <div style={{ textAlign: "center", marginTop: "45vh" }}>
+        <CircularProgress />
+      </div>
     );
   }
 

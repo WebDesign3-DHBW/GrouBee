@@ -2,7 +2,7 @@ import { useState } from "react";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
-import { AppBar, makeStyles, Tab, Tabs } from "@material-ui/core";
+import { AppBar, CircularProgress, makeStyles, Tab, Tabs } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import SwipeableViews from "react-swipeable-views";
 import MediaList from "./MediaList";
@@ -47,7 +47,11 @@ function Media() {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div style={{ textAlign: "center", marginTop: "45vh" }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   const getMediaData = (type) => {

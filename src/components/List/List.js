@@ -5,9 +5,8 @@ import FAB from "../FAB";
 import { useState } from "react";
 import ListPopup from "./ListPopup";
 import { useLocation } from "@reach/router";
-import Skeleton from "@material-ui/lab/Skeleton";
 import Tasks from "./Tasks";
-import { makeStyles } from "@material-ui/core";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 import Snackbar from "../Snackbar";
 import ConfirmPopup from "./ConfirmPopup";
 import UpdatePopup from "../base/UpdatePopup";
@@ -48,7 +47,11 @@ function List() {
   }
 
   if (isLoading) {
-    return <Skeleton variant="text" animation="wave" />;
+    return (
+      <div style={{ textAlign: "center", marginTop: "45vh" }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   const handleConfirmPopup = (task) => {
