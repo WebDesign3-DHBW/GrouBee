@@ -100,7 +100,13 @@ function DebtOverview({ financeData, settlementData, group, currentUserID, updat
 
   return (
     <Card className={classes.box}>
-      <h2 className={classes.debt}>{calculateDebt()}</h2>
+      <h2 className={classes.debt}>
+        {(Math.round(calculateDebt() * 100) / 100)
+          .toString()
+          .replace(".", ",")
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+        €
+      </h2>
       <Typography className={classes.group}>offen an {group[1].name}</Typography>
       <Button
         variant="contained"
