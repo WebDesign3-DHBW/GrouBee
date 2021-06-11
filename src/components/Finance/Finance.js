@@ -68,6 +68,10 @@ function Finance() {
     ));
   }
 
+  const handleUpdatePopup = (docID, title, groupID, color) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID, color });
+  };
   const SettlementDivider = ({ groupName, settledDate, settledDateDocID }) => {
     return (
       <>
@@ -140,6 +144,7 @@ function Finance() {
               multipleSelected={activeGroups.length > 1 ? true : false}
               groupName={groupName}
               settled={settlementDoc}
+              handleUpdatePopup={handleUpdatePopup}
             />
             <Divider />
           </div>
