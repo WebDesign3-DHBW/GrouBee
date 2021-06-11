@@ -6,4 +6,5 @@ export const addSettlement = async (entry) => {
     groupID,
     settleDate,
   });
+
 };

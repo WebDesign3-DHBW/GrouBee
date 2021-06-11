@@ -1,6 +1,6 @@
 import { Button, Card, makeStyles, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
-//import { addSettlement } from "../../firebase/addSettlement";
+import { addSettlement } from "../../firebase/addSettlement";
 import { getAllUserData } from "../../firebase/getAllUserData";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,12 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DebtOverview({ financeData, group, currentUserID }) {
-  //add settlementData
-
+function DebtOverview({ financeData, settlementData, group, currentUserID, update }) {
   const classes = useStyles();
   const [allUserInGroup, setAllUserInGroup] = useState([]);
-  //const [latestSettleDate, setLatestSettleDate] = useState();
 
   useEffect(() => {
     const getUserInGroup = async () => {
@@ -45,25 +42,27 @@ function DebtOverview({ financeData, group, currentUserID }) {
     getUserInGroup();
   }, [group.groupID]);
 
-  // Für die Abrechnen Story
+  function getLatestSettleDate() {
+    let currentNewestSettleDate = new Date("2000-01-01");
 
-  // function getLatestSettleDate() {
-  //   settlementData.map((data) =>
-  //     if(data.groupID === group[0]) {
-  //       if(new Date(data.settleDate) > new Date(latestSettleDate)) {
-  //          setLatestSettleDate(data.settleDate)
-  //        }
-  //      }
-  //     setLatestSettleDate(new Date().toISOString().split("T")[0])
-  //   );
-  // }
+    settlementData.forEach((data) => {
+      if (data.groupID === group[0]) {
+        if (new Date(data.settleDate) >= currentNewestSettleDate) {
+          currentNewestSettleDate = data.settleDate;
+        }
+      }
+    });
+    return currentNewestSettleDate;
+  }
 
   function calculateDebt() {
-    // getLatestSettleDate();
+    const settlementDate = getLatestSettleDate();
 
     var groupsize = allUserInGroup.length !== 0 ? allUserInGroup.length : 1;
 
-    const filteredFinanceData = financeData;
+    const filteredFinanceData = financeData.filter((entry) => {
+      return new Date(entry.currentDate) > new Date(settlementDate);
+    });
 
     const sumPaidByMe = filteredFinanceData
       .filter((entry) => entry.paidBy === currentUserID)
@@ -79,7 +78,6 @@ function DebtOverview({ financeData, group, currentUserID }) {
 
     let debt = sumNotPaidByMe / groupsize - sumPaidByMe / groupsize;
 
-
     if (debt > 0) {
       debt = "-" + debt;
     }
@@ -90,12 +88,15 @@ function DebtOverview({ financeData, group, currentUserID }) {
     return debt;
   }
 
-  // function handleSettle() {
-  //   const settleDate = new Date().toISOString().split("T")[0];
-  //   const groupID = group[0];
-  //   const entry = { groupID, settleDate };
-  //   addSettlement(entry);
-  // }
+  function handleSettle() {
+    const settleDate = new Date().toISOString().split("T")[0];
+    const groupID = group[0];
+    const entry = { groupID, settleDate };
+    addSettlement(entry);
+    calculateDebt();
+
+    update();
+  }
 
   return (
     <Card className={classes.box}>
@@ -105,7 +106,7 @@ function DebtOverview({ financeData, group, currentUserID }) {
         variant="contained"
         color="primary"
         className={classes.calculate}
-        //onClick={handleSettle}
+        onClick={handleSettle}
       >
         Abrechnen
       </Button>
