@@ -130,6 +130,7 @@ function Finance() {
               settlementData={groupSettlementData}
               group={group}
               currentUserID={currentUserData.userId}
+              update={() => setUpdate(!update)}
             />
           );
         })}
@@ -153,6 +154,7 @@ function Finance() {
                   sortedData={sortedData}
                   ID={i}
                   handleUpdatePopup={handleUpdatePopup}
+                  update={() => setUpdate(!update)}
                 />
                 <Divider />
               </div>

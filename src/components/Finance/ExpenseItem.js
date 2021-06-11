@@ -46,7 +46,7 @@ function ExpenseItem(props) {
       if (props.settlementData?.length !== 0 && props.settlementData !== null) {
         props.settlementData.map((data, i) => {
           if (props.groupID === data.groupID) {
-            setSettled(new Date(data.settleDate) > new Date(props.currentDate));
+            setSettled(new Date(data.settleDate) >= new Date(props.currentDate));
           }
           return null;
         });
