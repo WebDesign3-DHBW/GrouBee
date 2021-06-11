@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DebtOverview({ financeData, settlementData, group, currentUserID }) {
+function DebtOverview({ financeData, settlementData, group, currentUserID, update }) {
   const classes = useStyles();
   const [allUserInGroup, setAllUserInGroup] = useState([]);
 
@@ -96,7 +96,8 @@ function DebtOverview({ financeData, settlementData, group, currentUserID }) {
     const entry = { groupID, settleDate };
     addSettlement(entry);
     calculateDebt();
-    //muss neu rendern
+
+    update();
   }
 
   return (
