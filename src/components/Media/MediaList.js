@@ -69,13 +69,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MediaList({ media, data, update, setSnackbarContent, handleConfirmPopup }) {
+function MediaList({
+  media,
+  data,
+  update,
+  setSnackbarContent,
+  handleConfirmPopup,
+  expanded,
+  expandAccordion,
+  setExpanded,
+}) {
   const classes = useStyles();
 
-  //contains the index for every open accordion
-  const [expanded, setExpanded] = useState([0]);
-
-  const handleChange = (panel) => {
+  const handleAccordion = (panel) => {
     // Check if accordion is already in Array
     if (expanded.some((el) => el === panel)) {
       // If in array -> remove
@@ -97,6 +103,7 @@ function MediaList({ media, data, update, setSnackbarContent, handleConfirmPopup
           update={update}
           media={media}
           handleConfirmPopup={handleConfirmPopup}
+          expandAccordion={expandAccordion}
         />
       ));
   };
@@ -107,7 +114,7 @@ function MediaList({ media, data, update, setSnackbarContent, handleConfirmPopup
         <Accordion
           square
           expanded={expanded.some((accordion) => accordion === idx)}
-          onChange={() => handleChange(idx)}
+          onChange={() => handleAccordion(idx)}
         >
           <AccordionSummary
             expandIcon={<MdExpandMore className={classes.expandIcon} />}
@@ -152,16 +159,35 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const MediaItem = ({ data, category, update, setSnackbarContent, media, handleConfirmPopup }) => {
+const MediaItem = ({
+  data,
+  category,
+  update,
+  setSnackbarContent,
+  media,
+  handleConfirmPopup,
+  expandAccordion,
+}) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
+  const getAccordionIndex = (status) => {
+    if (status === "begonnen") {
+      return 0;
+    } else if (status === "neu") {
+      return 1;
+    } else if (status === "abgeschlossen") {
+      return 2;
+    } else {
+      return 3;
+    }
+  };
+
   const handleUpdate = async (status) => {
     const mediaText = media === "Filme" ? "den Film" : "die Serie";
     if (status === "delete") {
-      handleConfirmPopup(data.docId)
-      
+      handleConfirmPopup(data.docId);
     } else {
       await updateMedia(data.docId, { status });
       setSnackbarContent({
@@ -169,6 +195,7 @@ const MediaItem = ({ data, category, update, setSnackbarContent, media, handleCo
         status: "success",
         open: true,
       });
+      expandAccordion(getAccordionIndex(status));
       update();
     }
   };
