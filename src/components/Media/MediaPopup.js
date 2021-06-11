@@ -131,7 +131,7 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
         </DialogContent>
         <DialogActions className={classes.buttons}>
           <Button onClick={close}>Abbrechen</Button>
-          <Button autofocus onSubmit={handleSave} color="primary">
+          <Button autofocus onClick={handleSave} color="primary">
             Speichern
           </Button>
         </DialogActions>
