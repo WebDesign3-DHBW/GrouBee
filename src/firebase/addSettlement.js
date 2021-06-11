@@ -7,5 +7,4 @@ export const addSettlement = async (entry) => {
     settleDate,
   });
 
-  console.log("document successfully written");
 };
