@@ -103,6 +103,7 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
             value={title}
             style={{ marginBottom: 10 }}
             className={classes.textField}
+            autoComplete="off"
           />
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="selectGroup" shrink={true}>
