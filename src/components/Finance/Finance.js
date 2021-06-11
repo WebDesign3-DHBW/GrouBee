@@ -14,6 +14,9 @@ import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 import DebtOverview from "./DebtOverview";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import UpdatePopup from "../base/UpdatePopup";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { motion } from "framer-motion";
+import ConfirmPopup from "../List/ConfirmPopup";
 import Snackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +50,8 @@ function Finance() {
   const [clickedItem, setClickedItem] = useState();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState();
+  const [open, setOpen] = useState(false);
+  const [clickedSettlementDate, setClickedSettlementDate] = useState();
 
   const activeGroups = useRecoilValue(activeGroupsState);
 
@@ -91,9 +96,33 @@ function Finance() {
 
   const financeData = pageData[0];
   const settlementData = pageData[1];
+  console.log(settlementData);
 
   return (
     <>
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
+      <ConfirmPopup
+        open={open}
+        close={() => setOpen(false)}
+        clickedItem={clickedSettlementDate && clickedSettlementDate[0]}
+        update={() => {
+          setUpdate(!update);
+          console.log("update");
+        }}
+        collection="Settlement"
+        mediaType={
+          clickedSettlementDate &&
+          "das letzte Begleichen der Gruppe " +
+            clickedSettlementDate[2] +
+            " am " +
+            new Date(clickedSettlementDate[1]).toLocaleDateString("de-DE", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })
+        }
+        setSnackbarContent={setSnackbarContent}
+      />
       <ButtonAppBar title="Finanzen" />
       <Bubbles />
       <FAB open={() => setOpenFinancePopup(true)} />
@@ -148,6 +177,8 @@ function Finance() {
                   sortedData={sortedData}
                   ID={i}
                   handleUpdatePopup={handleUpdatePopup}
+                  openConfirm={setOpen}
+                  clicked={setClickedSettlementDate}
                   update={() => setUpdate(!update)}
                 />
                 <Divider />

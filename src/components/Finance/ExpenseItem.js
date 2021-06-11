@@ -2,6 +2,7 @@ import {
   Avatar,
   CardActionArea,
   Divider,
+  IconButton,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
@@ -12,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { getUserData } from "../../firebase/getUserData";
 import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
+import { MdDelete } from "react-icons/md";
 
 const useStyles = makeStyles((theme) => ({
   crossedOut: {
@@ -22,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ExpenseItem(props) {
+function ExpenseItem(props, open) {
   const classes = useStyles();
   const [dataLoading, setDataLoading] = useState(true);
   const [profileImage, setProfileImage] = useState();
@@ -31,8 +33,10 @@ function ExpenseItem(props) {
   const [settled, setSettled] = useState(false);
   const [nextSettled, setNextSettled] = useState(false);
   const [settledDate, setSettledDate] = useState();
+  const [settledDateDocID, setSettledDateDocID] = useState();
 
   useEffect(() => {
+    console.log("settledDate" + settledDate);
     const loadUserData = async () => {
       const userData = await getUserData(props.paidBy);
       try {
@@ -68,7 +72,10 @@ function ExpenseItem(props) {
               nextKey = sortedDataLength + 1;
               props.settlementData.map((data, i) => {
                 setNextSettled(new Date(data.settleDate) > new Date(nextDate));
-                new Date(data.settleDate) > new Date(nextDate) && setSettledDate(data.settleDate);
+                if (new Date(data.settleDate) > new Date(nextDate)) {
+                  setSettledDate(data.settleDate);
+                  setSettledDateDocID(data.docId);
+                }
                 return null;
               });
             }
@@ -78,7 +85,47 @@ function ExpenseItem(props) {
     }
     getNext();
     setDataLoading(false);
-  }, [props]);
+  }, [
+    props.update,
+    props.settlementData,
+    props.ID,
+    props.currentDate,
+    props.currentUserData.group,
+    props.groupID,
+    props.paidBy,
+    props.sortedData,
+    props.currentUserData.groups,
+  ]);
+
+  const SettlementDivider = () => {
+    return (
+      <div style={{ display: "flex" }}>
+        <Typography variant="overline" color="primary">
+          zul. {groupName} beglichen{" "}
+          {new Date(settledDate).toLocaleDateString("de-DE", {
+            weekday: "short",
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          })}
+        </Typography>
+        <div style={{ marginLeft: "auto", display: "flex" }}>
+          <IconButton
+            edge="end"
+            aria-label="Delete"
+            onClick={() => {
+              props.clicked([settledDateDocID, settledDate, groupName]);
+              props.openConfirm(true);
+            }}
+            size="small"
+            color="primary"
+          >
+            <MdDelete />
+          </IconButton>
+        </div>
+      </div>
+    );
+  };
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -94,15 +141,7 @@ function ExpenseItem(props) {
           {settled && props.ID === 0 && (
             <>
               <Divider />
-              <Typography variant="overline" color="primary">
-                {groupName} beglichen{" "}
-                {new Date(settledDate).toLocaleDateString("de-DE", {
-                  weekday: "short",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </Typography>
+              <SettlementDivider />
               <Divider />
             </>
           )}
@@ -139,15 +178,7 @@ function ExpenseItem(props) {
         {!settled && nextSettled && (
           <>
             <Divider />
-            <Typography variant="overline" color="primary">
-              {groupName} beglichen{" "}
-              {new Date(settledDate).toLocaleDateString("de-DE", {
-                weekday: "short",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </Typography>
+            <SettlementDivider />
           </>
         )}
       </>
