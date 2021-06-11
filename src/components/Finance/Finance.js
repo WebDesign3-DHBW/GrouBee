@@ -147,6 +147,7 @@ function Finance() {
                   paidBy={data.paidBy}
                   groupID={data.groupID}
                   docID={data.docId}
+                  color={data.color}
                   multipleSelected={multipleSelected}
                   settlementData={settlementData}
                   sortedData={sortedData}
