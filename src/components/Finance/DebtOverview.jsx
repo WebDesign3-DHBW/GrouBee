@@ -49,7 +49,6 @@ function DebtOverview({ financeData, settlementData, group, currentUserID, updat
       if (data.groupID === group[0]) {
         if (new Date(data.settleDate) >= currentNewestSettleDate) {
           currentNewestSettleDate = data.settleDate;
-          console.log(currentNewestSettleDate);
         }
       }
     });
