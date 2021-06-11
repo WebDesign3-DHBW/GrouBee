@@ -64,8 +64,16 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
     setSelectedGroup({ groupID, color });
   };
 
-  const handleConfirm = () => {
-    updateItem(
+  const handleConfirm = async (e) => {
+    if (!title || !selectedGroup) {
+      setSnackbarContent({
+        message: "Bitte fülle alle Felder aus",
+        status: "error",
+        open: true,
+      });
+      return;
+    }
+    await updateItem(
       clickedItem.docID,
       { title, groupID: selectedGroup.groupID, color: selectedGroup.color },
       collection
@@ -87,7 +95,7 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
         Eintrag ändern
       </DialogTitle>
       <DialogContent dividers>
-        <form className={classes.root} noValidate autoComplete="off">
+        <div className={classes.root}>
           <TextField
             id="update item"
             label="Titel"
@@ -113,7 +121,7 @@ function UpdatePopup({ open, close, clickedItem, update, collection, setSnackbar
                 ))}
             </NativeSelect>
           </FormControl>
-        </form>
+        </div>
       </DialogContent>
       <DialogActions className={classes.buttons}>
         <Button autoFocus onClick={handleCancel}>

@@ -51,7 +51,6 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
     setSelectedGroup({ groupID, color });
   };
   const handleTitle = (e) => {
-    e.preventDefault();
     setTitle(e.target.value);
   };
   const handleMedia = (e) => {
@@ -69,7 +68,6 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
   const handleSave = async (e) => {
     const mediaType = isMovie ? "Dein Film" : "Deine Serie";
     if (!title || !selectedGroup.groupID) {
-      e.preventDefault();
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
         status: "error",
@@ -102,7 +100,7 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
           Film / Serie hinzufügen
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
-          <form className={classes.form} noValidate autoComplete="off">
+          <div className={classes.form}>
             <TextField id="movie title" label="Titel" onChange={handleTitle} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
@@ -127,7 +125,7 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
                 <option value={false}>Serie</option>
               </Select>
             </FormControl>
-          </form>
+          </div>
         </DialogContent>
         <DialogActions className={classes.buttons}>
           <Button onClick={close}>Abbrechen</Button>
