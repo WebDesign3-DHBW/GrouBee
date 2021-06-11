@@ -233,7 +233,7 @@ const MediaItem = ({
                   <IconButton
                     edge="end"
                     aria-label="complete"
-                    onClick={() => handleUpdate("abgeschlossen")}
+                    onClick={(e) => handleUpdate(e, "abgeschlossen")}
                   >
                     <MdCheck />
                   </IconButton>
