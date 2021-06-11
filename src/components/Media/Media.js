@@ -2,7 +2,7 @@ import { useState } from "react";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
-import { AppBar, makeStyles, Tab, Tabs } from "@material-ui/core";
+import { AppBar, CircularProgress, makeStyles, Tab, Tabs } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import SwipeableViews from "react-swipeable-views";
 import MediaList from "./MediaList";
@@ -11,6 +11,7 @@ import MediaPopup from "./MediaPopup";
 import { TabPanel, a11yProps } from "../Settings/GroupPopup";
 import Snackbar from "../Snackbar";
 import ConfirmPopup from "../List/ConfirmPopup";
+import UpdatePopup from "../base/UpdatePopup";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import InfoPanel from "./InfoPanel";
 
@@ -29,11 +30,13 @@ function Media() {
   const [mediaData, isLoading] = usePageData("Media", update);
   const [open, setOpen] = useState(false);
   const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
+  const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [snackbarContent, setSnackbarContent] = useState();
   const [clickedMedia, setClickedMedia] = useState();
   const [expanded, setExpanded] = useState([0]);
+  const [clickedItem, setClickedItem] = useState();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -44,7 +47,11 @@ function Media() {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div style={{ textAlign: "center", marginTop: "45vh" }}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   const getMediaData = (type) => {
@@ -63,6 +70,11 @@ function Media() {
     }
   };
 
+  const handleUpdatePopup = (docID, title, groupID, color) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID, color });
+  };
+
   return (
     <div className={classes.wrapper}>
       <ButtonAppBar title="Filme & Serien" />
@@ -76,6 +88,16 @@ function Media() {
         mediaType={value === 0 ? "den Film" : "die Serie"}
         setSnackbarContent={setSnackbarContent}
       />
+      {openUpdatePopup && (
+        <UpdatePopup
+          open={openUpdatePopup}
+          close={() => setOpenUpdatePopup(false)}
+          clickedItem={clickedItem}
+          update={() => setUpdate(!update)}
+          collection={"Media"}
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
 
       <FAB open={() => setOpen(true)} />
@@ -115,6 +137,7 @@ function Media() {
             expandAccordion={expandAccordion}
             setExpanded={setExpanded}
             expanded={expanded}
+            handleUpdatePopup={handleUpdatePopup}
           />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
@@ -127,6 +150,7 @@ function Media() {
             expandAccordion={expandAccordion}
             setExpanded={setExpanded}
             expanded={expanded}
+            handleUpdatePopup={handleUpdatePopup}
           />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction} className={classes.info}>

@@ -125,9 +125,9 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
           {cardTitle} hinzufügen
         </DialogTitle>
         <DialogContent dividers>
-          <form className={classes.root} noValidate autoComplete="off">
+          <div className={classes.root}>
             <TextField
-              id="movie title"
+              id="task title"
               label="Titel"
               onChange={handleTitle}
               value={title}
@@ -173,7 +173,7 @@ export default function ListPopup({ open, close, cardTitle, list, triggerUpdate 
                   ))}
               </Select>
             </FormControl>
-          </form>
+          </div>
         </DialogContent>
         <DialogActions className={classes.buttons}>
           <Button autoFocus onClick={close}>

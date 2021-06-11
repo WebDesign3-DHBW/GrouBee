@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MediaPopup({ open, close, triggerUpdate, mediaType, expandAccordion }) {
   const classes = useStyles();
   const [selectedGroup, setSelectedGroup] = useState({ groupID: "", color: "" });
-  const [title, setTitel] = useState("");
+  const [title, setTitle] = useState("");
   const [isMovie, setIsMovie] = useState(mediaType);
   const [userData, isLoading] = useCurrentUser();
   const [snackbarContent, setSnackbarContent] = useState();
@@ -50,8 +50,8 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
     const color = e.target.value.substring(e.target.value.indexOf("/") + 1);
     setSelectedGroup({ groupID, color });
   };
-  const handleTitel = (e) => {
-    setTitel(e.target.value);
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
   };
   const handleMedia = (e) => {
     setIsMovie(str2bool(e.target.value));
@@ -83,7 +83,7 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
     });
     triggerUpdate();
     close();
-    setTitel("");
+    setTitle("");
     setSnackbarContent({
       message: `${mediaType} wurde erfolgreich hinzugefügt`,
       status: "success",
@@ -100,8 +100,8 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
           Film / Serie hinzufügen
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
-          <form className={classes.form} noValidate autoComplete="off">
-            <TextField id="movie title" label="Titel" onChange={handleTitel} value={title} />
+          <div className={classes.form}>
+            <TextField id="movie title" label="Titel" onChange={handleTitle} value={title} />
             <FormControl>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
               <Select
@@ -125,13 +125,11 @@ export default function MediaPopup({ open, close, triggerUpdate, mediaType, expa
                 <option value={false}>Serie</option>
               </Select>
             </FormControl>
-          </form>
+          </div>
         </DialogContent>
         <DialogActions className={classes.buttons}>
-          <Button autoFocus onClick={close}>
-            Abbrechen
-          </Button>
-          <Button autoFocus onClick={handleSave} color="primary">
+          <Button onClick={close}>Abbrechen</Button>
+          <Button autofocus onClick={handleSave} color="primary">
             Speichern
           </Button>
         </DialogActions>

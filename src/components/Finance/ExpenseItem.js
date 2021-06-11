@@ -1,5 +1,6 @@
 import {
   Avatar,
+  CardActionArea,
   Divider,
   ListItem,
   ListItemAvatar,
@@ -79,40 +80,47 @@ function ExpenseItem(props) {
     setDataLoading(false);
   }, [props]);
 
+  const handleClick = (e) => {
+    e.stopPropagation();
+    props.handleUpdatePopup(props.docID, props.title, props.groupID, props.color);
+  };
+
   if (dataLoading) {
     return <ExpenseItemSkeleton />;
   } else {
     return (
       <>
-        <ListItem className="nplr">
-          <ListItemAvatar>
-            <Avatar alt="Avatar" src={profileImage} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={props.title}
-            secondary={
-              groupName &&
-              `${profileName} ${props.multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
-                props.currentDate
-              ).toLocaleDateString("de-DE", {
-                weekday: "short",
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-              })}`
-            }
-          />
-          <ListItemSecondaryAction className="nr">
-            <Typography
-              className={`${settled && classes.crossedOut} ${!settled && classes.textPrimary}`}
-            >
-              {String(props.expense)
-                .replace(".", ",")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
-              €
-            </Typography>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <CardActionArea style={{ padding: "0px 5px" }} onClick={handleClick}>
+          <ListItem className="nplr">
+            <ListItemAvatar>
+              <Avatar alt="Avatar" src={profileImage} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={props.title}
+              secondary={
+                groupName &&
+                `${profileName} ${
+                  props.multipleSelected ? "@" + groupName + " | " : "|"
+                } ${new Date(props.currentDate).toLocaleDateString("de-DE", {
+                  weekday: "short",
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                })}`
+              }
+            />
+            <ListItemSecondaryAction className="nr">
+              <Typography
+                className={`${settled && classes.crossedOut} ${!settled && classes.textPrimary}`}
+              >
+                {String(props.expense)
+                  .replace(".", ",")
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                €
+              </Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </CardActionArea>
         {!settled && nextSettled && (
           <>
             <Divider />

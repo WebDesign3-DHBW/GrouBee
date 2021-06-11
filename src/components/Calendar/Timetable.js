@@ -17,6 +17,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   CircularProgress,
+  CardActionArea,
 } from "@material-ui/core";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
@@ -25,6 +26,7 @@ import FAB from "../FAB";
 import CalendarPopup from "../Calendar/CalendarPopup";
 import ConfirmPopup from "../List/ConfirmPopup";
 import Snackbar from "../Snackbar";
+import UpdatePopup from "../base/UpdatePopup";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -82,9 +84,11 @@ function Timetable() {
   const [calendarDate, setCalendarDate] = useState(new Date(new Date()));
   const [openCalendarPopup, setOpenCalendarPopup] = useState(false);
   const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
-  const [clickedItem, setClickedItem] = useState();
+  const [clickedCalendarItem, setClickedCalendarItem] = useState();
   const [clickedItemType, setClickedItemType] = useState();
   const [snackbarContent, setSnackbarContent] = useState();
+  const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
+  const [clickedItem, setClickedItem] = useState();
 
   if (isLoading) {
     return (
@@ -106,8 +110,19 @@ function Timetable() {
 
   const handleConfirmPopup = (docId, docType) => {
     setOpenConfirmPopup(true);
-    setClickedItem(docId);
+    setClickedCalendarItem(docId);
     setClickedItemType(docType);
+  };
+
+  const handleUpdatePopup = (docID, title, groupID, color, collection) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID, color });
+    setClickedItemType(collection);
+  };
+
+  const handleClick = (e, docId, title, groupID, color, collection) => {
+    e.stopPropagation();
+    handleUpdatePopup(docId, title, groupID, color, collection);
   };
 
   const calendarData = pageData[0];
@@ -126,12 +141,22 @@ function Timetable() {
       <ConfirmPopup
         open={openConfirmPopup}
         close={() => setOpenConfirmPopup(false)}
-        clickedItem={clickedItem}
+        clickedCalendarItem={clickedCalendarItem}
         update={() => setUpdate(!update)}
         collection={clickedItemType}
         mediaType={clickedItemType === "ToDo" ? "die Aufgabe" : "den Termin"}
         setSnackbarContent={setSnackbarContent}
       />
+      {openUpdatePopup && (
+        <UpdatePopup
+          open={openUpdatePopup}
+          close={() => setOpenUpdatePopup(false)}
+          clickedItem={clickedItem}
+          update={() => setUpdate(!update)}
+          collection={clickedItemType}
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Wrapper>
         <Calendar
@@ -175,20 +200,34 @@ function Timetable() {
                 .sort((a, b) => a.time.localeCompare(b.time))
                 .map((data, idx, arr) => (
                   <div key={idx}>
-                    <ListItem>
-                      <ListItemText>
-                        <span className={classes.time}>{data.time} Uhr</span> {data.title}
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          onClick={() => handleConfirmPopup(data.docId, "Calendar")}
-                          size="small"
-                        >
-                          <MdDelete />
-                        </IconButton>
-                      </ListItemSecondaryAction>
+                    <ListItem disableGutters={true}>
+                      <CardActionArea
+                        style={{ paddingLeft: "5px" }}
+                        onClick={(e) =>
+                          handleClick(
+                            e,
+                            data.docId,
+                            data.title,
+                            data.groupID,
+                            data.color,
+                            "Calendar"
+                          )
+                        }
+                      >
+                        <ListItemText>
+                          <span className={classes.time}>{data.time} Uhr</span> {data.title}
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => handleConfirmPopup(data.docId, "Calendar")}
+                            size="small"
+                          >
+                            <MdDelete />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </CardActionArea>
                     </ListItem>
                     {data !== arr[arr.length - 1] && <Divider variant="middle" component="li" />}
                   </div>
@@ -217,6 +256,7 @@ function Timetable() {
                         task={task}
                         update={() => setUpdate(!update)}
                         handleConfirmPopup={handleConfirmPopup}
+                        handleUpdatePopup={handleUpdatePopup}
                         hideProfilePic
                         hideDate
                       />

@@ -122,7 +122,7 @@ export default function MediaPopup({ open, close, update }) {
           Termin/ToDos hinzufügen
         </DialogTitle>
         <DialogContent dividers className={classes.content}>
-          <form className={classes.form} noValidate autoComplete="off">
+          <div className={classes.form}>
             <TextField id="title" label="Titel" onChange={handleTitle} value={title} />
             <FormControl className={classes.textField}>
               <InputLabel htmlFor="selectGroup">Gruppe</InputLabel>
@@ -169,7 +169,7 @@ export default function MediaPopup({ open, close, update }) {
                 <option value={false}>ToDo</option>
               </Select>
             </FormControl>
-          </form>
+          </div>
         </DialogContent>
         <DialogActions className={classes.buttons}>
           <Button autoFocus onClick={close}>
