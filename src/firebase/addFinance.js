@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 
 export const addFinance = async (entry) => {
-  const { title, expense, groupID, paidBy } = entry;
+  const { title, expense, groupID, paidBy, userName, profileImage } = entry;
   firebase
     .firestore()
     .collection("Finance")
@@ -11,6 +11,8 @@ export const addFinance = async (entry) => {
       expense,
       groupID,
       paidBy,
+      userName,
+      profileImage,
       currentDate: new Date().toISOString().split("T")[0],
     });
 };

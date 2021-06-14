@@ -28,7 +28,6 @@ function ConfirmPopup({
   setSnackbarContent,
 }) {
   const classes = useStyles();
-  console.log(`clickedItem`, clickedItem);
 
   const handleConfirm = () => {
     deleteItem(clickedItem, collection);

@@ -8,8 +8,6 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { useEffect, useState } from "react";
-import { getUserData } from "../../firebase/getUserData";
 
 const useStyles = makeStyles((theme) => ({
   crossedOut: {
@@ -21,20 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ExpenseItem({ expenseItem, multipleSelected, groupName, settled, handleUpdatePopup }) {
-  const { title, currentDate, expense, paidBy, groupID, color } = expenseItem;
+  const { title, currentDate, expense, groupID, color, profileImage, userName } = expenseItem;
 
   const classes = useStyles();
-  const [profileImage, setProfileImage] = useState();
-  const [profileName, setProfileName] = useState();
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      const userData = await getUserData(paidBy);
-      setProfileImage(() => userData.profileImage);
-      setProfileName(() => userData.userName);
-    };
-    loadUserData();
-  }, [paidBy]);
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -52,7 +39,7 @@ function ExpenseItem({ expenseItem, multipleSelected, groupName, settled, handle
             primary={title}
             secondary={
               groupName &&
-              `${profileName ?? ""} ${multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
+              `${userName ?? ""} ${multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
                 currentDate
               ).toLocaleDateString("de-DE", {
                 weekday: "short",

@@ -71,6 +71,8 @@ export default function FinancePopup({ open, close, update }) {
   };
 
   const handleSave = async (e) => {
+    let user = JSON.parse(selectedUser);
+
     if (!title || !selectedGroup || !expense) {
       setSnackbarContent({
         message: "Bitte fülle alle Felder aus",
@@ -84,7 +86,9 @@ export default function FinancePopup({ open, close, update }) {
       expense,
       groupID: selectedGroup.groupID,
       color: selectedGroup.color,
-      paidBy: selectedUser,
+      paidBy: user.id,
+      userName: user.name,
+      profileImage: user.profileImage,
     });
     close();
     setSelectedGroup("");
@@ -107,6 +111,7 @@ export default function FinancePopup({ open, close, update }) {
         .map((user) => ({
           name: user.userName,
           id: user.userId,
+          profileImage: user.profileImage,
         }));
       setAllUserInGroup(groupUserNames);
       setIsLoading(false);
@@ -168,7 +173,7 @@ export default function FinancePopup({ open, close, update }) {
                   <option aria-label="None" value="" />
                   {!isLoading &&
                     allUserInGroup.map((user, idx) => (
-                      <option key={idx} value={user.id}>
+                      <option key={idx} value={JSON.stringify(user)}>
                         {user.name}
                       </option>
                     ))}

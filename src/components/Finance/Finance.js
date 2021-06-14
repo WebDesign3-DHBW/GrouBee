@@ -17,7 +17,6 @@ import UpdatePopup from "../base/UpdatePopup";
 import ConfirmPopup from "../List/ConfirmPopup";
 import Snackbar from "../Snackbar";
 import { MdDelete } from "react-icons/md";
-import { getUserData } from "../../firebase/getUserData";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -75,12 +74,6 @@ function Finance() {
   };
 
   const SettlementDivider = ({ groupName, settledDate, settledDateDocID }) => {
-    console.log(
-      `groupName, settledDate, settledDateDocID`,
-      groupName,
-      settledDate,
-      settledDateDocID
-    );
     return (
       <>
         <Divider />
@@ -212,7 +205,7 @@ function Finance() {
       )}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Wrapper>
-        {activeGroups.map((group) => {
+        {activeGroups.map((group, idx) => {
           const groupID = group[0];
           const groupFinanceData = financeData.filter((doc) => doc.groupID === groupID);
           const groupSettlementData = settlementData.filter((doc) => doc.groupID === groupID);
@@ -223,6 +216,7 @@ function Finance() {
               group={group}
               currentUserID={currentUserData.userId}
               update={() => setUpdate(!update)}
+              key={idx}
             />
           );
         })}
