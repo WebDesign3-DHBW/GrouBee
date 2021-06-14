@@ -28,11 +28,10 @@ function ExpenseItem({ expenseItem, multipleSelected, groupName, settled, handle
   const [profileName, setProfileName] = useState();
 
   useEffect(() => {
-    console.log(`rendered`);
     const loadUserData = async () => {
       const userData = await getUserData(paidBy);
-      setProfileImage(userData.profileImage);
-      setProfileName(userData.userName);
+      setProfileImage(() => userData.profileImage);
+      setProfileName(() => userData.userName);
     };
     loadUserData();
   }, [paidBy]);
@@ -47,13 +46,13 @@ function ExpenseItem({ expenseItem, multipleSelected, groupName, settled, handle
       <CardActionArea style={{ padding: "0px 5px" }} onClick={handleClick}>
         <ListItem className="nplr">
           <ListItemAvatar>
-            <Avatar alt="Avatar" src={profileImage} />
+            <Avatar alt="Avatar" src={profileImage ?? ""} />
           </ListItemAvatar>
           <ListItemText
             primary={title}
             secondary={
               groupName &&
-              `${profileName} ${multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
+              `${profileName ?? ""} ${multipleSelected ? "@" + groupName + " | " : "|"} ${new Date(
                 currentDate
               ).toLocaleDateString("de-DE", {
                 weekday: "short",

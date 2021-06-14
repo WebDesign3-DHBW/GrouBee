@@ -17,6 +17,7 @@ import UpdatePopup from "../base/UpdatePopup";
 import ConfirmPopup from "../List/ConfirmPopup";
 import Snackbar from "../Snackbar";
 import { MdDelete } from "react-icons/md";
+import { getUserData } from "../../firebase/getUserData";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -72,7 +73,14 @@ function Finance() {
     setOpenUpdatePopup(true);
     setClickedItem({ docID, title, groupID, color });
   };
+
   const SettlementDivider = ({ groupName, settledDate, settledDateDocID }) => {
+    console.log(
+      `groupName, settledDate, settledDateDocID`,
+      groupName,
+      settledDate,
+      settledDateDocID
+    );
     return (
       <>
         <Divider />
@@ -109,47 +117,52 @@ function Finance() {
   const FinanceFeed = () => {
     let renderedDivider = [];
     let firstDivider = false;
+    let financeFeed = null;
 
-    return financeData
-      .sort(function (a, b) {
-        let dateA = new Date(a.currentDate),
-          dateB = new Date(b.currentDate);
-        return dateB - dateA;
-      })
-      .map((financeDoc, i, arr) => {
-        const groupName = currentUserData.groups[financeDoc.groupID].name;
+    if (pageData[0].length !== 0 && !userIsLoading) {
+      financeFeed = financeData
+        .sort(function (a, b) {
+          let dateA = new Date(a.currentDate),
+            dateB = new Date(b.currentDate);
+          return dateB - dateA;
+        })
+        .map((financeDoc, i, arr) => {
+          const groupName = currentUserData.groups[financeDoc.groupID].name;
 
-        const settlementDoc = settlementData
-          .filter((doc) => doc.groupID === financeDoc.groupID)
-          .find((doc) => new Date(doc.settleDate) >= new Date(financeDoc.currentDate));
+          const settlementDoc = settlementData
+            .filter((doc) => doc.groupID === financeDoc.groupID)
+            .find((doc) => new Date(doc.settleDate) >= new Date(financeDoc.currentDate));
 
-        if (settlementDoc) {
-          const dividerID = `${settlementDoc.groupID}-${settlementDoc.settleDate}`;
-          renderedDivider.push(dividerID);
-          const arrWithSameDivider = renderedDivider.filter((id) => id === dividerID);
-          firstDivider = arrWithSameDivider.length <= 1;
-        }
+          if (settlementDoc) {
+            const dividerID = `${settlementDoc.groupID}-${settlementDoc.settleDate}`;
+            renderedDivider.push(dividerID);
+            const arrWithSameDivider = renderedDivider.filter((id) => id === dividerID);
+            firstDivider = arrWithSameDivider.length <= 1;
+          }
 
-        return (
-          <div key={i}>
-            {settlementDoc && firstDivider && (
-              <SettlementDivider
+          return (
+            <div key={i}>
+              {settlementDoc && firstDivider && (
+                <SettlementDivider
+                  groupName={groupName}
+                  settledDate={settlementDoc.settleDate}
+                  settledDateDocID={`${settlementDoc.groupID}-${settlementDoc.settleDate}`}
+                />
+              )}
+              <ExpenseItem
+                expenseItem={financeDoc}
+                multipleSelected={activeGroups.length > 1 ? true : false}
                 groupName={groupName}
-                settledDate={settlementDoc.settleDate}
-                settledDateDocID={`${settlementDoc.groupID}-${settlementDoc.settleDate}`}
+                settled={settlementDoc}
+                handleUpdatePopup={handleUpdatePopup}
               />
-            )}
-            <ExpenseItem
-              expenseItem={financeDoc}
-              multipleSelected={activeGroups.length > 1 ? true : false}
-              groupName={groupName}
-              settled={settlementDoc}
-              handleUpdatePopup={handleUpdatePopup}
-            />
-            <Divider />
-          </div>
-        );
-      });
+              <Divider />
+            </div>
+          );
+        });
+    }
+
+    return financeFeed;
   };
 
   const financeData = pageData[0];
@@ -158,28 +171,27 @@ function Finance() {
   return (
     <>
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
-      <ConfirmPopup
-        open={open}
-        close={() => setOpen(false)}
-        clickedItem={clickedSettlementDate && clickedSettlementDate[0]}
-        update={() => {
-          setUpdate(!update);
-          console.log("update");
-        }}
-        collection="Settlement"
-        mediaType={
-          clickedSettlementDate &&
-          "das letzte Begleichen der Gruppe " +
-            clickedSettlementDate[2] +
-            " am " +
-            new Date(clickedSettlementDate[1]).toLocaleDateString("de-DE", {
-              year: "numeric",
-              month: "numeric",
-              day: "numeric",
-            })
-        }
-        setSnackbarContent={setSnackbarContent}
-      />
+      {open && (
+        <ConfirmPopup
+          open={open}
+          close={() => setOpen(false)}
+          clickedItem={clickedSettlementDate[0]}
+          update={() => setUpdate(!update)}
+          collection="Settlement"
+          mediaType={
+            clickedSettlementDate &&
+            "das letzte Begleichen der Gruppe " +
+              clickedSettlementDate[2] +
+              " am " +
+              new Date(clickedSettlementDate[1]).toLocaleDateString("de-DE", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+              })
+          }
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
       <ButtonAppBar title="Finanzen" />
       <Bubbles />
       <FAB open={() => setOpenFinancePopup(true)} />

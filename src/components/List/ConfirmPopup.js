@@ -28,6 +28,7 @@ function ConfirmPopup({
   setSnackbarContent,
 }) {
   const classes = useStyles();
+  console.log(`clickedItem`, clickedItem);
 
   const handleConfirm = () => {
     deleteItem(clickedItem, collection);
@@ -37,7 +38,6 @@ function ConfirmPopup({
       open: true,
     });
     update();
-    console.log("ive updated");
     close();
   };
   const handleCancel = () => {
