@@ -45,7 +45,7 @@ function ConfirmPopup({
   return (
     <Dialog open={open} onClose={close} aria-labelledby="responsive-dialog-title">
       <DialogContent>
-        <DialogContentText>Willst du {mediaType} wirklich löschen?</DialogContentText>
+        <DialogContentText>Möchtest du {mediaType} wirklich löschen?</DialogContentText>
       </DialogContent>
       <DialogActions className={classes.buttons}>
         <Button autoFocus onClick={handleCancel}>

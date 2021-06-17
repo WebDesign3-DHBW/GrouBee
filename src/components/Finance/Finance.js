@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Wrapper from "../base/Wrapper";
 import ButtonAppBar from "../AppBar";
 import usePageData from "../../hooks/usePageData";
 import Bubbles from "../Bubbles";
 import FAB from "../FAB";
 import FinancePopup from "./FinancePopup";
-import { CircularProgress, Divider, makeStyles, Typography } from "@material-ui/core";
+import { CircularProgress, Divider, makeStyles, Typography, IconButton } from "@material-ui/core";
 import ExpenseItem from "./ExpenseItem";
 import { useRecoilValue } from "recoil";
 import { activeGroupsState } from "../../utils/recoil";
@@ -14,7 +14,9 @@ import ExpenseItemSkeleton from "./ExpenseItemSkeleton";
 import DebtOverview from "./DebtOverview";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import UpdatePopup from "../base/UpdatePopup";
+import ConfirmPopup from "../List/ConfirmPopup";
 import Snackbar from "../Snackbar";
+import { MdDelete } from "react-icons/md";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -37,40 +39,17 @@ const useStyles = makeStyles((theme) => ({
 
 function Finance() {
   const classes = useStyles();
-  const [dataLoading, setDataLoading] = useState(true);
   const [update, setUpdate] = useState(false);
   const [pageData, isLoading] = usePageData("Finance", update);
   const [openFinancePopup, setOpenFinancePopup] = useState(false);
-  const [multipleSelected, setMultipleSelected] = useState(false);
-  const [sortedData, setSortedData] = useState([]);
   const [currentUserData, userIsLoading] = useCurrentUser();
   const [clickedItem, setClickedItem] = useState();
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const [snackbarContent, setSnackbarContent] = useState();
+  const [open, setOpen] = useState(false);
+  const [clickedSettlementDate, setClickedSettlementDate] = useState();
 
   const activeGroups = useRecoilValue(activeGroupsState);
-
-  useEffect(() => {
-    const financeData = pageData ? pageData[0] : [];
-
-    activeGroups.length > 1 ? setMultipleSelected(true) : setMultipleSelected(false);
-
-    financeData &&
-      setSortedData(
-        financeData.sort(function (a, b) {
-          var dateA = new Date(a.currentDate),
-            dateB = new Date(b.currentDate);
-          return dateB - dateA;
-        })
-      );
-
-    setDataLoading(false);
-  }, [pageData, activeGroups.length]);
-
-  const handleUpdatePopup = (docID, title, groupID, color) => {
-    setOpenUpdatePopup(true);
-    setClickedItem({ docID, title, groupID, color });
-  };
 
   if (isLoading || userIsLoading) {
     return (
@@ -89,11 +68,123 @@ function Finance() {
     ));
   }
 
+  const handleUpdatePopup = (docID, title, groupID, color) => {
+    setOpenUpdatePopup(true);
+    setClickedItem({ docID, title, groupID, color });
+  };
+
+  const SettlementDivider = ({ groupName, settledDate, settledDateDocID }) => {
+    return (
+      <>
+        <Divider />
+        <div style={{ display: "flex" }}>
+          <Typography variant="overline" color="primary">
+            zul. {groupName} beglichen{" "}
+            {new Date(settledDate).toLocaleDateString("de-DE", {
+              weekday: "short",
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })}
+          </Typography>
+          <div style={{ marginLeft: "auto", display: "flex" }}>
+            <IconButton
+              edge="end"
+              aria-label="Delete"
+              onClick={() => {
+                setClickedSettlementDate([settledDateDocID, settledDate, groupName]);
+                setOpen(true);
+              }}
+              size="small"
+              color="primary"
+            >
+              <MdDelete />
+            </IconButton>
+          </div>
+        </div>
+        <Divider />
+      </>
+    );
+  };
+
+  const FinanceFeed = () => {
+    let renderedDivider = [];
+    let firstDivider = false;
+    let financeFeed = null;
+
+    if (pageData[0].length !== 0 && !userIsLoading) {
+      financeFeed = financeData
+        .sort(function (a, b) {
+          let dateA = new Date(a.currentDate),
+            dateB = new Date(b.currentDate);
+          return dateB - dateA;
+        })
+        .map((financeDoc, i, arr) => {
+          const groupName = currentUserData.groups[financeDoc.groupID].name;
+
+          const settlementDoc = settlementData
+            .filter((doc) => doc.groupID === financeDoc.groupID)
+            .find((doc) => new Date(doc.settleDate) >= new Date(financeDoc.currentDate));
+
+          if (settlementDoc) {
+            const dividerID = `${settlementDoc.groupID}-${settlementDoc.settleDate}`;
+            renderedDivider.push(dividerID);
+            const arrWithSameDivider = renderedDivider.filter((id) => id === dividerID);
+            firstDivider = arrWithSameDivider.length <= 1;
+          }
+
+          return (
+            <div key={i}>
+              {settlementDoc && firstDivider && (
+                <SettlementDivider
+                  groupName={groupName}
+                  settledDate={settlementDoc.settleDate}
+                  settledDateDocID={`${settlementDoc.groupID}-${settlementDoc.settleDate}`}
+                />
+              )}
+              <ExpenseItem
+                expenseItem={financeDoc}
+                multipleSelected={activeGroups.length > 1 ? true : false}
+                groupName={groupName}
+                settled={settlementDoc}
+                handleUpdatePopup={handleUpdatePopup}
+              />
+              <Divider />
+            </div>
+          );
+        });
+    }
+
+    return financeFeed;
+  };
+
   const financeData = pageData[0];
   const settlementData = pageData[1];
 
   return (
     <>
+      <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
+      {open && (
+        <ConfirmPopup
+          open={open}
+          close={() => setOpen(false)}
+          clickedItem={clickedSettlementDate[0]}
+          update={() => setUpdate(!update)}
+          collection="Settlement"
+          mediaType={
+            clickedSettlementDate &&
+            "das letzte Begleichen der Gruppe " +
+              clickedSettlementDate[2] +
+              " am " +
+              new Date(clickedSettlementDate[1]).toLocaleDateString("de-DE", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+              })
+          }
+          setSnackbarContent={setSnackbarContent}
+        />
+      )}
       <ButtonAppBar title="Finanzen" />
       <Bubbles />
       <FAB open={() => setOpenFinancePopup(true)} />
@@ -114,7 +205,7 @@ function Finance() {
       )}
       <Snackbar snackbarContent={snackbarContent} setSnackbarContent={setSnackbarContent} />
       <Wrapper>
-        {activeGroups.map((group) => {
+        {activeGroups.map((group, idx) => {
           const groupID = group[0];
           const groupFinanceData = financeData.filter((doc) => doc.groupID === groupID);
           const groupSettlementData = settlementData.filter((doc) => doc.groupID === groupID);
@@ -125,34 +216,11 @@ function Finance() {
               group={group}
               currentUserID={currentUserData.userId}
               update={() => setUpdate(!update)}
+              key={idx}
             />
           );
         })}
-        {dataLoading && isLoading && activeGroups.length !== 0
-          ? loadingSkeleton()
-          : sortedData?.length !== 0 &&
-            sortedData !== null &&
-            sortedData.map((data, i) => (
-              <div key={i}>
-                <ExpenseItem
-                  currentUserData={currentUserData}
-                  title={data.title}
-                  currentDate={data.currentDate}
-                  expense={data.expense}
-                  paidBy={data.paidBy}
-                  groupID={data.groupID}
-                  docID={data.docId}
-                  color={data.color}
-                  multipleSelected={multipleSelected}
-                  settlementData={settlementData}
-                  sortedData={sortedData}
-                  ID={i}
-                  handleUpdatePopup={handleUpdatePopup}
-                  update={() => setUpdate(!update)}
-                />
-                <Divider />
-              </div>
-            ))}
+        {isLoading ? loadingSkeleton() : <FinanceFeed />}
         {activeGroups.length === 0 && (
           <Typography
             variant="subtitle1"
