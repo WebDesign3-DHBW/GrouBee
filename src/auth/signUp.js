@@ -35,7 +35,22 @@ export const signUp = async (username, email, password) => {
         return false;
       });
 
-    return isMailSuccessful;
+    const signOut = firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        return true;
+      })
+      .catch(function (error) {
+        alert("Fehler bei der Registrierung.");
+        return false;
+      });
+
+    if (signOut) {
+      return isMailSuccessful;
+    } else {
+      return false;
+    }
   } catch (e) {
     throw new Error(e.code);
   }
